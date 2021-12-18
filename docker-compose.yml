@@ -1,6 +1,6 @@
 services:
   fronend:
-    build: -t gitlab-hub/frontend . 
+    build: .
     image: gitlab-hub/frontend
     container_name: nginx-vue
     ports:
