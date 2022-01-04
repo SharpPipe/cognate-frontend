@@ -1,5 +1,5 @@
 services:
-  fronend:
+  frontend:
     build: .
     image: gitlab-hub/frontend
     container_name: nginx-vue
