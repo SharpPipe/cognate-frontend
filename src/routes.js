@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Posts from './views/Posts'
+import Groups from './views/Groups'
 
 Vue.use(VueRouter)
 
@@ -10,8 +10,8 @@ export default new VueRouter({
     routes: [
         {
             path: '/',
-            name: 'posts', 
-            component: Posts,
+            name: 'groups',
+            component: Groups,
         },
     ]
 })
