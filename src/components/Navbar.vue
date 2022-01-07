@@ -1,6 +1,6 @@
 <template>
   <div class="nav-bar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white nav-1">
+    <nav class="navbar navbar-expand-lg navbar-dark BG-DARK nav-1">
       <div class="container mw-0 px-3">
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-            <router-link :to = "{ name:'posts' }" exact>Posts</router-link>
+            <router-link :to = "{ name:'groups' }" exact>Groups</router-link>
             </li>
           </ul>
         </div>
@@ -27,7 +27,5 @@
 </script>
 
 <style scoped>
-    a {
-      color:#000;
-  }
+
 </style>
