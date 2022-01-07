@@ -8,7 +8,7 @@
 
 
 
-    <div class="album py-2 bg-light">
+    <div class="album py-2">
       <div class="container">
         <div class="row">
           <div v-for="group in APIData" :key="group.id">
