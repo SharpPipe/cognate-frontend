@@ -1,36 +1,32 @@
 <template>
   <div class="groups">
     <Navbar/>
-    <center>
-      <h1>Gitlab Hub</h1>
+
+    <div class="container">
       <h3>Groups</h3>
-    </center>
 
-
-
-    <div class="album py-2">
-      <div class="container">
+      <div v-for="group in APIData" :key="group.id">
         <div class="row">
-          <div v-for="group in APIData" :key="group.id">
-            <div class="card">
-              <div class="row no-gutters">
-                <div class="col-auto">
-                  <img src="//placehold.it/150" class="img-fluid" alt="">
-                </div>
-                <div class="col">
-                  <div class="card-block px-2 py-2">
-                    <h4 class="card-title"><a class="text-secondary" href="">{{ group.group_name }}</a></h4>
-                    <p class="card-text">{{ group.description }}</p>
-                    <a href="#" class="btn btn-primary">BUTTON</a>
-                  </div>
+          <div class="card" style="width: 100%;">
+            <div class="row justify-content-between">
+              <div class="col-auto">
+                <img src="//placehold.it/100" class="img-fluid" alt="">
+              </div>
+              <div class="col my-auto">
+                <div class="card-block">
+                  <h5 class="card-title">
+                    <a class="text-primary" href="">{{ group.group_name }}</a>
+                  </h5>
+                  <p class="card-text">{{ group.description }}</p>
                 </div>
               </div>
-              <div class="card-footer w-100 text-muted">
-                Footer stating Kristjan is a spicy boy
+
+              <div class="col my-auto d-flex justify-content-end">
+                <img class="px-2 img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Sparkline_sp500.svg/188px-Sparkline_sp500.svg.png" alt="sparkline"/>
               </div>
             </div>
-
           </div>
+
         </div>
       </div>
     </div>
@@ -46,7 +42,10 @@ export default {
   name: 'Groups',
   data() {
     return {
-      APIData: []
+      APIData: [{'id': 0, 'group_name': 'Java Tiimiprojektid', 'description': 'Games! Games! Games!'},
+              {'id': 1, 'group_name': 'Veebiarendus', 'description': 'Oleg annab'},
+              {'id': 2, 'group_name': 'Erialatutvustus', 'description': 'Onboarding to Taltech'}
+      ]
     }
   },
   components: {
