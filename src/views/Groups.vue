@@ -6,7 +6,7 @@
       <h3>Groups</h3>
 
       <div v-for="group in APIData" :key="group.id">
-        <div class="row">
+        <div class="row py-1">
           <div class="card" style="width: 100%;">
             <div class="row justify-content-between">
               <div class="col-auto">
@@ -22,7 +22,9 @@
               </div>
 
               <div class="col my-auto d-flex justify-content-end">
-                <img class="px-2 img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Sparkline_sp500.svg/188px-Sparkline_sp500.svg.png" alt="sparkline"/>
+                <img class="px-2 img-fluid"
+                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Sparkline_sp500.svg/188px-Sparkline_sp500.svg.png"
+                     alt="sparkline"/>
               </div>
             </div>
           </div>
@@ -43,8 +45,8 @@ export default {
   data() {
     return {
       APIData: [{'id': 0, 'group_name': 'Java Tiimiprojektid', 'description': 'Games! Games! Games!'},
-              {'id': 1, 'group_name': 'Veebiarendus', 'description': 'Oleg annab'},
-              {'id': 2, 'group_name': 'Erialatutvustus', 'description': 'Onboarding to Taltech'}
+        {'id': 1, 'group_name': 'Veebiarendus', 'description': 'Oleg annab'},
+        {'id': 2, 'group_name': 'Erialatutvustus', 'description': 'Onboarding to Taltech'}
       ]
     }
   },
