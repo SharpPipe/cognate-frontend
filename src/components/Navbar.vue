@@ -1,29 +1,37 @@
 <template>
-  <div class="nav-bar">
-    <nav class="navbar navbar-expand-lg navbar-dark BG-DARK nav-1">
-      <div class="container mw-0 px-3">
+  <div class="navbar">
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-md navbar-dark primary-color">
+      <a class="navbar-brand font-italic" href="/">Cognate</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-            <router-link :to = "{ name:'groups' }" exact>Groups</router-link>
-            </li>
-          </ul>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item nav-link">
+            <router-link :to="{ name:'groups' }" exact>Groups</router-link>
+          </li>
 
+          <li class="nav-item nav-link">
+            <router-link :to="{ name:'browse' }" exact>Browse</router-link>
+          </li>
+
+          <li class="nav-item disabled nav-link">
+            <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
+          </li>
+        </ul>
       </div>
+
     </nav>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'Navbar',
-  }
+export default {
+  name: 'Navbar',
+}
 </script>
 
 <style scoped>
