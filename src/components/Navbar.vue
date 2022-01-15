@@ -2,13 +2,9 @@
   <div class="navbar">
 
     <nav class="navbar navbar-expand-md navbar-dark primary-color">
-      <a class="navbar-brand font-italic" href="/">Cognate</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
-              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <a class="navbar-brand font-italic font-weight-light" href="/">Cognate</a>
 
-      <div class="collapse navbar-collapse" id="navbarContent">
+      <div class="navbar-expand">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item nav-link">
             <router-link :to="{ name:'groups' }" exact>Groups</router-link>

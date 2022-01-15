@@ -7,7 +7,7 @@
 
       <div v-for="group in APIData" :key="group.id">
         <div class="row py-1">
-          <div class="card" style="width: 100%;">
+          <div class="card w-100">
             <div class="row justify-content-between">
               <div class="col-auto">
                 <img src="//placehold.it/100" class="img-fluid" alt="">
@@ -15,7 +15,8 @@
               <div class="col my-auto">
                 <div class="card-block">
                   <h5 class="card-title">
-                    <a class="text-primary" href="">{{ group.group_name }}</a>
+                    <!-- TODO add real routing -->
+                    <a class="text-primary" href="/repos">{{ group.group_name}} </a>
                   </h5>
                   <p class="card-text">{{ group.description }}</p>
                 </div>
