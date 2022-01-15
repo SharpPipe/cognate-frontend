@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
+  <div class="home h-100">
     <Navbar/>
 
-    <div class="container px-4 px-lg-5 d-flex my-auto h-100 align-items-center justify-content-center">
+    <div class="container h-100 d-flex">
 
-      <div class="jumbotron">
+      <div class="jumbotron my-auto">
         <h1 class="display-1 font-weight-lighter font-italic">Cognate</h1>
         <p class="lead">Some people still know how learning is monitored.</p>
         <hr class="my-4">
