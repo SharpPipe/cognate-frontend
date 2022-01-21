@@ -37,5 +37,15 @@ export default new VueRouter({
             name: 'repo',
             component: Repo,
         },
+        {
+            path: '/signup',
+            name: 'signup',
+            component: () => import('./components/Signup.vue')
+        },
+        {
+            path: '/signin',
+            name: 'signin',
+            component: () => import('./components/Signin.vue')
+        }
     ]
 })
