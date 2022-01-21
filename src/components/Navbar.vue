@@ -16,7 +16,7 @@
           <li class="nav-item nav-link">
             <router-link :to="{ name:'browse' }" exact>Browse</router-link>
           </li>
-          <li class="nav-item disabled nav-link">
+          <li class="nav-item nav-link">
             <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
           </li>
         </ul>
