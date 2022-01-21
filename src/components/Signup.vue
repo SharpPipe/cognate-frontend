@@ -29,7 +29,6 @@
                     </form>
                 </div>
         </div>
-        <p class="mt-3 mb-3 text-muted text-center">© 2020–2025</p>
     </main>
 </template>
 
@@ -45,19 +44,4 @@
 </script>
 
 <style lang="css">
-    body {
-        display: flex;
-        padding-top: 60px;
-        padding-bottom: 60px;
-        align-items: center;
-        background-color: #f6f6f6;
-    }
-    .form-signin {
-        width: 100%;
-        max-width: 450px;
-        margin: auto;
-    }
-    label {
-        font-weight: 600;
-    }
 </style>
