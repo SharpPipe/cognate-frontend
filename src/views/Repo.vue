@@ -3,59 +3,56 @@
     <Navbar/>
 
     <div class="container">
-      <h3>Repo</h3>
+      <h4>{{ APIData.project_name }}</h4>
       <div class="row">
-        <div class="col-8 p-0">
-          <h4>{{ APIData.project_name }}</h4>
-          <img src="//placehold.it/800x400" class="img-fluid" alt="">
-
-
-        </div>
         <div class="col-4 p-0">
-
-          <h4>Work load balance</h4>
           <img src="//placehold.it/400/333333" class="img-fluid" alt="">
-
+        </div>
+        <div class="col-8 p-0">
+          <img src="//placehold.it/800x400" class="img-fluid" alt="">
         </div>
       </div>
 
       <div class="row">
 
-        <div class="col-12 p-0">
+        <div class="col p-0">
           <table class="table table-bordered">
             <tbody>
-            <tr v-for="dev in APIData.developers" :key="dev">
-              <td class="col-1" v-for="n in 8" :key="n">
-                <div v-if="APIData.milestones[n-1] !== undefined">
-                  {{ APIData.milestones[n - 1].time_spent.per_person[dev.name] }}h
-                </div>
-                <div v-else>
-                  TBA
-                </div>
+              <tr v-for="dev in APIData.developers" :key="dev">
+                <td class="col-4">{{ dev.name }}</td>
 
-              </td>
+                <td class="col-1" v-for="n in 8" :key="n">
+                  <div v-if="APIData.milestones[n-1] !== undefined">
+                    {{ APIData.milestones[n - 1].time_spent.per_person[dev.name] }}h
+                  </div>
+                  <div v-else>
+                    TBA
+                  </div>
+                </td>
 
-              <td class="col-4">{{ dev.name }}</td>
-            </tr>
-            <tr>
-              <th class="col-1" v-for="n in 8" :key="n">
-                <div v-if="APIData.milestones[n-1] !== undefined">
-                  {{ APIData.milestones[n - 1].time_spent.total }}
-                </div>
-                <div v-else>
-                  TBA
-                </div>
-
-              </th>
-
-              <td class="col-4">total</td>
-            </tr>
-
-
+              </tr>
             </tbody>
-            <thead>
 
-            </thead>
+            <tfoot>
+              <tr>
+                <td class="col-4">total</td>
+
+                <th class="col-1 small p-0" v-for="n in 8" :key="n">
+                  <div v-if="APIData.milestones[n-1] !== undefined">
+                    {{ APIData.milestones[n - 1].name }} <br>
+                    {{ APIData.milestones[n - 1].issues_completed }} /
+                    {{ APIData.milestones[n - 1].issues }} issues <br>
+                    {{ APIData.milestones[n - 1].time_spent.total }}h
+                  </div>
+                  <div v-else>
+                    TBA
+                  </div>
+                </th>
+
+              </tr>
+
+            </tfoot>
+
 
           </table>
         </div>
@@ -114,9 +111,9 @@ export default {
 </script>
 
 <style>
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
 </style>
