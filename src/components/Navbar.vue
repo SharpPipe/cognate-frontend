@@ -19,12 +19,6 @@
           <li class="nav-item disabled nav-link">
             <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
           </li>
-          <li class="nav-item nav-link">
-            <router-link :to="{ name:'signin' }" exact>signin</router-link>
-          </li>
-          <li class="nav-item nav-link">
-            <router-link :to="{ name:'signup' }" exact>signup</router-link>
-          </li>
         </ul>
         <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#authModal">Auth</button>
       </div>
