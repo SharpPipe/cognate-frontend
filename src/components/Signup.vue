@@ -35,6 +35,10 @@
             <input type="password" class="form-control form-control-lg" placeholder="Confirm Password" v-model="form.password_confirm"/>
           </div>
 
+          <div class="notification is-danger" v-if="errors.length">
+            <p v-for="error in errors" v-bind:key="error">{{error}}</p>
+          </div>
+
           <div class="w-100 form-group">
             <button class="btn btn-primary" type="submit">Submit</button>
           </div>
