@@ -1,7 +1,5 @@
 <template>
   <div class="repo">
-    <Navbar/>
-
     <div class="container">
       <h4>{{ APIData.project_name }}</h4>
       <div class="row">
@@ -68,8 +66,6 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-
 export default {
   name: 'Repo',
   data() {
@@ -107,9 +103,6 @@ export default {
         ]
       }
     }
-  },
-  components: {
-    Navbar,
   },
 }
 </script>

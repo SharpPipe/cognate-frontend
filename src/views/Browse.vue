@@ -1,7 +1,5 @@
 <template>
   <div class="browse">
-    <Navbar/>
-
 
     <div class="container-fluid px-5">
       <h3>Browse projects</h3>
@@ -34,7 +32,6 @@
 
 <script>
 import { Api } from '../axios-api'
-import Navbar from '../components/Navbar.vue'
 
 export default {
   name: 'Browse',
@@ -50,9 +47,6 @@ export default {
       ]
     }
   },
-  components: {
-    Navbar,
-  },
   created() {
     Api.get('/projects',)
         .then(response => {
@@ -66,7 +60,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-
-</style>

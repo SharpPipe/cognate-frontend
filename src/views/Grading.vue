@@ -1,6 +1,5 @@
 <template>
   <div class="milestone">
-    <Navbar/>
 
     <div class="container">
       <div class="row">
@@ -24,14 +23,11 @@
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
 
 export default {
   name: 'Grading',
@@ -62,11 +58,5 @@ export default {
       }
     }
   },
-  components: {
-    Navbar,
-  },
 }
 </script>
-
-<style>
-</style>

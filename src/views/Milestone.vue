@@ -1,7 +1,5 @@
 <template>
   <div class="milestone">
-    <Navbar/>
-
     <div class="container">
       <div class="row">
         <div class="col-8">
@@ -74,8 +72,6 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-
 export default {
   name: 'Repo',
   data() {
@@ -114,9 +110,6 @@ export default {
         },
       }
     }
-  },
-  components: {
-    Navbar,
   },
 }
 </script>

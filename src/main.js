@@ -7,9 +7,6 @@ import '@forevolve/bootstrap-dark/dist/js/bootstrap.js'
 
 Vue.config.productionTip = false
 
-// jQuery
-window.$ = window.jQuery = require('jquery');
-
 router.beforeEach((to, from, next) => {
   // ./router.js has a meta named 'requiresAuth: true'
   // then check if the user is logged in before routing to this path:
@@ -32,7 +29,6 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
-
 
 new Vue({
     router,
