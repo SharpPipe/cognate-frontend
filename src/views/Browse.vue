@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {getAPI} from '../axios-api'
+import { Api } from '../axios-api'
 import Navbar from '../components/Navbar.vue'
 
 export default {
@@ -54,7 +54,7 @@ export default {
     Navbar,
   },
   created() {
-    getAPI.get('/projects',)
+    Api.get('/projects',)
         .then(response => {
           console.log('Post API has recieved data')
           this.APIData = response.data

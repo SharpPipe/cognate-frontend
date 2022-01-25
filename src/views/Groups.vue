@@ -16,9 +16,10 @@
                   <div class="card-block">
                     <h5 class="card-title">
                       <!-- TODO add real routing -->
-                      <a class="text-primary" href="/repos">{{ group.group_name}} </a>
+                      <a class="text-primary" href="/repos">{{ group.name}} </a>
                     </h5>
                     <p class="card-text">{{ group.description }}</p>
+                    <p class="card-text">Children type: {{ group.children_type }}</p>
                   </div>
                 </div>
 
@@ -38,27 +39,32 @@
 </template>
 
 <script>
-import {getAPI} from '../axios-api'
+//import { Api } from '../axios-api'
 import Navbar from '../components/Navbar.vue'
+//import AuthService from "../services/AuthService";
+import {Api} from "../axios-api";
+import { mapState } from 'vuex'
 
 export default {
   name: 'Groups',
   data() {
     return {
-      APIData: [{'id': 0, 'group_name': 'Java Tiimiprojektid', 'description': 'Games! Games! Games!'},
-        {'id': 1, 'group_name': 'Veebiarendus', 'description': 'Oleg annab'},
-        {'id': 2, 'group_name': 'Erialatutvustus', 'description': 'Onboarding to Taltech'}
-      ]
+      //APIData: []
     }
   },
   components: {
     Navbar,
   },
+  computed: mapState(['APIData']),
   created() {
-    getAPI.get('/groups',)
+    if (!this.$store.getters.loggedIn) {
+      this.$router.push('/');
+    }
+    Api.get('groups/', { headers: { Authorization: `Bearer ${this.$store.state.accessToken}`}})
+
+    //Api.get('groups/', )
         .then(response => {
-          console.log('Post API has recieved data')
-          this.APIData = response.data
+          this.$store.state.APIData = response.data
         })
         .catch(err => {
           console.log(err)
