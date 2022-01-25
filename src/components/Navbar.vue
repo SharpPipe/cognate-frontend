@@ -20,54 +20,39 @@
             <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#authModal">Auth</button>
-      </div>
-      <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header" id="tab-content">
-              <ul class="nav nav-tabs-justified">
-                <li class="active nav-item">
-                  <a class="nav-link active" href="#login" data-toggle="tab">Login</a></li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#signup" data-toggle="tab">Signin</a></li>
-              </ul>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+        <button class="btn btn-outline-secondary" v-if="accessToken!=null">
+          <router-link :to="{name: 'logout'}">Logout</router-link>
+        </button>
 
-            </div>
-            <div class="modal-body">
-              <div class="tab-content">
-                <div class="tab-pane active" id="login">
-                  <Signin/>
-                </div>
-                <div class="tab-pane" id="signup">
-                  <Signup/>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!--
+        <button class="btn btn-outline-secondary" v-if="accessToken==null">
+          <router-link :to="{name: 'register'}">Register</router-link>
+        </button>
+        <button class="btn btn-outline-secondary" v-if="accessToken==null">
+          <router-link :to="{name: 'login'}">Login</router-link>
+        </button>
+        -->
+        <button type="button" class="btn btn-primary" v-if="accessToken==null" data-toggle="modal" data-target="#authModal">
+          Authenticate
+        </button>
+        <AuthModal/>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
-import Signin from "./Signin";
-import Signup from "./Signup";
+import {mapState} from 'vuex'
+import AuthModal from "./AuthModal";
 
 export default {
   name: 'Navbar',
+  computed: mapState(['accessToken']),
   components: {
-    Signin,
-    Signup,
-  }
+    AuthModal,
+  },
 }
 </script>
 
 <style scoped>
-
 </style>

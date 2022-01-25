@@ -33,13 +33,17 @@
               </tr>
             </tbody>
 
-            <tfoot>
+            <tfoot class="table-dark">
               <tr>
-                <td class="col-4">total</td>
+                <th class="col-4">Milestone stats</th>
 
                 <th class="col-1 small p-0" v-for="n in 8" :key="n">
                   <div v-if="APIData.milestones[n-1] !== undefined">
-                    {{ APIData.milestones[n - 1].name }} <br>
+                    <a href="/milestone">
+
+                      {{ APIData.milestones[n - 1].name }}
+                    </a>
+                    <br>
                     {{ APIData.milestones[n - 1].issues_completed }} /
                     {{ APIData.milestones[n - 1].issues }} issues <br>
                     {{ APIData.milestones[n - 1].time_spent.total }}h
