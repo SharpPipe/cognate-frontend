@@ -1,9 +1,7 @@
 <template>
   <div class="home h-100">
-    <Navbar/>
 
     <div class="container h-100 d-flex">
-
       <div class="jumbotron my-auto">
         <h1 class="display-1 font-weight-lighter font-italic">Cognate</h1>
         <p class="lead">Some people still know how learning is monitored.</p>
@@ -17,19 +15,10 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-
 export default {
   name: 'Home',
   data() {
     return {}
   },
-  components: {
-    Navbar,
-  },
 }
 </script>
-
-<style scoped>
-
-</style>

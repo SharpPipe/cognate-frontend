@@ -1,7 +1,5 @@
 <template>
   <div class="repos">
-    <Navbar/>
-
     <div class="container">
       <h3>Project Management</h3>
 
@@ -68,8 +66,6 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-
 export default {
   name: 'Home',
   data() {
@@ -128,12 +124,5 @@ export default {
       ]
     }
   },
-components: {
-  Navbar,
-  },
 }
 </script>
-
-<style scoped>
-
-</style>

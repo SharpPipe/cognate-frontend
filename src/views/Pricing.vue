@@ -1,7 +1,5 @@
 <template>
   <div class="pricing">
-    <Navbar/>
-
 
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">Pricing</h1>
@@ -70,19 +68,7 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-
 export default {
-  name: 'Home',
-  data() {
-    return {}
-  },
-  components: {
-    Navbar,
-  },
+  name: 'Pricing',
 }
 </script>
-
-<style scoped>
-
-</style>
