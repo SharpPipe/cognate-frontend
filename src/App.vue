@@ -1,13 +1,18 @@
 <template>
   <div id="app">
+    <Navbar/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import Navbar from "./components/Navbar";
 
 export default {
   name: 'App',
+  components: {
+    Navbar,
+  },
 }
 </script>
 
@@ -15,6 +20,5 @@ export default {
   body {
     margin: 0;
     padding: 0;
-    background-color: #eeeeee !important;
   }
 </style>

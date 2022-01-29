@@ -1,0 +1,116 @@
+<template>
+  <div class="repo">
+    <div class="container">
+      <h4>{{ APIData.project_name }}</h4>
+      <div class="row">
+        <div class="col-4 p-0">
+          <img src="//placehold.it/400/333333" class="img-fluid" alt="">
+        </div>
+        <div class="col-8 p-0">
+          <img src="//placehold.it/800x400" class="img-fluid" alt="">
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col p-0">
+          <table class="table table-bordered">
+            <tbody>
+              <tr v-for="dev in APIData.developers" :key="dev">
+                <td class="col-4">{{ dev.name }}</td>
+
+                <td class="col-1" v-for="n in 8" :key="n">
+                  <div v-if="APIData.milestones[n-1] !== undefined">
+                    {{ APIData.milestones[n - 1].time_spent.per_person[dev.name] }}h
+                  </div>
+                  <div v-else>
+                    TBA
+                  </div>
+                </td>
+
+              </tr>
+            </tbody>
+
+            <tfoot class="table-dark">
+              <tr>
+                <th class="col-4">Milestone stats</th>
+
+                <th class="col-1 small p-0" v-for="n in 8" :key="n">
+                  <div v-if="APIData.milestones[n-1] !== undefined">
+                    <a href="/milestone">
+
+                      {{ APIData.milestones[n - 1].name }}
+                    </a>
+                    <br>
+                    {{ APIData.milestones[n - 1].issues_completed }} /
+                    {{ APIData.milestones[n - 1].issues }} issues <br>
+                    {{ APIData.milestones[n - 1].time_spent.total }}h
+                  </div>
+                  <div v-else>
+                    TBA
+                  </div>
+                </th>
+
+              </tr>
+
+            </tfoot>
+
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Repo',
+  data() {
+    return {
+      APIData: {
+        'project_name': 'Minecraft',
+        'developers': [
+          {'name': 'priit', 'status': 0},
+          {'name': 'tiit', 'status': 0},
+          {'name': 'viive', 'status': 1}
+        ],
+        'milestones': [
+          {
+            'name': 'First Milestone', 'issues': 12, 'issues_completed': 3,
+            'time_spent': {
+              'total': 34,
+              'per_person': {
+                'priit': 14,
+                'tiit': 12,
+                'viive': 8,
+              },
+            },
+          },
+          {
+            'name': 'Second Milestone', 'issues': 18, 'issues_completed': 0,
+            'time_spent': {
+              'total': 0,
+              'per_person': {
+                'priit': 0,
+                'tiit': 0,
+                'viive': 0,
+              },
+            }
+          },
+        ]
+      }
+    }
+  },
+}
+</script>
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+</style>

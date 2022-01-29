@@ -1,33 +1,55 @@
 <template>
   <div class="nav-bar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white nav-1">
-      <div class="container mw-0 px-3">
+    <nav class="navbar navbar-expand-lg navbar-dark primary-color">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+              aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand font-italic font-weight-light" href="/">Cognate</a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item nav-link">
+            <router-link :to="{ name:'groups' }" exact>Groups</router-link>
+          </li>
+
+          <li class="nav-item nav-link">
+            <router-link :to="{ name:'browse' }" exact>Browse</router-link>
+          </li>
+          <li class="nav-item nav-link">
+            <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
+          </li>
+        </ul>
+        <button class="btn btn-outline-secondary" v-if="accessToken!=null">
+          <router-link :to="{name: 'logout'}">Logout</router-link>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-            <router-link :to = "{ name:'posts' }" exact>Posts</router-link>
-            </li>
-          </ul>
-        </div>
-
+        <!--
+        <button class="btn btn-outline-secondary" v-if="accessToken==null">
+          <router-link :to="{name: 'register'}">Register</router-link>
+        </button>
+        <button class="btn btn-outline-secondary" v-if="accessToken==null">
+          <router-link :to="{name: 'login'}">Login</router-link>
+        </button>
+        -->
+        <button type="button" class="btn btn-primary" v-if="accessToken==null" data-toggle="modal" data-target="#authModal">
+          Authenticate
+        </button>
+        <AuthModal/>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'Navbar',
-  }
-</script>
+import {mapState} from 'vuex'
+import AuthModal from "./AuthModal";
 
-<style scoped>
-    a {
-      color:#000;
-  }
-</style>
+export default {
+  name: 'Navbar',
+  computed: mapState(['accessToken']),
+  components: {
+    AuthModal,
+  },
+}
+</script>
