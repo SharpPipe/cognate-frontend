@@ -1,7 +1,7 @@
 services:
   frontend:
     build: .
-    image: gitlab-hub/frontend
+    image: cognate/front
     container_name: nginx-vue
     ports:
       - "8080:80"
