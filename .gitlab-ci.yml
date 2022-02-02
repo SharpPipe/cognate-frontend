@@ -11,7 +11,10 @@ lint:
   tags:
     - cognate
   stage: lint
+  image: node:latest
   before_script:
+    - echo "Install npm"
+    - npm install
     - echo "Running linter"
   script:
     - npm run lint
