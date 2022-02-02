@@ -35,10 +35,10 @@ deploy:
   tags:
     - cognate
   stage: deploy
-  #only:
-  #  refs:
-  #    - main
-  #environment: main
+  only:
+    refs:
+      - main
+  environment: main
   before_script:
     - docker-compose version
   script:
