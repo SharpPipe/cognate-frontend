@@ -1,6 +1,7 @@
 services:
   frontend:
     build: .
+    restart: always
     image: cognate/front
     container_name: nginx-vue
     ports:
