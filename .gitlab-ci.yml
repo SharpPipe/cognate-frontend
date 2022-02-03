@@ -1,0 +1,48 @@
+image: docker
+services:
+  - docker:dind
+
+stages:
+  - lint
+  - test
+  - deploy
+
+lint:
+  tags:
+    - cognate
+  stage: lint
+  image: node:latest
+  before_script:
+    - echo "Install npm"
+    - npm install
+    - echo "Running linter"
+  script:
+    - npm run lint
+
+test:
+  tags:
+    - cognate
+  stage: test
+  image: node:latest
+  before_script:
+    - echo "Install npm"
+    - npm install
+    - echo "Running tests"
+  script:
+    - echo "no tests written yet :("
+
+deploy:
+  tags:
+    - cognate
+  stage: deploy
+  only:
+    refs:
+      - main
+  environment: main
+  before_script:
+    - docker-compose version
+  script:
+    - echo "Building Docker container"
+    - docker-compose down
+    - docker-compose up -d --build
+
