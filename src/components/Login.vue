@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
   name: 'login',
   data() {
@@ -44,12 +46,15 @@ export default {
       this.$store.dispatch('loginUser', this.payload)
       .then(() => {
         this.wrongCredentials = false
+        $("#authClose").click()
         this.$router.push({ name: 'groups' })
       })
       .catch(error => {
         console.log(error)
         this.wrongCredentials = true
-      })
+      }
+      
+      )
 
     }
   },
