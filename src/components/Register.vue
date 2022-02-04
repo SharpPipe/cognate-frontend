@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
   name: 'register',
   data() {
@@ -64,6 +66,7 @@ export default {
     registerUser() {
       this.$store.dispatch('registerUser', this.payload)
         .then(() => {
+          $("#authClose").click()
           this.$router.push({ name: 'home' })
         })
     }

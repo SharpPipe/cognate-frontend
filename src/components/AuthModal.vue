@@ -10,7 +10,7 @@
             <li class="nav-item">
               <a class="nav-link" href="#signup" data-toggle="tab">Register</a></li>
           </ul>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button id="authClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
 
