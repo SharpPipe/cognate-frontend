@@ -70,7 +70,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/repo',
+            path: '/group/:groupid/repo/:repoid',
             name: 'repo',
             component: Repo,
             meta: {

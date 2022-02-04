@@ -14,9 +14,10 @@
             </td>
 
             <td>
-                <div class="col p-0 my-auto">
-                  {{repo.name}}
-                </div>
+                <router-link :to="{name: 'repo', params: { groupid: repo.project_group, repoid: repo.id }}" 
+                              class='text-white'>
+                  {{ repo.name }} 
+                </router-link>
             </td>
 
             <td>
