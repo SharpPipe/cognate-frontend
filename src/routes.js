@@ -70,7 +70,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/repo',
+            path: '/group/:groupid/repo/:repoid',
             name: 'repo',
             component: Repo,
             meta: {
@@ -78,8 +78,8 @@ export default new VueRouter({
             }
         },
         {
-            path: '/repos',
-            name: 'repos',
+            path: '/group/:id',
+            name: 'group-repos',
             component: Repo_management,
             meta: {
                 requiresAuth: true
