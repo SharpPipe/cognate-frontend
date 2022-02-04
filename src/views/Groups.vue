@@ -18,7 +18,10 @@
               <div class="col my-auto">
                 <div>
                   <h5 class="text-capitalize">
-                    <a class="text-white" href="/repos">{{ group.name }} </a>
+                    <router-link :to="{name: 'group-repos', params: { id: group.id }}" class='text-white'>
+                      {{ group.name }} 
+                    </router-link>
+
                   </h5>
                   <p class="text-muted m-0">{{ group.description }}</p>
                   <p class="text-muted m-0">Children type: {{ group.children_type }}</p>
