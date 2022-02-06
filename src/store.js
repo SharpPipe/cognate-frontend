@@ -6,16 +6,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        accessToken: localStorage.getItem('access_token') || null, // makes sure the user is logged in even after refreshing the page
+        accessToken:  localStorage.getItem('access_token')  || null, // makes sure the user is logged in even after refreshing the page
         refreshToken: localStorage.getItem('refresh_token') || null,
-        APIData: '',
+        APIData:  '',
+        username: '',
     },
     mutations: {
-        updateLocalStorage (state, { access, refresh }) {
+        updateLocalStorage (state, { access, refresh, username}) {
             localStorage.setItem('access_token',  access)
             localStorage.setItem('refresh_token', access)
             state.accessToken  = access
             state.refreshToken = refresh
+
+            localStorage.setItem('username', username)
+            state.username = username
         },
         updateAccess (state, access) {
             state.accessToken = access
@@ -23,7 +27,7 @@ export default new Vuex.Store({
         destroyToken (state) {
             state.accessToken  = null
             state.refreshToken = null
-        }
+        },
     },
     getters: {
         loggedIn (state) {
@@ -38,7 +42,11 @@ export default new Vuex.Store({
                     password: credentials.password
                 })
                     .then(response => {
-                        context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh })
+                        context.commit('updateLocalStorage', { 
+                            access: response.data.access, 
+                            refresh: response.data.refresh,
+                            username: credentials.username
+                        })
                         resolve()
                     })
                     .catch(error => {
@@ -52,6 +60,7 @@ export default new Vuex.Store({
             if (context.getters.loggedIn) {
                 localStorage.removeItem('access_token')
                 localStorage.removeItem('refresh_token')
+                localStorage.removeItem('username')
                 context.commit('destroyToken')
             }
         },

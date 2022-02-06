@@ -20,18 +20,15 @@
             <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
           </li>
         </ul>
-        <button class="btn btn-outline-secondary" v-if="accessToken!=null">
+
+        <button class="btn btn-outline-info mx-2" v-if="accessToken!=null">
+          <router-link :to="{name: 'profile'}">{{username}} ⚙</router-link>
+        </button>
+
+        <button class="btn btn-outline-danger" v-if="accessToken!=null">
           <router-link :to="{name: 'logout'}">Logout</router-link>
         </button>
 
-        <!--
-        <button class="btn btn-outline-secondary" v-if="accessToken==null">
-          <router-link :to="{name: 'register'}">Register</router-link>
-        </button>
-        <button class="btn btn-outline-secondary" v-if="accessToken==null">
-          <router-link :to="{name: 'login'}">Login</router-link>
-        </button>
-        -->
         <button type="button" class="btn btn-primary" v-if="accessToken==null" data-toggle="modal" data-target="#authModal">
           Authenticate
         </button>
@@ -47,7 +44,7 @@ import AuthModal from "./AuthModal";
 
 export default {
   name: 'Navbar',
-  computed: mapState(['accessToken']),
+  computed: mapState(['accessToken', 'username']),
   components: {
     AuthModal,
   },
