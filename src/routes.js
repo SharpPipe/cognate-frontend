@@ -9,6 +9,7 @@ import Repo      from "./views/Repo";
 import Milestone from "./views/Milestone";
 import Pricing   from "./views/Pricing";
 import Grading   from "./views/Grading";
+import Profile   from "./views/Profile";
 import Login     from "./components/Login";
 import Register  from "./components/Register";
 import Logout    from "./components/Logout";
@@ -50,6 +51,14 @@ export default new VueRouter({
             component: Register,
             meta: {
                 requiresLogged: true
+            }
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: Profile,
+            meta: {
+                requiresAuth: true
             }
         },
         {
