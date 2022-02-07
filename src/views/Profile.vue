@@ -66,11 +66,9 @@ export default {
     },
     methods: {
         submitToken() {
-            Api.put('profile/', { gitlab_token: this.gitlab_token }, {
-                headers: { 
-                    Authorization: `Bearer ${this.$store.state.accessToken}` 
-                }
-            })
+            Api.put('profile/', { 
+                    gitlab_token: this.gitlab_token 
+                })
                 .then(response => {
                     this.success = "Great success!"
                     console.log(response.data)
