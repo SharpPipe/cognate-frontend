@@ -27,18 +27,18 @@ export default new VueRouter({
             component: Home,
         },
         {
-            path: '/pricing',
+            path: '/pricing/',
             name: 'pricing',
             component: Pricing,
         },
         {
-            path: '/browse',
+            path: '/browse/',
             name: 'browse',
             component: Browse,
         },
         // authentications
         {
-            path: '/login',
+            path: '/login/',
             name: 'login',
             component: Login,
             meta: {
@@ -46,7 +46,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/register',
+            path: '/register/',
             name: 'register',
             component: Register,
             meta: {
@@ -54,7 +54,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/profile',
+            path: '/profile/',
             name: 'profile',
             component: Profile,
             meta: {
@@ -62,7 +62,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/logout',
+            path: '/logout/',
             name: 'logout',
             component: Logout,
             meta: {
@@ -71,7 +71,7 @@ export default new VueRouter({
         },
         // authenticated users
         {
-            path: '/groups',
+            path: '/groups/',
             name: 'groups',
             component: Groups,
             meta: {
@@ -79,7 +79,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/group/:groupid/repo/:repoid',
+            path: '/group/:groupid/repo/:repoid/',
             name: 'repo',
             component: Repo,
             meta: {
@@ -87,7 +87,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/group/:id',
+            path: '/group/:id/',
             name: 'group-repos',
             component: Repo_management,
             meta: {
@@ -95,7 +95,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/milestone',
+            path: '/milestone/',
             name: 'milestone',
             component: Milestone,
             meta: {
@@ -103,7 +103,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/grading',
+            path: '/grading/',
             name: 'grading',
             component: Grading,
             meta: {

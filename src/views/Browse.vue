@@ -48,7 +48,7 @@ export default {
     }
   },
   created() {
-    Api.get('/projects',)
+    Api.get('/projects/',)
         .then(response => {
           console.log('Post API has recieved data')
           this.APIData = response.data
