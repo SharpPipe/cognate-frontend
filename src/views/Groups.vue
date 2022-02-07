@@ -2,7 +2,10 @@
   <div class="groups">
 
     <div class="container">
-      <h3>Groups</h3>
+      <div class="row d-flex">
+        <h3 class="flex-grow-1">Groups</h3>
+        <a class="btn btn-primary r-100" href="/groupadd">+</a>
+      </div>
 
       <div>
         <table class="table">

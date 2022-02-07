@@ -10,6 +10,7 @@ import Milestone from "./views/Milestone";
 import Pricing   from "./views/Pricing";
 import Grading   from "./views/Grading";
 import Profile   from "./views/Profile";
+import GroupAdd  from "./views/GroupAdd";
 import Login     from "./components/Login";
 import Register  from "./components/Register";
 import Logout    from "./components/Logout";
@@ -110,6 +111,13 @@ export default new VueRouter({
                 requiresAuth: true
             }
         },
-
+        {
+            path: '/groupadd/',
+            name: 'groupadd',
+            component: GroupAdd,
+            meta: {
+                requiresAuth: true
+            }
+        },
     ]
 })
