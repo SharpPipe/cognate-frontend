@@ -66,7 +66,7 @@ export default new Vuex.Store({
         },
         registerUser (context, data) {
             return new Promise((resolve, reject) => {
-                Api.post('/api/register', {
+                Api.post('/api/register/', {
                     first_name: data.first_name,
                     last_name : data.last_name,
                     username  : data.username,
@@ -84,7 +84,7 @@ export default new Vuex.Store({
         },
         refreshToken (context) {
             return new Promise( (resolve, reject) => {
-                Api.post('/api/token/refresh', {
+                Api.post('/api/token/refresh/', {
                     refresh: context.state.refreshToken
                 })
                     .then(response => {
