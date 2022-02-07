@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 import { Api } from './axios-api'
 
 Vue.use(Vuex)
@@ -11,6 +12,7 @@ export default new Vuex.Store({
         APIData:  '',
         username: '',
     },
+    plugins: [createPersistedState()],
     mutations: {
         updateLocalStorage (state, { access, refresh, username}) {
             localStorage.setItem('access_token',  access)
