@@ -59,7 +59,7 @@ export default {
   },
   computed: mapState(['APIData']),
   created() {
-    Api.get('groups/', {headers: {Authorization: `Bearer ${this.$store.state.accessToken}`}})
+    Api.get('groups/')
         .then(response => {
           this.$store.state.APIData = response.data
         })
