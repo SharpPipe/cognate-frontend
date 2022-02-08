@@ -6,8 +6,6 @@
                 <div class="col">
                     <form class="form-group" v-on:submit.prevent="submitToken">
                         <label for="exampleInputEmail1">Your Gitlab API Token</label>
-                        <div class="row d-flex mx-0">
-                            <div class="flex-grow-1">
                                 <input
                                     type="text"
                                     class="form-control"
@@ -15,21 +13,18 @@
                                     placeholder="Access Token"
                                     v-model="gitlab_token"
                                 />
-                            </div>
-                            <div class>
+
+                        <small class="form-text text-muted float-right">
                                 <a
                                     href="https://gitlab.cs.ttu.ee/-/profile/personal_access_tokens"
-                                    class="btn btn-outline-primary"
+                                    class="alert-link"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                >Generate</a>
-                                <!-- target: open in new tab -->
-                            </div>
-                        </div>
-
-                        <small class="form-text text-muted">Do not share it!</small>
+                                >Generate a new Gitlab Token</a>
+                                <!-- target and rel to open the link in new tab -->
+                        </small>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary my-3">Submit</button>
                         </div>
                     </form>
                 </div>
