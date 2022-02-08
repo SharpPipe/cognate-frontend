@@ -2,7 +2,10 @@
   <div class="groups">
 
     <div class="container">
-      <h3>Groups</h3>
+      <div class="row d-flex">
+        <h3 class="flex-grow-1">Groups</h3>
+        <a class="btn btn-primary r-100" href="/groupadd">+</a>
+      </div>
 
       <div>
         <table class="table">
@@ -18,7 +21,7 @@
               <div class="col my-auto">
                 <div>
                   <h5 class="text-capitalize">
-                    <router-link :to="{name: 'group-repos', params: { id: group.id }}" class='text-white'>
+                    <router-link :to="{name: 'group-repos', params: { id: group.id, group_id: group.group_id, name: group.name }}" class='text-white'>
                       {{ group.name }} 
                     </router-link>
 

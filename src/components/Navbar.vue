@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bar">
+  <div class="nav-bar bg-dark mb-2">
     <nav class="navbar navbar-expand-lg navbar-dark primary-color">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
               aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,7 +8,7 @@
       <a class="navbar-brand font-italic font-weight-light" href="/">Cognate</a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-1">
           <li class="nav-item nav-link">
             <router-link :to="{ name:'groups' }" exact>Groups</router-link>
           </li>
