@@ -17,7 +17,7 @@
                             placeholder="Group description"
                             v-model="payload.description"
                         />
-                        <div class="row m-0 d-flex">
+                        <div class="row m-0">
                             <div class="col-8 p-0 pr-1">
                                 <input
                                     type="text"
@@ -28,15 +28,15 @@
                             </div>
                             <div class="col p-0">
                                 <select
-                                    class="flex-shrink-1 form-control my-0"
+                                    required
+                                    class="form-control my-0"
                                     v-model="payload.children_type"
                                 >
                                     <option
-                                        value
-                                        disabled
+                                        value=""
                                         selected
+                                        disabled
                                         hidden
-                                        class="text-muted"
                                     >Children</option>
                                     <option value="P">Projects</option>
                                     <option value="G">Groups</option>
@@ -91,3 +91,14 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+select, select option {
+  color: #dee2e6;
+}
+
+select:invalid,
+select option[value=""] {
+  color: #6c757d;
+}
+</style>
