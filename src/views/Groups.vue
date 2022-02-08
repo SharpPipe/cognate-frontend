@@ -21,7 +21,7 @@
               <div class="col my-auto">
                 <div>
                   <h5 class="text-capitalize">
-                    <router-link :to="{name: 'group-repos', params: { id: group.id }}" class='text-white'>
+                    <router-link :to="{name: 'group-repos', params: { id: group.id, group_id: group.group_id, name: group.name }}" class='text-white'>
                       {{ group.name }} 
                     </router-link>
 
