@@ -96,17 +96,17 @@ export default new VueRouter({
             }
         },
         {
-            path: '/milestone/',
-            name: 'milestone',
-            component: Milestone,
+            path: '/group/:id/grading/',
+            name: 'grading',
+            component: Grading,
             meta: {
                 requiresAuth: true
             }
         },
         {
-            path: '/grading/',
-            name: 'grading',
-            component: Grading,
+            path: '/milestone/',
+            name: 'milestone',
+            component: Milestone,
             meta: {
                 requiresAuth: true
             }

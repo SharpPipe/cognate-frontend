@@ -1,45 +1,30 @@
 <template>
   <div class="milestone">
-
     <div class="container">
       <div class="row">
-        <h6>Teamwork Grading</h6>
-        <div class="col-8">
-
-        </div>
-
-
-        <h6>Final Grade</h6>
-        <div class="col-4">
-
-        </div>
-      </div>
-
-      <div class="row">
-        <h6>Individual grading</h6>
-        <div v-for="dev in APIData.developers" :key="dev">
-          <div class="card">
-
-          </div>
-        </div>
+        <CourseGradingTree />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import CourseGradingTree from "../components/visualizations/CourseGradingTree.vue"
 
 export default {
   name: 'Grading',
+  components: {
+    CourseGradingTree,
+  },
   data() {
     return {
       APIData: {
         'project_name': 'Minecraft',
         'milestone_name': 'First Milestone',
         'developers': [
-          {'name': 'priit', 'status': 0, 'time_spent': 5},
-          {'name': 'tiit', 'status': 0, 'time_spent': 24},
-          {'name': 'viive', 'status': 1, 'time_spent': 9}
+          { 'name': 'priit', 'status': 0, 'time_spent': 5 },
+          { 'name': 'tiit', 'status': 0, 'time_spent': 24 },
+          { 'name': 'viive', 'status': 1, 'time_spent': 9 }
         ],
         'milestone_stats': {
           'total_time_spent': 33,
