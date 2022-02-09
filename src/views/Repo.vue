@@ -3,15 +3,9 @@
     <div class="container">
       <h4>{{ APIData.project_name }}</h4>
       <div class="row m-1">
-        <div class="col-4 p-0" id="repoRadarArea">
+        <div class="col-4 p-0">
           <RepoRadar :radardata="radarData"/>
-        </div>
-        <div class="col-8 p-0" id="gitTimeArea">
-          <GitTime  />
-        </div>
-      </div>
-
-      <div class="form-group col-4">
+      <div class="form-group">
         <label>Management</label>
         <input type="range" min="0" max="10" v-model="radarData[0].value" class="form-control-range"  />
 
@@ -31,6 +25,12 @@
         <input type="range" min="0" max="10" v-model="radarData[5].value" class="form-control-range" />
 
       </div>
+        </div>
+        <div class="col-8 p-0">
+          <GitTime  />
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -66,3 +66,34 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+input[type="range"] {
+      -webkit-appearance: none;
+    background-color: #dddddd;
+    height: 10px;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 5px rgba(0,0,0,0.7);
+}
+
+input[type="range"]:focus {
+  outline: none
+}
+
+input[type="range"]::-webkit-slider-thumb {
+ -webkit-appearance: none;
+ height: 15px;
+ width: 15px;
+ background: #66ee66;
+    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.5);
+ border-radius: 50%;
+}
+
+input[type="range"]::-moz-range-thumb {
+ height: 15px;
+ width: 15px;
+ background: #66ee66;
+    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.5);
+ border-radius: 50%;
+}
+</style>

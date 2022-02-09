@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg :viewBox="`0 0 400 400`" />
+    <svg :viewBox="`0 0 400 400`" id="reporadar"/>
   </div>
 </template>
 
@@ -92,7 +92,7 @@ export default {
         .radius(d => rScale(d))
         .angle((d, i) => i * angleSlice)
 
-      const svg = d3.select('svg')
+      const svg = d3.select('#reporadar')
 
       const containerWidth = width - (margin * 2);
       const containerHeight = height - (margin * 2);
