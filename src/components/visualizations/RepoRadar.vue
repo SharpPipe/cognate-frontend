@@ -33,7 +33,7 @@ export default {
 
   },
   methods: {
-    onRadarDataChange(after, before) {
+    onRadarDataChange() {
       d3.select('svg').selectAll("*").remove()
       this.drawChart(this.radardata)
     },
@@ -47,8 +47,8 @@ export default {
       const radius = (height - (margin * 2)) / 2 - 1
       const dotRadius = 4
       const axisCircles = 10
-      const axisLabelFactor = 1.3
-      const wrapWidth = 200
+      //const axisLabelFactor = 1.3
+      //const wrapWidth = 200
       const axesLength = 6
       const axesDomain = data[0].map(d => d.axis)
       const maxValue = 10
