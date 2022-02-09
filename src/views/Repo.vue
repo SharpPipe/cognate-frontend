@@ -2,115 +2,98 @@
   <div class="repo">
     <div class="container">
       <h4>{{ APIData.project_name }}</h4>
-      <div class="row">
+      <div class="row m-1">
         <div class="col-4 p-0">
-          <img src="//placehold.it/400/333333" class="img-fluid" alt="">
+          <RepoRadar :radardata="radarData"/>
+      <div class="form-group">
+        <label>Management</label>
+        <input type="range" min="0" max="10" v-model="radarData[0].value" class="form-control-range"  />
+
+        <label>Tests</label>
+        <input type="range" min="0" max="10" v-model="radarData[1].value" class="form-control-range" />
+
+        <label>Issues</label>
+        <input type="range" min="0" max="10" v-model="radarData[2].value" class="form-control-range" />
+
+        <label>Time Spent</label>
+        <input type="range" min="0" max="10" v-model="radarData[3].value" class="form-control-range" />
+
+        <label>Code lines</label>
+        <input type="range" min="0" max="10" v-model="radarData[4].value" class="form-control-range" />
+
+        <label>Style</label>
+        <input type="range" min="0" max="10" v-model="radarData[5].value" class="form-control-range" />
+
+      </div>
         </div>
         <div class="col-8 p-0">
-          <img src="//placehold.it/800x400" class="img-fluid" alt="">
+          <GitTime  />
         </div>
       </div>
 
-      <div class="row">
-
-        <div class="col p-0">
-          <table class="table table-bordered">
-            <tbody>
-              <tr v-for="dev in APIData.developers" :key="dev">
-                <td class="col-4">{{ dev.name }}</td>
-
-                <td class="col-1" v-for="n in 8" :key="n">
-                  <div v-if="APIData.milestones[n-1] !== undefined">
-                    {{ APIData.milestones[n - 1].time_spent.per_person[dev.name] }}h
-                  </div>
-                  <div v-else>
-                    TBA
-                  </div>
-                </td>
-
-              </tr>
-            </tbody>
-
-            <tfoot class="table-dark">
-              <tr>
-                <th class="col-4">Milestone stats</th>
-
-                <th class="col-1 small p-0" v-for="n in 8" :key="n">
-                  <div v-if="APIData.milestones[n-1] !== undefined">
-                    <a href="/milestone">
-
-                      {{ APIData.milestones[n - 1].name }}
-                    </a>
-                    <br>
-                    {{ APIData.milestones[n - 1].issues_completed }} /
-                    {{ APIData.milestones[n - 1].issues }} issues <br>
-                    {{ APIData.milestones[n - 1].time_spent.total }}h
-                  </div>
-                  <div v-else>
-                    TBA
-                  </div>
-                </th>
-
-              </tr>
-
-            </tfoot>
-
-
-          </table>
-        </div>
-
-      </div>
     </div>
-
   </div>
 </template>
 
 <script>
+import RepoRadar from "../components/visualizations/RepoRadar";
+import GitTime from "../components/visualizations/GitTime";
 export default {
   name: 'Repo',
+  components: {
+    GitTime,
+    RepoRadar,
+  },
   data() {
     return {
+      radarData: [
+        { axis: "Management", value: 8 },
+        { axis: "Tests", value: 5 },
+        { axis: "Issues", value: 10 },
+        { axis: "Time Spent", value: 8 },
+        { axis: "Codelines", value: 8 },
+        { axis: "Style", value: 4 }
+      ],
       APIData: {
         'project_name': 'Minecraft',
-        'developers': [
-          {'name': 'priit', 'status': 0},
-          {'name': 'tiit', 'status': 0},
-          {'name': 'viive', 'status': 1}
-        ],
-        'milestones': [
-          {
-            'name': 'First Milestone', 'issues': 12, 'issues_completed': 3,
-            'time_spent': {
-              'total': 34,
-              'per_person': {
-                'priit': 14,
-                'tiit': 12,
-                'viive': 8,
-              },
-            },
-          },
-          {
-            'name': 'Second Milestone', 'issues': 18, 'issues_completed': 0,
-            'time_spent': {
-              'total': 0,
-              'per_person': {
-                'priit': 0,
-                'tiit': 0,
-                'viive': 0,
-              },
-            }
-          },
-        ]
       }
     }
   },
+  watch: {
+    radarData(change) {
+      console.log(change)
+    }
+  }
 }
 </script>
 
-<style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
+<style scoped>
+input[type="range"] {
+      -webkit-appearance: none;
+    background-color: #dddddd;
+    height: 10px;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 5px rgba(0,0,0,0.7);
+}
+
+input[type="range"]:focus {
+  outline: none
+}
+
+input[type="range"]::-webkit-slider-thumb {
+ -webkit-appearance: none;
+ height: 15px;
+ width: 15px;
+ background: #66ee66;
+    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.5);
+ border-radius: 50%;
+}
+
+input[type="range"]::-moz-range-thumb {
+ height: 15px;
+ width: 15px;
+ background: #66ee66;
+    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.5);
+ border-radius: 50%;
+}
 </style>
