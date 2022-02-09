@@ -2,35 +2,34 @@
   <div class="repo">
     <div class="container">
       <h4>{{ APIData.project_name }}</h4>
-      <div class="row">
+      <div class="row m-1">
         <div class="col-4 p-0" id="repoRadarArea">
-          <RepoRadar />
+          <RepoRadar :radardata="radarData"/>
         </div>
         <div class="col-8 p-0" id="gitTimeArea">
-          <GitTime :radar-data="radarData" />
+          <GitTime  />
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group col-4">
         <label>Management</label>
-        <input type="range" v-model="radarData[0].value" class="form-control-range"  />
+        <input type="range" min="0" max="10" v-model="radarData[0].value" class="form-control-range"  />
 
         <label>Tests</label>
-        <input type="range" v-model="radarData[1].value" class="form-control-range" />
+        <input type="range" min="0" max="10" v-model="radarData[1].value" class="form-control-range" />
 
         <label>Issues</label>
-        <input type="range" v-model="radarData[2].value" class="form-control-range" />
+        <input type="range" min="0" max="10" v-model="radarData[2].value" class="form-control-range" />
 
         <label>Time Spent</label>
-        <input type="range" v-model="radarData[3].value" class="form-control-range" />
+        <input type="range" min="0" max="10" v-model="radarData[3].value" class="form-control-range" />
 
         <label>Code lines</label>
-        <input type="range" v-model="radarData[4].value" class="form-control-range" />
+        <input type="range" min="0" max="10" v-model="radarData[4].value" class="form-control-range" />
 
         <label>Style</label>
-        <input type="range" v-model="radarData[5].value" class="form-control-range" />
+        <input type="range" min="0" max="10" v-model="radarData[5].value" class="form-control-range" />
 
-        <p class="mt-50">Value: {{ radarData[5].value }}</p>
       </div>
     </div>
   </div>
@@ -60,5 +59,10 @@ export default {
       }
     }
   },
+  watch: {
+    radarData(change) {
+      console.log(change)
+    }
+  }
 }
 </script>
