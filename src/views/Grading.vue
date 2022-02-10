@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import CourseGradingTree from "../components/visualizations/CourseGradingTree.vue"
+import CourseGradingTree from "../components/visualizations/CourseGradingTreeLinear.vue"
 
 export default {
   name: 'Grading',

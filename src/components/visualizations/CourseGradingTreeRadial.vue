@@ -1,11 +1,12 @@
 <template>
-    <div>
+    <div id="divid">
         <svg
-            :viewBox="`0 0 ${width} ${height}`"
+            :viewBox="`${-width} ${-height} ${width} ${height}`"
             :width="`${width}`"
             :height="`${height}`"
             id="gradetree"
-        />
+        >
+        </svg>
     </div>
 </template>
 
@@ -49,16 +50,17 @@ export default {
             // Git Log code inspired by and definitely not directly stolen from 
             // https://observablehq.com/@aaronkyle/interactive-tree-diagram-d3v3
             // https://observablehq.com/@asktree/interactive-tree-diagram-d3v4-v5
+            // https://observablehq.com/@esperanc/d3-radial-tidy-tree
             if (!this.dataLoaded) return
             data = this.data
             let tree = data => d3.tree()
                 .size([2 * Math.PI, radius])
-                .separation((a, b) => (a.parent == b.parent ? 1 : 3) / a.depth)(d3.hierarchy(data))
+                .separation((a, b) => (a.parent == b.parent ? 1 : 2) / a.depth)(d3.hierarchy(data))
 
             const svg = d3.select("#gradetree")
                 .style("width", "100%")
                 .style("height", "auto")
-                .style("padding", "10px")
+                .style("padding", "0px")
                 .style("box-sizing", "border-box")
                 .style("font", "12px sans-serif");
 
@@ -92,13 +94,12 @@ export default {
                         .radius(0.1));
 
 
-
                 let t = d3.transition()
                     .duration(animate ? 400 : 0)
                     .ease(d3.easeLinear)
                     .on("end", function () {
                         const box = g.node().getBBox();
-                        svg.transition().duration(1000).attr("viewBox", `${box.x} ${box.y} ${box.width} ${box.height}`);
+                        svg.transition().duration(3000).attr("viewBox", `${box.x} ${box.y} ${box.width} ${box.height}`);
                     });
 
                 let alllinks = linkgroup.selectAll("path")
@@ -125,10 +126,10 @@ export default {
 
                 let allnodes = animate ? nodegroup.selectAll("g").transition(t) : nodegroup.selectAll("g");
                 allnodes
-                    .attr("transform", d => `
-        rotate(${d.x * 180 / Math.PI - 90})
-        translate(${d.y},0)
-      `);
+                        .attr("transform", d => `
+                        rotate(${d.x * 180 / Math.PI - 90})
+                        translate(${d.y},0)
+                        `);
 
                 newnodes.append("circle")
                     .attr("r", 4.5)
@@ -160,19 +161,26 @@ export default {
 
             }
 
-            newdata(false);
+            newdata(true);
 
-            document.body.appendChild(svg.node());
+            //document.body.appendChild(svg.node());
+            //let temp = document.createElement("temp")
 
-            const box = g.node().getBBox();
+            //document.body.appendChild(svg.node());
+            //const box = svg.node().getBBox();
+            const box = d3.select("#gradetree").node().getBBox();
 
-            //box.width = box.height = Math.max(box.width, box.height)*1.2;
+
+            //box.width = box.height = Math.max(box.width, box.height)*1.9;
+
             svg.remove()
-                .attr("width", box.width)
-                .attr("height", box.height)
+                //.attr("width", box.width)
+                //.attr("height", box.height)
                 .attr("viewBox", `${box.x} ${box.y} ${box.width} ${box.height}`);
+
+            console.log(svg.node())
+            document.getElementById("divid").appendChild(svg.node());
             
-            console.log(svg)
             return svg.node();
 
         },
