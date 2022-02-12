@@ -4,9 +4,9 @@ import router from './routes.js'
 import store from './store'
 import '@forevolve/bootstrap-dark/dist/css/bootstrap-dark.css'
 import '@forevolve/bootstrap-dark/dist/js/bootstrap.js'
+import 'fontawesome-free/css/all.min.css'
 
 Vue.config.productionTip = false
-
 router.beforeEach((to, from, next) => {
   // ./router.js has a meta named 'requiresAuth: true'
   // then check if the user is logged in before routing to this path:
