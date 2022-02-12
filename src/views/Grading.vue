@@ -1,24 +1,21 @@
 <template>
   <div class="milestone">
     <div class="container">
-      <div class="row">
-        <CourseGradingTree />
-      </div>
+      <CourseGradingTree />
     </div>
   </div>
 </template>
 
 <script>
-import CourseGradingTree from "../components/visualizations/CourseGradingTreeLinear.vue"
+import CourseGradingTree from "../components/visualizations/CourseGradingTreeLinear.vue";
 
 export default {
-  name: 'Grading',
+  name: "Grading",
   components: {
     CourseGradingTree,
   },
   data() {
-    return {
-    }
+    return {};
   },
-}
+};
 </script>
