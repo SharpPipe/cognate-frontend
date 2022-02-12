@@ -1,5 +1,37 @@
 <template>
     <div id="divid">
+        <div class="border rounded">
+            <div class="input-group mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="New grade element"
+                    aria-label="Grade element"
+                    aria-describedby="button-addon1"
+                    v-model="newNode.name"
+                />
+                <div class="input-group-append">
+                    <button
+                        class="btn btn-outline-success"
+                        type="button"
+                        id="button-addon2"
+                    >Add Node</button>
+                </div>
+            </div>
+            <div class="input-group d-flex">
+                <div class="input-group-prepend flex-grow-1">
+                    <label class="input-group-text flex-grow-1" for="inputGroupSelect01">
+                        Selected:
+                        <em
+                            class="font-weight-bold"
+                        >{{ currentNode.data.name }} </em>
+                    </label>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-danger" type="button" id="button-addon2">Delete</button>
+                </div>
+            </div>
+        </div>
         <svg
             :viewBox="`${-width} ${-height} ${width} ${height}`"
             :width="`${width}`"
@@ -22,6 +54,14 @@ export default {
             width, height,
             data,
             dataLoaded: false,
+            currentNode: {
+                id: null,
+                data: { name: "" }
+            },
+            newNode: {
+                id: 0,
+                name: ''
+            }
         }
     },
     created() {
@@ -73,7 +113,7 @@ export default {
             const nodegroup = g.append("g")
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-width", 4)
-                
+
 
             function newdata(animate = true) {
                 let root = tree(data);
@@ -85,7 +125,7 @@ export default {
                 links.exit().remove();
 
                 //let newlinks = links  
-                links  
+                links
                     .enter()
                     .append("path");
 
@@ -110,7 +150,7 @@ export default {
                 let nodes = nodegroup
                     .selectAll("g")
                     .data(nodes_data, function (d) {
-                        if (d.parent) 
+                        if (d.parent)
                             return d.parent.data.name + d.data.name;
                         return d.data.name
                     });
@@ -133,11 +173,11 @@ export default {
                         //d3.select(this).select("text").style("color", "blue");
                     })
                     .on("mouseout", function () {
-/*                         d3.select(this).select("circle").style("fill", function (d) {
-                            let altChildren = d.data.altChildren || [];
-                            let children = d.data.children;
-                            return d.children || (children && (children.length > 0 || altChildren.length > 0)) ? "red" : "blue"
-                        }); */
+                        /*                         d3.select(this).select("circle").style("fill", function (d) {
+                                                    let altChildren = d.data.altChildren || [];
+                                                    let children = d.data.children;
+                                                    return d.children || (children && (children.length > 0 || altChildren.length > 0)) ? "red" : "blue"
+                                                }); */
                     });
 
                 let allnodes = animate ? nodegroup.selectAll("g").transition(t) : nodegroup.selectAll("g");
