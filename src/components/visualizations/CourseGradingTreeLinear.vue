@@ -265,7 +265,7 @@ export default {
         .attr("pointer-events", "all");
 
       function update(source) {
-        const duration = d3.event && d3.event.altKey ? 2500 : 250;
+        const duration = 250;
         const nodes = root.descendants().reverse();
         const links = root.links();
 
