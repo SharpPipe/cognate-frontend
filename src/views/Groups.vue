@@ -3,7 +3,11 @@
     <div class="container">
       <div class="row d-flex">
         <h3 class="flex-grow-1">Groups</h3>
-        <a class="btn btn-primary r-100" href="/groupadd">+</a>
+        <router-link
+          :to="{ name: 'groupadd'}"
+        >
+          <button class="btn btn-primary r-100">+</button>
+        </router-link>
       </div>
 
       <div>

@@ -23,6 +23,10 @@ export default new VueRouter({
     routes: [
         // public
         {
+            path: '/*',
+            redirect: { name: 'home' }
+        },
+        {
             path: '/',
             name: 'home',
             component: Home,
