@@ -18,7 +18,7 @@ import Logout    from "./components/Logout";
 Vue.use(VueRouter)
 
 export default new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes: [
         // public
