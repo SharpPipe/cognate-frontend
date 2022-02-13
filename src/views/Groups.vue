@@ -10,7 +10,7 @@
         </router-link>
       </div>
 
-      <div>
+      <div v-if="APIData">
         <table class="table">
           <tr v-for="group in APIData" :key="group.id">
             <td>
@@ -64,6 +64,7 @@ export default {
   },
   computed: mapState(['APIData']),
   created() {
+    this.$store.state.APIData = null
     Api.get('groups/')
       .then(response => {
         this.$store.state.APIData = response.data
