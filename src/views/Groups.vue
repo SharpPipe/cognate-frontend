@@ -67,6 +67,7 @@ export default {
     Api.get('groups/')
       .then(response => {
         this.$store.state.APIData = response.data
+        console.log(response.data)
       })
       .catch(err => {
         console.log(err)
