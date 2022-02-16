@@ -53,19 +53,20 @@ export default {
       root,
     };
   },
+  beforeUpdate() {
+    root = null
+    document.getElementById("gradingTree").innerHTML = null
+  },
   mounted() {
-    this.renderGraph()
+    this.$nextTick(() => {
+      this.renderGraph()
+    })
   },
   watch: {
     gradedata() {
-
-      //document.getElementById("gradingTree").innerHTML = ""
-      this.root= null
       this.renderGraph()
-      console.log("gradedate watcher triggered")
     }
   },
-
   methods: {
     renderGraph() {
       // Tidy Tree code inspired by and definitely not directly stolen from

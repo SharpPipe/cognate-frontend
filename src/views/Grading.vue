@@ -178,8 +178,7 @@ export default {
           this.payload
         )
           .then(() => {
-            //this.getTree()
-            this.$router.go()
+            this.getTree()
           })
           .catch((err) => console.log(err));
       }
@@ -190,8 +189,7 @@ export default {
         Api.delete("grade_category/" + this.selectedNode.id + "/")
           .then(() => {
             this.resetSelected()
-            //this.getTree()
-            this.$router.go()
+            this.getTree()
           })
           .catch((err) => console.log(err));
       }
