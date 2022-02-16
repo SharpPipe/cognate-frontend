@@ -63,33 +63,28 @@
           <div class="input-group-text rounded-0 mx-n1">to</div>
           <date-picker id="endtime" disabled v-model="payload.end" :config="options"></date-picker>
         </div>
-        <div class="input-group d-flex">
-          <div class="input-group-prepend flex-grow-1">
-            <label class="input-group-text flex-grow-1" for="inputGroupSelect01">
-              Selected: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.data.name, }}</em>
-            </label>
-            <label class="input-group-text flex-shrink-1" for="inputGroupSelect01">
-              Points worth: &nbsp;
-              <em class="font-weight-bold">{{ formatedPoints }}</em>
-            </label>
+        <div class="row  rounded m-0 bg-dark">
+          <div class="col border border-right-0 border-secondary rounded-left">
+            Selected: &nbsp;
+            <em class="font-weight-bold">{{ selectedNode.data.name, }}</em>
+            <br />Points worth: &nbsp;
+            <em class="font-weight-bold">{{ formatedPoints }}</em>
+            <br />Description: &nbsp;
+            <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
           </div>
           <div class="input-group-append w-20">
             <button
-              class="btn btn-outline-danger"
+              class="btn btn-outline-danger rounded-r"
               type="button"
               id="button-addon2"
               @click="deleteNode"
             >Delete Node</button>
           </div>
         </div>
+
       </div>
 
-      <CourseGradingTree
-        v-if="graphData"
-        :gradedata="graphData"
-        v-on:select="updateSelected"
-      />
+      <CourseGradingTree v-if="graphData" :gradedata="graphData" v-on:select="updateSelected" />
     </div>
   </div>
 </template>
@@ -135,7 +130,7 @@ export default {
       },
       selectedNode: {
         id: null,
-        data: { name: "", id: null, total: 0 },
+        data: { name: "", id: null, total: 0, description: "" },
       },
       graphData: null,
       addedNode: null,
@@ -158,7 +153,6 @@ export default {
     },
     updateSelected(nodeData) {
       this.selectedNode = nodeData
-      console.log(this.selectedNode)
     },
     getTree() {
       Api.get("groups/" + this.groupid + "/grading/")
@@ -219,5 +213,11 @@ export default {
 select:invalid,
 select option[value=""] {
   color: #6c757d;
+}
+.rounded-r {
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
 }
 </style>
