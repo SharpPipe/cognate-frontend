@@ -22,7 +22,7 @@
               >{{ repo.name }}</router-link>
 
               <br />
-              <a :href="`{$repo.url}`" class="badge badge-dark">
+              <a :href="`${repo.url}`" class="badge badge-dark">
                 GitLab ID:
                 <small class>{{ repo.id }}</small>
               </a>

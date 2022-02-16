@@ -5,7 +5,7 @@
 <script>
 import * as d3 from 'd3'
 const width = 800
-const height = 850
+const height = 400
 let data
 
 export default {
@@ -18,7 +18,7 @@ export default {
     }
   },
   created() {
-    d3.json("/gittimemockdata.json")
+    d3.json("/gittimemockdatams.json")
       .then(d => {
         this.data = d
         this.dataLoaded = true
@@ -42,7 +42,7 @@ export default {
       if (!this.dataLoaded) return
       data = this.data
       let svg = d3.select('#gittime')
-      let margins = ({ top: 20, right: 30, bottom: 30, left: 40 })
+      let margins = ({ top: 20, right: 50, bottom: 30, left: 50 })
       // axis
 
       let x = d3.scaleTime()

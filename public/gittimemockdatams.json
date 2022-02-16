@@ -1,0 +1,937 @@
+[
+    {
+        "datetime": "2018-02-01T06:50:46.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Added-Digest-workflow-action-removed-DigestComposer"
+    },
+    {
+        "datetime": "2018-01-31T21:47:07.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-area-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-31T21:04:12.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "refactored-dociment-composers"
+    },
+    {
+        "datetime": "2018-01-31T14:32:30.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-IT-localization"
+    },
+    {
+        "datetime": "2018-01-31T13:34:04.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Workflows-tests"
+    },
+    {
+        "datetime": "2018-01-31T13:33:05.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-localization-resources-DE"
+    },
+    {
+        "datetime": "2018-01-31T13:15:29.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-localization-resources-IT"
+    },
+    {
+        "datetime": "2018-01-31T12:13:44.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-search-highlightings"
+    },
+    {
+        "datetime": "2018-01-31T11:14:36.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-search-higlighting-performance"
+    },
+    {
+        "datetime": "2018-01-31T11:08:52.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "adedd-warning-about-unsaved-changes-in-Connectors-and-Feeds-settings"
+    },
+    {
+        "datetime": "2018-01-31T09:18:52.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-31T09:13:34.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "reverted-changes-in-web.config"
+    },
+    {
+        "datetime": "2018-01-31T09:13:06.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-shingles-analyzer-removed-stop-tokens"
+    },
+    {
+        "datetime": "2018-01-31T08:16:27.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-suggest-by-query-with-space"
+    },
+    {
+        "datetime": "2018-01-30T15:04:26.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Autocomplete-component-implemented-debouncing"
+    },
+    {
+        "datetime": "2018-01-30T15:00:45.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-30T14:02:42.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-suggest-endpoint-set-min_doc_count-to-2"
+    },
+    {
+        "datetime": "2018-01-30T12:59:51.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-suggest-dispatcher-added-multiple-suggest-sources"
+    },
+    {
+        "datetime": "2018-01-30T11:03:45.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "added-stopwords-markers-cut"
+    },
+    {
+        "datetime": "2018-01-30T07:09:53.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-29T19:57:46.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-shingles-analyzers"
+    },
+    {
+        "datetime": "2018-01-29T19:00:22.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-Digest-composer"
+    },
+    {
+        "datetime": "2018-01-29T18:59:27.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-suggest-query-endpoint"
+    },
+    {
+        "datetime": "2018-01-29T18:58:35.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-document-mapping-and-analysis-settings"
+    },
+    {
+        "datetime": "2018-01-29T14:53:53.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-remarks-on-tasks"
+    },
+    {
+        "datetime": "2018-01-29T14:48:57.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Moved-workflows-classes-to-separate-project-Hes.Workflows"
+    },
+    {
+        "datetime": "2018-01-29T09:58:33.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Fixed-autofac-registration-of-IngestModule-in-Connector-Manager"
+    },
+    {
+        "datetime": "2018-01-29T09:07:04.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Fixed-mapping-for-workflows"
+    },
+    {
+        "datetime": "2018-01-28T00:24:08.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-multiline-editable-cell"
+    },
+    {
+        "datetime": "2018-01-27T20:57:47.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-SwitchCell"
+    },
+    {
+        "datetime": "2018-01-27T20:12:30.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-27T19:58:15.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-27T18:21:15.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-27T17:47:42.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-27T12:07:44.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-27T10:16:13.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "renamed-ProtectedTerms-view"
+    },
+    {
+        "datetime": "2018-01-27T09:55:14.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-26T14:57:25.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Integrated-workflows-into-Connector-Manager"
+    },
+    {
+        "datetime": "2018-01-26T14:41:41.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "reverted-search-feature-in-stopwords-synonyms-protected-terms"
+    },
+    {
+        "datetime": "2018-01-26T14:31:22.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-stopwords-token-filters"
+    },
+    {
+        "datetime": "2018-01-26T14:02:08.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-synonyms-token-filters-merged-neutral-synonyms"
+    },
+    {
+        "datetime": "2018-01-26T13:28:35.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs-2033-1909"
+    },
+    {
+        "datetime": "2018-01-26T13:11:16.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-protected-terms-token-filters-synchronization"
+    },
+    {
+        "datetime": "2018-01-26T11:58:13.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-analysis-settings-added-protected-words-token-filters"
+    },
+    {
+        "datetime": "2018-01-26T11:48:45.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-filter-stopwords-synonyms-protected-terms-by-Language-and-Contex"
+    },
+    {
+        "datetime": "2018-01-26T09:31:22.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-synonyms-synchronization"
+    },
+    {
+        "datetime": "2018-01-26T08:58:03.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-admin-views-and-styles"
+    },
+    {
+        "datetime": "2018-01-26T08:45:07.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "added-synonyms-token-filters-to-analyzers"
+    },
+    {
+        "datetime": "2018-01-26T08:11:55.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Synonyms-model-removed-Word-property"
+    },
+    {
+        "datetime": "2018-01-26T07:54:13.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-26T07:24:10.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-english-synonyms-list"
+    },
+    {
+        "datetime": "2018-01-25T22:58:19.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-synonyms-lists-updated-embedded-synonyms-token-filter"
+    },
+    {
+        "datetime": "2018-01-25T14:15:00.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-25T13:10:14.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-stopwords-synchronization"
+    },
+    {
+        "datetime": "2018-01-25T11:14:31.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-sync-endpoint-for-stopwords-api-controller"
+    },
+    {
+        "datetime": "2018-01-25T10:20:13.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs-2018-2007-2008-1927-2028"
+    },
+    {
+        "datetime": "2018-01-25T08:44:39.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-stopwords-token-filters-and-analyzers"
+    },
+    {
+        "datetime": "2018-01-24T15:01:28.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-initial-stopwords-filling"
+    },
+    {
+        "datetime": "2018-01-24T14:59:27.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "deleted-defaults-color-for-index-health-chart"
+    },
+    {
+        "datetime": "2018-01-24T14:54:46.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-padding-for-chart-index-health"
+    },
+    {
+        "datetime": "2018-01-24T14:51:43.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-EmbeddedStopTokenFilter-added-preconfigured-stopwords-list-per-each-language"
+    },
+    {
+        "datetime": "2018-01-24T14:34:12.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fexed-render-chart-for-types-document"
+    },
+    {
+        "datetime": "2018-01-24T13:02:17.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-NEST-package-to-5.6.0"
+    },
+    {
+        "datetime": "2018-01-24T10:34:28.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-Workflow-mappings-for-Description-field"
+    },
+    {
+        "datetime": "2018-01-24T10:09:59.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "temporarily-disabled-german-decompounder"
+    },
+    {
+        "datetime": "2018-01-24T09:53:20.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-translate-for-the-description-index-healyj"
+    },
+    {
+        "datetime": "2018-01-24T09:50:13.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-Index-Health"
+    },
+    {
+        "datetime": "2018-01-24T08:51:51.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-index-health"
+    },
+    {
+        "datetime": "2018-01-23T13:32:50.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Removed-WorkflowExecuteAction"
+    },
+    {
+        "datetime": "2018-01-23T13:29:30.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-german-analyzer-added-german-decompound-filter"
+    },
+    {
+        "datetime": "2018-01-23T12:24:39.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Deleted-compilerconfig.json"
+    },
+    {
+        "datetime": "2018-01-23T12:14:32.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-styles-for-Grid-component"
+    },
+    {
+        "datetime": "2018-01-23T09:55:21.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "refactored-Blockword-model-moved-to-service-index"
+    },
+    {
+        "datetime": "2018-01-22T15:00:31.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Added-large-grid-Admin"
+    },
+    {
+        "datetime": "2018-01-22T14:32:18.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-color-for-line-in-the-graphics"
+    },
+    {
+        "datetime": "2018-01-22T14:24:35.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-UI-for-the-Indexing-process"
+    },
+    {
+        "datetime": "2018-01-22T13:47:29.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "moved-Keymatch-entity-to-service-index"
+    },
+    {
+        "datetime": "2018-01-22T12:15:54.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-search-with-quotes"
+    },
+    {
+        "datetime": "2018-01-22T11:40:25.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "added-shingles-for-document-Text-field"
+    },
+    {
+        "datetime": "2018-01-22T11:01:35.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "disabled-documents-Content-field-indexing"
+    },
+    {
+        "datetime": "2018-01-22T08:51:11.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Added-implementations-and-tests-for-workflow-actions"
+    },
+    {
+        "datetime": "2018-01-22T08:21:32.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-feeds-widget-on-the-dashbord"
+    },
+    {
+        "datetime": "2018-01-22T07:08:10.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fix-csproj"
+    },
+    {
+        "datetime": "2018-01-21T21:44:22.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Added-implementations-and-tests-for-workflow-conditions"
+    },
+    {
+        "datetime": "2018-01-19T13:51:40.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-json-schema-form"
+    },
+    {
+        "datetime": "2018-01-19T13:28:32.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "removed-Admin.Settings.Logging-view"
+    },
+    {
+        "datetime": "2018-01-19T13:26:52.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Admin.Settings.Cleaning-view"
+    },
+    {
+        "datetime": "2018-01-19T13:10:40.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "reverted-admin-logs-route"
+    },
+    {
+        "datetime": "2018-01-19T12:54:32.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "Delete-ui.switch.css"
+    },
+    {
+        "datetime": "2018-01-19T12:54:09.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "Delete-ui.switch.min.css"
+    },
+    {
+        "datetime": "2018-01-19T12:52:39.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "reverted-Admin.Logs-view"
+    },
+    {
+        "datetime": "2018-01-19T12:23:27.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-after-merge"
+    },
+    {
+        "datetime": "2018-01-19T12:08:40.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Added-Switch-component-updated-views"
+    },
+    {
+        "datetime": "2018-01-19T11:55:33.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Added-mapping-for-workflows-added-workflows-manager"
+    },
+    {
+        "datetime": "2018-01-19T11:51:08.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Feeds-view"
+    },
+    {
+        "datetime": "2018-01-19T11:39:02.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-FileSystem-connector-schema-settings"
+    },
+    {
+        "datetime": "2018-01-19T11:38:07.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Feed-configuration-settings-saving"
+    },
+    {
+        "datetime": "2018-01-19T11:08:21.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "Merged-Logging-and-Cleaning-settings"
+    },
+    {
+        "datetime": "2018-01-19T10:05:34.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-IConnectorExplorer-interface-and-default-implementation"
+    },
+    {
+        "datetime": "2018-01-19T08:35:23.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-unsaved-changes-tracking-for-Feeds-management-ui"
+    },
+    {
+        "datetime": "2018-01-19T07:48:12.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "removed-outdated-Admin.Connector.Feeds-view"
+    },
+    {
+        "datetime": "2018-01-19T07:43:51.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-Feed-traversing-settings-save"
+    },
+    {
+        "datetime": "2018-01-18T23:23:14.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Feed-traversing-cleaning-settings-form"
+    },
+    {
+        "datetime": "2018-01-18T22:59:27.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "added-Feed-traversing-cleaning-settings-form"
+    },
+    {
+        "datetime": "2018-01-18T22:12:59.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "implemented-feed-General-settings-updates"
+    },
+    {
+        "datetime": "2018-01-18T14:50:46.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Admin.Feeds-views-and-dispatchers-added-Feed-General-settings-form"
+    },
+    {
+        "datetime": "2018-01-18T13:36:55.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-translation-and-fix-icon-menu"
+    },
+    {
+        "datetime": "2018-01-18T13:36:06.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Admin.Feeds-views-added-feed-settings-views-stubs"
+    },
+    {
+        "datetime": "2018-01-18T13:34:36.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-FeedDescriptorDto-fixed-bug-with-missing-Feed-type"
+    },
+    {
+        "datetime": "2018-01-18T12:24:30.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-POST-PUT-methods-for-document-json-view"
+    },
+    {
+        "datetime": "2018-01-18T10:57:06.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-Tabular-menu"
+    },
+    {
+        "datetime": "2018-01-18T08:49:29.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Admin.Settings.OCR-fixed-bug-with-tracking-form-dirtiness"
+    },
+    {
+        "datetime": "2018-01-18T08:42:53.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-2006"
+    },
+    {
+        "datetime": "2018-01-18T08:24:29.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-18T08:16:33.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Document-model-fixed-bug-with-serialization"
+    },
+    {
+        "datetime": "2018-01-18T07:35:05.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-description-for-most-popular-content-type"
+    },
+    {
+        "datetime": "2018-01-18T07:07:40.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-Metadata-composer"
+    },
+    {
+        "datetime": "2018-01-18T06:54:48.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Document-model-and-tests"
+    },
+    {
+        "datetime": "2018-01-18T06:49:04.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-prop-types-for-the-autocomplet-component"
+    },
+    {
+        "datetime": "2018-01-17T14:48:18.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Document-model-and-tests"
+    },
+    {
+        "datetime": "2018-01-17T14:43:32.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Fixed-bug-1686.-Updated-localization-resources"
+    },
+    {
+        "datetime": "2018-01-17T14:41:57.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-autocomplet-for-the-content-type"
+    },
+    {
+        "datetime": "2018-01-17T13:46:13.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Document-model-and-tests"
+    },
+    {
+        "datetime": "2018-01-17T12:47:29.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "refactored-Document-model-implemented-IDictionary-interface-added-tests"
+    },
+    {
+        "datetime": "2018-01-16T08:31:20.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-sorting-for-protected-word-UI"
+    },
+    {
+        "datetime": "2018-01-16T07:53:27.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-1993"
+    },
+    {
+        "datetime": "2018-01-16T07:27:53.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-component-message"
+    },
+    {
+        "datetime": "2018-01-15T14:35:49.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "added-Synonym-model-and-mappings"
+    },
+    {
+        "datetime": "2018-01-15T14:17:11.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "removed-User.Stopwords-view-updated-dispatcher"
+    },
+    {
+        "datetime": "2018-01-15T14:16:02.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Added-worflow-classes"
+    },
+    {
+        "datetime": "2018-01-15T13:58:34.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Stopwords-localization-resources"
+    },
+    {
+        "datetime": "2018-01-15T13:32:53.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Stopwords-editor"
+    },
+    {
+        "datetime": "2018-01-15T13:30:27.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Stopwords-editor-added-sorting"
+    },
+    {
+        "datetime": "2018-01-15T12:53:15.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-controller-and-view-for-the-protected-terms"
+    },
+    {
+        "datetime": "2018-01-15T10:41:22.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "added-ProtectedWord-model-and-mappings"
+    },
+    {
+        "datetime": "2018-01-15T10:32:10.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-global-languages-list-added-neutral-language"
+    },
+    {
+        "datetime": "2018-01-15T10:20:07.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Admin.Stopwords-view"
+    },
+    {
+        "datetime": "2018-01-15T10:13:59.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Stopwords-view-and-dispatcher"
+    },
+    {
+        "datetime": "2018-01-15T10:06:02.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "refactored-Stopword-model-moved-to-service-index-updated-mappings"
+    },
+    {
+        "datetime": "2018-01-15T09:27:08.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "refactored-stopwords-management-UI"
+    },
+    {
+        "datetime": "2018-01-12T14:28:00.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "refactor-datacloud-managmentUI"
+    },
+    {
+        "datetime": "2018-01-12T12:20:08.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-animation-in-admin-panel"
+    },
+    {
+        "datetime": "2018-01-12T11:56:30.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-cloud-api-controller-fixed-bug-with-fetching-keywords"
+    },
+    {
+        "datetime": "2018-01-12T11:39:23.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Keyword-mappings-and-IndexUtil-moved-keywords-to-hes.service-index"
+    },
+    {
+        "datetime": "2018-01-12T11:24:56.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-Cloud-controller-added-include-exclude-keywords-support"
+    },
+    {
+        "datetime": "2018-01-12T11:23:38.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "refactored-Keyword-model-added-Action-property"
+    },
+    {
+        "datetime": "2018-01-12T08:39:35.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-gulpfile"
+    },
+    {
+        "datetime": "2018-01-12T08:24:14.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "revert-test"
+    },
+    {
+        "datetime": "2018-01-12T08:21:46.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "test"
+    },
+    {
+        "datetime": "2018-01-12T08:18:27.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Changed-credentials-settings-in-SharePoint-Connector"
+    },
+    {
+        "datetime": "2018-01-12T08:05:21.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Fixed-bug-HES-1689"
+    },
+    {
+        "datetime": "2018-01-12T07:37:14.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-ButtonMenu-component-after-ES6-modification"
+    },
+    {
+        "datetime": "2018-01-11T14:55:35.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-custom-calendar"
+    },
+    {
+        "datetime": "2018-01-11T06:57:08.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-DatePicker-method-hide"
+    },
+    {
+        "datetime": "2018-01-10T14:52:51.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Fixed-bug-HES-1949-NullReferenceException-on-any-feeds-request-if-POST-feeds-without-body-was-sent-before-FileSystem-SharePoint"
+    },
+    {
+        "datetime": "2018-01-10T14:21:50.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-HES-1692-resize-chart-for-the-CreatedAt-and-LastUpdatedAt"
+    },
+    {
+        "datetime": "2018-01-10T13:04:30.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Fixed-bug-HES-1915"
+    },
+    {
+        "datetime": "2018-01-10T11:44:28.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "turn-back"
+    },
+    {
+        "datetime": "2018-01-10T11:35:29.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-pattern-for-check-input"
+    },
+    {
+        "datetime": "2018-01-10T10:50:26.000Z",
+        "author": "o.krushelnitsky@gitlab.iveonik.com",
+        "subject": "HES-Fixed-bug-HES-1946-500-error-on-request-to-Logs-and-Analytics-after-update-version"
+    },
+    {
+        "datetime": "2018-01-10T10:10:54.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "updated-KeywordType-enum-description"
+    },
+    {
+        "datetime": "2018-01-10T09:51:00.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "trim-white-space-in-the-end-start"
+    },
+    {
+        "datetime": "2018-01-10T09:48:17.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-Results-by-trimmed-query-should-be-found"
+    },
+    {
+        "datetime": "2018-01-10T09:39:45.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-rendering-ButtonMenu-component"
+    },
+    {
+        "datetime": "2018-01-10T09:39:11.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-rendering-visual-filters-HES-1940"
+    },
+    {
+        "datetime": "2018-01-10T09:08:10.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-error-message-if-image-size-above-2mb"
+    },
+    {
+        "datetime": "2018-01-10T08:59:28.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bug"
+    },
+    {
+        "datetime": "2018-01-10T08:46:23.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-saving-super-user-preferences-HES-1760"
+    },
+    {
+        "datetime": "2018-01-09T14:49:39.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Updated-Preloader-animation-Admin"
+    },
+    {
+        "datetime": "2018-01-09T14:18:58.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-link-to-advanced-search"
+    },
+    {
+        "datetime": "2018-01-09T14:15:38.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-1942"
+    },
+    {
+        "datetime": "2018-01-09T13:42:48.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-1938"
+    },
+    {
+        "datetime": "2018-01-09T13:38:03.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixws-bugs"
+    },
+    {
+        "datetime": "2018-01-09T13:29:46.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-1908"
+    },
+    {
+        "datetime": "2018-01-09T13:20:30.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-1941"
+    },
+    {
+        "datetime": "2018-01-09T13:14:55.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-widgets-initial-load-in-Admin-dashboard"
+    },
+    {
+        "datetime": "2018-01-09T13:02:12.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-HES-1943"
+    },
+    {
+        "datetime": "2018-01-09T12:58:04.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bug"
+    },
+    {
+        "datetime": "2018-01-09T12:05:11.000Z",
+        "author": "m.holenko@iveonik.com",
+        "subject": "fixed-bug-with-ButtonMenu-default-props"
+    },
+    {
+        "datetime": "2018-01-09T11:00:12.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bugs"
+    },
+    {
+        "datetime": "2018-01-09T06:42:49.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "fixed-bug"
+    },
+    {
+        "datetime": "2018-01-06T10:31:19.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Added-retreiving-language-for-UI-from-user-s-browser-language"
+    },
+    {
+        "datetime": "2018-01-05T13:29:45.000Z",
+        "author": "diana.golenko@outlook.com",
+        "subject": "Changed-UI-Grid-component-Preloader-.-Updated-localization-resources"
+    },
+    {
+        "datetime": "2018-01-04T14:41:47.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-placeholder-logic-and-chevron-icon-for-the-collapse-object-type"
+    },
+    {
+        "datetime": "2018-01-03T14:57:39.000Z",
+        "author": "r.savchenko84@gmail.com",
+        "subject": "added-render-array-element-form"
+    },
+    {
+        "datetime": "2018-01-03T12:30:07.000Z",
+        "author": "o.krushelnitsky@iveonik.com",
+        "subject": "Fixed-bug-HES-1944-Server-error-if-open-site-HttpCompileException"
+    },
+    {
+        "datetime": "2018-01-03T12:19:00.000Z",
+        "author": "d.golenko@gitlab.iveonik.com",
+        "subject": "HES"
+    }
+]

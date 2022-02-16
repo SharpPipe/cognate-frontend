@@ -2,47 +2,68 @@
   <div class="repo">
     <div class="container">
       <h4>{{ APIData.project_name }}</h4>
+      <ProgressBar
+        class="mb-2"
+        :currentPoints="currentPointsNew"
+        :minPoints="minCoursePoints"
+        :maxPoints="maxCoursePoints"
+      />
       <div class="row m-1">
         <div class="col-4 p-0">
-          <RepoRadar :radardata="radarData"/>
-      <div class="form-group">
-        <label>Management</label>
-        <input type="range" min="0" max="10" v-model="radarData[0].value" class="form-control-range"  />
-
-        <label>Tests</label>
-        <input type="range" min="0" max="10" v-model="radarData[1].value" class="form-control-range" />
-
-        <label>Issues</label>
-        <input type="range" min="0" max="10" v-model="radarData[2].value" class="form-control-range" />
-
-        <label>Time Spent</label>
-        <input type="range" min="0" max="10" v-model="radarData[3].value" class="form-control-range" />
-
-        <label>Code lines</label>
-        <input type="range" min="0" max="10" v-model="radarData[4].value" class="form-control-range" />
-
-        <label>Style</label>
-        <input type="range" min="0" max="10" v-model="radarData[5].value" class="form-control-range" />
-
-      </div>
+          <RepoRadar class="p-1" :radardata="radarData" />
         </div>
-        <div class="col-8 p-0">
-          <GitTime  />
+        <div class="col-4 p-0">
+          <ProjectDevs class="m-2" />
+        </div>
+        <div class="col-4 p-0">
+          <RepoTotalStats />
         </div>
       </div>
+      <table class="table">
+        <tr>
+          <router-link
+            :to="{
+              name: 'grade-milestone',
+              params: {
+                groupid: $route.params.groupid,
+                repoid: $route.params.repoid,
+                msid: 1
+              }
+            }"
+          >
+            <td class="p-1">
+              <RepoMilestoneCard nr="1" ms_status="ungraded" points="0" />
+            </td>
+          </router-link>
 
+          <td class="p-1" v-for="n in 6" :key="n">
+            <RepoMilestoneCard :nr="n" ms_status="TBA" points="0" />
+          </td>
+        </tr>
+      </table>
+      <div class="row">
+        <GitTime />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import ProgressBar from "../components/ProgressBar";
+import ProjectDevs from "../components/ProjectDevs";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
+import RepoTotalStats from "../components/RepoTotalStats.vue";
+import RepoMilestoneCard from "../components/RepoMilestoneCard.vue";
 export default {
   name: 'Repo',
   components: {
+    ProgressBar,
     GitTime,
     RepoRadar,
+    ProjectDevs,
+    RepoTotalStats,
+    RepoMilestoneCard
   },
   data() {
     return {
@@ -56,8 +77,21 @@ export default {
       ],
       APIData: {
         'project_name': 'Minecraft',
-      }
+      },
+      currentPoints: 34,
+      minCoursePoints: 0,
+      maxCoursePoints: 600,
     }
+  },
+  computed: {
+    currentPointsNew() {
+      let sum = 0
+      for (var thing in this.radarData) {
+        sum += +this.radarData[thing].value
+      }
+      return sum
+    }
+
   },
   watch: {
     radarData(change) {
@@ -66,34 +100,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-input[type="range"] {
-      -webkit-appearance: none;
-    background-color: #dddddd;
-    height: 10px;
-    border-radius: 5px;
-    box-shadow: inset 1px 1px 5px rgba(0,0,0,0.7);
-}
-
-input[type="range"]:focus {
-  outline: none
-}
-
-input[type="range"]::-webkit-slider-thumb {
- -webkit-appearance: none;
- height: 15px;
- width: 15px;
- background: #66ee66;
-    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.5);
- border-radius: 50%;
-}
-
-input[type="range"]::-moz-range-thumb {
- height: 15px;
- width: 15px;
- background: #66ee66;
-    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.5);
- border-radius: 50%;
-}
-</style>
