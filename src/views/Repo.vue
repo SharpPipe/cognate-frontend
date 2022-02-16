@@ -4,7 +4,7 @@
       <h4>{{ APIData.project_name }}</h4>
       <ProgressBar
         class="mb-2"
-        :currentPoints="currentPointsNew"
+        :currentPoints="currentPoints"
         :minPoints="minCoursePoints"
         :maxPoints="maxCoursePoints"
       />
@@ -12,11 +12,14 @@
         <div class="col-4 p-0">
           <RepoRadar class="p-1" :radardata="radarData" />
         </div>
-        <div class="col-4 p-0">
+        <div class="col-5 p-0">
           <ProjectDevs class="m-2" />
         </div>
-        <div class="col-4 p-0">
-          <RepoTotalStats />
+        <div class="col-3 p-0">
+          <RepoTotalStats 
+            spent=33
+            codelines=6344
+          />
         </div>
       </div>
       <table class="table">
@@ -78,20 +81,10 @@ export default {
       APIData: {
         'project_name': 'Minecraft',
       },
-      currentPoints: 34,
+      currentPoints: 15,
       minCoursePoints: 0,
       maxCoursePoints: 600,
     }
-  },
-  computed: {
-    currentPointsNew() {
-      let sum = 0
-      for (var thing in this.radarData) {
-        sum += +this.radarData[thing].value
-      }
-      return sum
-    }
-
   },
   watch: {
     radarData(change) {
