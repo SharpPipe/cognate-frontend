@@ -88,8 +88,6 @@
       <CourseGradingTree
         v-if="graphData"
         :gradedata="graphData"
-        :addnodes="addedNode"
-        :delnodes="deletedNode"
         v-on:select="updateSelected"
       />
     </div>
@@ -149,6 +147,9 @@ export default {
     this.getTree()
   },
   methods: {
+    forceUpdate() {
+      this.key++
+    },
     resetSelected() {
       this.selectedNode = {
         id: null,
@@ -177,7 +178,8 @@ export default {
           this.payload
         )
           .then(() => {
-            this.getTree()
+            //this.getTree()
+            this.$router.go()
           })
           .catch((err) => console.log(err));
       }
@@ -188,7 +190,8 @@ export default {
         Api.delete("grade_category/" + this.selectedNode.id + "/")
           .then(() => {
             this.resetSelected()
-            this.getTree()
+            //this.getTree()
+            this.$router.go()
           })
           .catch((err) => console.log(err));
       }

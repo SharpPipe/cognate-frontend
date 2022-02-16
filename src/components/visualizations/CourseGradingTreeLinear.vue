@@ -6,7 +6,6 @@
 import * as d3 from "d3";
 const width = 1000;
 const height = 1000;
-let data;
 
 
 let dx = 30;
@@ -47,7 +46,6 @@ export default {
     return {
       width,
       height,
-      data,
       selected: {
         id: null,
         data: { name: "", total: 0, description: ""},
@@ -61,7 +59,8 @@ export default {
   watch: {
     gradedata() {
 
-      document.getElementById("gradingTree").innerHTML = ""
+      //document.getElementById("gradingTree").innerHTML = ""
+      this.root= null
       this.renderGraph()
       console.log("gradedate watcher triggered")
     }
@@ -72,7 +71,6 @@ export default {
       // Tidy Tree code inspired by and definitely not directly stolen from
       // https://observablehq.com/@asktree/interactive-tree-diagram-d3v4-v5
       // https://observablehq.com/@jacob-tu/collapsible-tree
-      this.root= null
 
       this.root = d3.hierarchy(this.gradedata);
 
@@ -132,8 +130,8 @@ export default {
           this.update(d);
         })
         .on("click", (event, d) => {
-          this.selected.data.name = d.data.name;
           this.selected.id = d.data.id;
+          this.selected.data.name = d.data.name;
           this.selected.data.total = d.data.total;
           this.selected.data.description = d.data.description;
           this.$emit('select', this.selected);
