@@ -7,6 +7,7 @@ import Home      from './views/Home'
 import Repo_management from "./views/Repo_management";
 import Repo      from "./views/Repo";
 import Milestone from "./views/Milestone";
+import GradeMS   from "./views/GradeMilestone";
 import Pricing   from "./views/Pricing";
 import Grading   from "./views/Grading";
 import Profile   from "./views/Profile";
@@ -107,6 +108,14 @@ export default new VueRouter({
             path: '/milestone/',
             name: 'milestone',
             component: Milestone,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/group/:groupid/repo/:repoid/grade/:msid/',
+            name: 'grade-milestone',
+            component: GradeMS,
             meta: {
                 requiresAuth: true
             }

@@ -4,20 +4,20 @@
             class="bg-success progress-bar progress-bar-striped progress-bar-animated"
             role="progressbar"
             :aria-valuenow="currentPoints"
-            :aria-valuemin="minCoursePoints"
-            :aria-valuemax="maxCoursePoints"
+            :aria-valuemin="minPoints"
+            :aria-valuemax="maxPoints"
             :style="`width: ${styleWidth}%`"
-        >{{ currentPoints }}/{{ maxCoursePoints }}</div>
+        >{{ currentPoints }}/{{ maxPoints }}</div>
     </div>
 </template>
 
 <script>
 
 export default {
-    props: ["currentPoints", "minCoursePoints", "maxCoursePoints"],
+    props: ["currentPoints", "minPoints", "maxPoints"],
     computed: {
         styleWidth() {
-            return 100 * this.currentPoints / this.maxCoursePoints
+            return 100 * this.currentPoints / this.maxPoints
         }
     }
 }
