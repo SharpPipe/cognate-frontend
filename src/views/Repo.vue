@@ -1,9 +1,9 @@
 <template>
   <div class="repo">
     <div class="container">
-      <h4>{{ APIData.project_name }}</h4>
+      <h4>{{ APIData.name }}</h4>
       <ProgressBar
-        class="mb-2"
+        class="mb-2 mx-2"
         :currentPoints="currentPoints"
         :minPoints="minCoursePoints"
         :maxPoints="maxCoursePoints"
@@ -36,12 +36,12 @@
             }"
           >
             <td class="p-1">
-              <RepoMilestoneCard nr="1" ms_status="ungraded" points="0" />
+              <RepoMilestoneCard nr="1" ms_status="ungraded" points="0" :ms_data="firstMS"/>
             </td>
           </router-link>
 
           <td class="p-1" v-for="n in 6" :key="n">
-            <RepoMilestoneCard :nr="n" ms_status="TBA" points="0" />
+            <RepoMilestoneCard :nr="n+1" ms_status="TBA" points="0" />
           </td>
         </tr>
       </table>
@@ -59,6 +59,9 @@ import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
 import RepoTotalStats from "../components/RepoTotalStats.vue";
 import RepoMilestoneCard from "../components/RepoMilestoneCard.vue";
+
+import { mapState } from 'vuex'
+import { Api } from "../axios-api";
 export default {
   name: 'Repo',
   components: {
@@ -69,23 +72,44 @@ export default {
     RepoTotalStats,
     RepoMilestoneCard
   },
+  computed: mapState(['APIData']),
   data() {
     return {
       radarData: [
-        { axis: "Management", value: 1 },
-        { axis: "Tests", value: 1 },
-        { axis: "Issues", value: 1 },
-        { axis: "Time Spent", value: 1 },
-        { axis: "Codelines", value: 1 },
-        { axis: "Style", value: 1 }
+        { axis: "Retro", value: 0 },
+        { axis: "Meeting", value: 0 },
+        { axis: "Git Management", value: 0 },
+        { axis: "Planning", value: 0 },
+        { axis: "Tasks", value: 0 },
       ],
-      APIData: {
-        'project_name': 'Minecraft',
-      },
-      currentPoints: 15,
+      currentPoints: 30,
       minCoursePoints: 0,
-      maxCoursePoints: 600,
+      maxCoursePoints: 2000,
+      firstMS: null,
     }
+  },
+  created() {
+    const url = 'repositories/' + this.$route.params.repoid + "/update/"
+    Api.get(url)
+      .then(response => {
+        this.$store.state.APIData = response.data.data
+        console.log(response.data.data)
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+    Api.get("/projects/" + this.$route.params.repoid + "/milestones/")
+      .then(response => {
+        this.firstMS = response.data[response.data.length-1]
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+
   },
   watch: {
     radarData(change) {

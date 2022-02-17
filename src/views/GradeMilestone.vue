@@ -1,7 +1,5 @@
 <template>
     <div class="container">
-        <h4>{{ APIData.project_name }}</h4>
-
         <div class="row m-1">
             <div class="col-4 p-0">
                 <RepoRadar :radardata="radarData" :key="key" />
@@ -12,10 +10,11 @@
         </div>
 
         <div class="row m-1">
-            <div class="col" v-for="dev in 3" :key="dev">
+            <div class="col" :v-if="APIData" v-for="dev in APIData" :key="dev.id">
                 <RepoGradeStudent
-                    :points="payload.students[dev - 1].points"
-                    :devName="payload.students[dev - 1].name"
+                    :points="dev.data"
+                    :devName="dev.username"
+                    :spentTime="dev.spent_time"
                     :key="key"
                     v-on:pointsChanged="updateRadar"
                 />
@@ -25,7 +24,7 @@
             <RepoGradeTeam :radarData="radarData" :teampoints="teampoints" />
         </div>
         <div class="row mx-3 p-1 d-flex float-right">
-            <button class="btn btn-success">Sumbit</button>
+            <button class="btn btn-success" @click="submitGrades">Sumbit</button>
         </div>
     </div>
 </template>
@@ -35,6 +34,8 @@ import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
 import RepoGradeStudent from "../components/RepoGradeStudent.vue";
 import RepoGradeTeam from "../components/RepoGradeTeam.vue";
+import { Api } from "../axios-api"
+import { mapState } from 'vuex'
 
 export default {
     name: 'Repo',
@@ -54,46 +55,6 @@ export default {
                 { axis: "Planning", value: 0 },
                 { axis: "Tasks", value: 0 },
             ],
-            payload: {
-                students: [
-                    {
-                        name: "virve",
-                        points: [
-                            { axis: "Contribution", value: 0 },
-                            { axis: "Retro", value: 0 },
-                            { axis: "Meeting", value: 0 },
-                            { axis: "Git Management", value: 0 },
-                            { axis: "Planning", value: 0 },
-                            { axis: "Tasks", value: 0 },
-
-                        ]
-                    },
-                    {
-                        name: "peeter",
-                        points: [
-                            { axis: "Contribution", value: 0 },
-                            { axis: "Retro", value: 0 },
-                            { axis: "Meeting", value: 0 },
-                            { axis: "Git Management", value: 0 },
-                            { axis: "Planning", value: 0 },
-                            { axis: "Tasks", value: 0 },
-
-                        ]
-                    },
-                    {
-                        name: "virsik",
-                        points: [
-                            { axis: "Contribution", value: 0 },
-                            { axis: "Retro", value: 0 },
-                            { axis: "Meeting", value: 0 },
-                            { axis: "Git Management", value: 0 },
-                            { axis: "Planning", value: 0 },
-                            { axis: "Tasks", value: 0 },
-
-                        ]
-                    },
-                ]
-            },
             radarData: [
                 { axis: "Retro", value: 0 },
                 { axis: "Meeting", value: 0 },
@@ -101,45 +62,94 @@ export default {
                 { axis: "Planning", value: 0 },
                 { axis: "Tasks", value: 0 },
             ],
-            APIData: {
-                'project_name': 'Minecraft',
-            },
+            students: [],
             minCoursePoints: 0,
             maxCoursePoints: 55,
+            pl: [
+                {
+                    "user_group_id": 0,
+                    "grade_id": 35,
+                    "points": 10
+                },
+                {
+                    "user_group_id": 445,
+                    "grade_id": 35,
+                    "points": 15
+                }
+            ]
         }
     },
     methods: {
+        submitGrades() {
+            console.log('submiting grades watch out')
+
+            let pl = this.makePayload()
+
+            Api.post('/bulk_grade/', pl)
+                .then(() => {
+                    console.log("Grades posted")
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+
+        },
         onTeamPointsChange() {
-            for (var i in this.payload.students) {
-                this.payload.students[i].points[1].value = this.teampoints[0].value
-                this.payload.students[i].points[2].value = this.teampoints[1].value
+            for (var i in this.APIData) {
+                this.APIData[i].data[1].given_points = this.teampoints[0].value
+                this.APIData[i].data[2].given_points = this.teampoints[1].value
             }
             this.radarData[0] = this.teampoints[0]
             this.radarData[1] = this.teampoints[1]
-            console.log(this.key)
             this.key++;
         },
         updateRadar() {
-            var numStudents = this.payload.students.length // eslint-disable-line
+            var numStudents = this.APIData.length
             this.teampoints[2].value = 0
             this.teampoints[3].value = 0
             this.teampoints[4].value = 0
-            for (var i in this.payload.students) {
-                this.teampoints[2].value += this.payload.students[i].points[3].value / numStudents
-                this.teampoints[3].value += this.payload.students[i].points[4].value / numStudents
-                this.teampoints[4].value += this.payload.students[i].points[5].value / numStudents
+            for (var i in this.data) {
+                this.teampoints[2].value += this.APIData[i].data[3].given_points / numStudents
+                this.teampoints[3].value += this.APIData[i].data[4].given_points / numStudents
+                this.teampoints[4].value += this.APIData[i].data[5].given_points / numStudents
             }
             this.radarData[2].value = this.teampoints[2].value
             this.radarData[3].value = this.teampoints[3].value
             this.radarData[4].value = this.teampoints[4].value
+        },
+        makePayload() {
+            let payload = []
+            for (let i in this.APIData) {
+                let studentpoints = []
+                for (let p in this.APIData[i].data) {
+                    studentpoints[p] = {
+                        "user_group_id": this.APIData[i].id,
+                        "grade_id": this.APIData[i].data[p].id,
+                        "points": +this.APIData[i].data[p].given_points
+                    }
+                }
+                payload.push.apply(payload, studentpoints)
+
+            }
+            console.log(payload)
+            return payload
         }
-
-
     },
     created() {
         this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
+
+        Api.get('/projects/' + this.$route.params.repoid + "/milestone/1")
+            .then(response => {
+                this.$store.state.APIData = response.data.data
+                console.log(response.data.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     },
     computed: {
+        ...mapState(['APIData']),
         currentPoints() {
             let sum = 0
             for (var thing in this.radarData) {
@@ -148,12 +158,6 @@ export default {
             return sum
         }
     },
-    watch: {
-        keyz(k) {
-            console.log(this.teampoints[2].value)
-            console.log(k)
-        }
-    }
 }
 </script>
 

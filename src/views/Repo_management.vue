@@ -11,33 +11,31 @@
       <div>
         <table class="table">
           <tr v-for="repo in APIData" :key="repo.id">
-            <td>
+            <td class="p-1">
               <img src="//placehold.it/80" class="img-fluid" alt />
             </td>
 
-            <td>
+            <td class="p-1">
               <router-link
                 :to="{ name: 'repo', params: { groupid: $route.params.id, repoid: repo.id } }"
                 class="text-white"
               >{{ repo.name }}</router-link>
 
               <br />
-              <a :href="`${repo.url}`" class="badge badge-dark">
-                GitLab ID:
-                <small class>{{ repo.id }}</small>
-              </a>
+              <div class="badge badge-dark">
+                Group ID:
+                <small class>{{ repo.project_group }}</small>
+              </div>
             </td>
 
-            <td>
+            <td class="p-1">
               <div class="col my-auto">
                 <div class="text-secondary">
-                  Best Management
-                  <br />0.00 | 1.2 | 23
                 </div>
               </div>
             </td>
 
-            <td>
+            <td class="p-1">
               <RepoChartMini class="float-right" />
             </td>
           </tr>
@@ -54,19 +52,16 @@ import RepoChartMini from "../components/visualizations/RepoChartMini";
 
 export default {
   name: 'Home',
-  data() {
-    return {
-    }
-  },
   components: {
     RepoChartMini,
   },
   computed: mapState(['APIData']),
   created() {
-    const url = 'groups/' + this.$route.params.id + '/projects/'
-    Api.get(url, { headers: { Authorization: `Bearer ${this.$store.state.accessToken}` } })
+    const url = 'projects/' + this.$route.params.id + "/"
+    Api.get(url)
       .then(response => {
-        this.$store.state.APIData = response.data.data
+        this.$store.state.APIData = response.data
+
       })
       .catch(err => {
         console.log(err)

@@ -6,7 +6,7 @@
             </svg>
             {{ name }}
             <br />
-            Spent: {{ spentTime }}
+            Spent: {{ spentTime }}h
         </div>
     </div>
 </template>

@@ -37,7 +37,7 @@ import $ from 'jquery'
 
 export default {
     name: "RepoGradeTeam",
-    props: ["teampoints"],
+    props: ["teampoints", "radarData"],
     created() {
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
