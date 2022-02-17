@@ -1,126 +1,167 @@
 <template>
     <div class="container">
-        <h4>{{ APIData.project_name }}</h4>
-        <ProgressBar
-            class="mb-2"
-            :currentPoints="currentPointsNew"
-            :minPoints="minCoursePoints"
-            :maxPoints="maxCoursePoints"
-        />
         <div class="row m-1">
             <div class="col-4 p-0">
-                <RepoRadar :radardata="radarData" />
-                <div class="form-group">
-                    <label>Management</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[0].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Tests</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[1].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Issues</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[2].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Time Spent</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[3].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Code lines</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[4].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Style</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[5].value"
-                        class="form-control-range"
-                    />
-                </div>
+                <RepoRadar :radardata="radarData" :key="key" />
             </div>
-            <div class="col-8 p-0">
+            <div class="col-8 px-3">
                 <GitTime />
             </div>
+        </div>
+
+        <div class="row m-1">
+            <div class="col" :v-if="APIData" v-for="dev in APIData" :key="dev.id">
+                <RepoGradeStudent
+                    :points="dev.data"
+                    :devName="dev.username"
+                    :spentTime="dev.spent_time"
+                    :key="key"
+                    v-on:pointsChanged="updateRadar"
+                />
+            </div>
+        </div>
+        <div class="row mx-3 p-1">
+            <RepoGradeTeam :radarData="radarData" :teampoints="teampoints" />
+        </div>
+        <div class="row mx-3 p-1 d-flex float-right">
+            <button class="btn btn-success" @click="submitGrades">Sumbit</button>
         </div>
     </div>
 </template>
 
 <script>
-import ProgressBar from "../components/ProgressBar";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
+import RepoGradeStudent from "../components/RepoGradeStudent.vue";
+import RepoGradeTeam from "../components/RepoGradeTeam.vue";
+import { Api } from "../axios-api"
+import { mapState } from 'vuex'
+
 export default {
     name: 'Repo',
     components: {
-        ProgressBar,
         GitTime,
         RepoRadar,
+        RepoGradeStudent,
+        RepoGradeTeam,
     },
     data() {
         return {
-            radarData: [
-                { axis: "Management", value: 8 },
-                { axis: "Tests", value: 5 },
-                { axis: "Issues", value: 10 },
-                { axis: "Time Spent", value: 8 },
-                { axis: "Codelines", value: 8 },
-                { axis: "Style", value: 4 }
+            key: 0,  // to force update
+            teampoints: [
+                { axis: "Retro", value: 0 },
+                { axis: "Meeting", value: 0 },
+                { axis: "Git Management", value: 0 },
+                { axis: "Planning", value: 0 },
+                { axis: "Tasks", value: 0 },
             ],
-            APIData: {
-                'project_name': 'Minecraft',
-            },
-            currentPoints: 34,
+            radarData: [
+                { axis: "Retro", value: 0 },
+                { axis: "Meeting", value: 0 },
+                { axis: "Git Management", value: 0 },
+                { axis: "Planning", value: 0 },
+                { axis: "Tasks", value: 0 },
+            ],
+            students: [],
             minCoursePoints: 0,
             maxCoursePoints: 55,
+            pl: [
+                {
+                    "user_group_id": 0,
+                    "grade_id": 35,
+                    "points": 10
+                },
+                {
+                    "user_group_id": 445,
+                    "grade_id": 35,
+                    "points": 15
+                }
+            ]
         }
     },
+    methods: {
+        submitGrades() {
+            console.log('submiting grades watch out')
+
+            let pl = this.makePayload()
+
+            Api.post('/bulk_grade/', pl)
+                .then(() => {
+                    console.log("Grades posted")
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+
+        },
+        onTeamPointsChange() {
+            for (var i in this.APIData) {
+                this.APIData[i].data[1].given_points = this.teampoints[0].value
+                this.APIData[i].data[2].given_points = this.teampoints[1].value
+            }
+            this.radarData[0] = this.teampoints[0]
+            this.radarData[1] = this.teampoints[1]
+            this.key++;
+        },
+        updateRadar() {
+            var numStudents = this.APIData.length
+            this.teampoints[2].value = 0
+            this.teampoints[3].value = 0
+            this.teampoints[4].value = 0
+            for (var i in this.data) {
+                this.teampoints[2].value += this.APIData[i].data[3].given_points / numStudents
+                this.teampoints[3].value += this.APIData[i].data[4].given_points / numStudents
+                this.teampoints[4].value += this.APIData[i].data[5].given_points / numStudents
+            }
+            this.radarData[2].value = this.teampoints[2].value
+            this.radarData[3].value = this.teampoints[3].value
+            this.radarData[4].value = this.teampoints[4].value
+        },
+        makePayload() {
+            let payload = []
+            for (let i in this.APIData) {
+                let studentpoints = []
+                for (let p in this.APIData[i].data) {
+                    studentpoints[p] = {
+                        "user_group_id": this.APIData[i].id,
+                        "grade_id": this.APIData[i].data[p].id,
+                        "points": +this.APIData[i].data[p].given_points
+                    }
+                }
+                payload.push.apply(payload, studentpoints)
+
+            }
+            console.log(payload)
+            return payload
+        }
+    },
+    created() {
+        this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
+
+        Api.get('/projects/' + this.$route.params.repoid + "/milestone/1")
+            .then(response => {
+                this.$store.state.APIData = response.data.data
+                console.log(response.data.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
     computed: {
-        currentPointsNew() {
+        ...mapState(['APIData']),
+        currentPoints() {
             let sum = 0
             for (var thing in this.radarData) {
                 sum += +this.radarData[thing].value
             }
             return sum
         }
-
     },
-    watch: {
-        radarData(change) {
-            console.log(change)
-        }
-    }
 }
 </script>
 
-<style scoped>
+<style >
 input[type="range"] {
     -webkit-appearance: none;
     background-color: #dddddd;

@@ -5,6 +5,7 @@ import store from './store'
 import '@forevolve/bootstrap-dark/dist/css/bootstrap-dark.css'
 import '@forevolve/bootstrap-dark/dist/js/bootstrap.js'
 import 'fontawesome-free/css/all.min.css'
+import 'popper.js/dist/popper.min.js'
 
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {

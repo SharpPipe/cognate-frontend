@@ -3,12 +3,16 @@
         <div class="m-2 p-2 text-right">
             Spent: 
             <div class="display-3">
-            {{ stats.spent }}h
+            {{ spent }}h
             </div>
+            <h2>
+            {{eap}}EAP
+            </h2>
             Codelines:
-            <div class="display-4">
-            {{ stats.codelines }}
-            </div>
+            <h4>
+
+            {{ codelines }}
+            </h4>
         </div>
     </div>
 </template>
@@ -16,14 +20,11 @@
 <script>
 export default {
     name: "ProjectDevs",
-    data() {
-        return {
-            stats: {
-                spent: 23,
-                codelines: 6623,
-            }
+    props: ["spent", "codelines"],
+    computed : {
+        eap() {
+            return (this.spent / 26).toFixed(1)
         }
-    },
-
+    }
 }
 </script>
