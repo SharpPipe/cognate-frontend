@@ -142,7 +142,7 @@ export default {
         Api.get('/projects/' + this.$route.params.repoid + "/milestone/1")
             .then(response => {
                 this.$store.state.APIData = response.data.data
-                console.log(response.data.data)
+                this.$store.state.APIData.forEach(d => d.data.forEach(d=>{return d.given_points = +d.given_points}))
             })
             .catch(err => {
                 console.log(err)
