@@ -4,7 +4,7 @@
 
         <div class="row m-1">
             <div class="col-4 p-0">
-                <RepoRadar :radardata="radarData" />
+                <RepoRadar :radardata="radarData" :key="key" />
             </div>
             <div class="col-8 px-3">
                 <GitTime />
@@ -17,6 +17,7 @@
                     :points="payload.students[dev - 1].points"
                     :devName="payload.students[dev - 1].name"
                     :key="key"
+                    v-on:pointsChanged="updateRadar"
                 />
             </div>
         </div>
@@ -24,10 +25,7 @@
             <RepoGradeTeam :radarData="radarData" :teampoints="teampoints" />
         </div>
         <div class="row mx-3 p-1 d-flex float-right">
-            <button class="btn btn-success">
-                Sumbit
-            </button>
-
+            <button class="btn btn-success">Sumbit</button>
         </div>
     </div>
 </template>
@@ -52,6 +50,9 @@ export default {
             teampoints: [
                 { axis: "Retro", value: 0 },
                 { axis: "Meeting", value: 0 },
+                { axis: "Git Management", value: 0 },
+                { axis: "Planning", value: 0 },
+                { axis: "Tasks", value: 0 },
             ],
             payload: {
                 students: [
@@ -109,14 +110,30 @@ export default {
     },
     methods: {
         onTeamPointsChange() {
-            console.log("teampoints change")
             for (var i in this.payload.students) {
-                this.payload.students[i].points[1] = this.teampoints[0]
-                this.payload.students[i].points[2] = this.teampoints[1]
-                console.log(this.payload.students[i].points[2])
+                this.payload.students[i].points[1].value = this.teampoints[0].value
+                this.payload.students[i].points[2].value = this.teampoints[1].value
             }
+            this.radarData[0] = this.teampoints[0]
+            this.radarData[1] = this.teampoints[1]
+            console.log(this.key)
             this.key++;
+        },
+        updateRadar() {
+            var numStudents = this.payload.students.length // eslint-disable-line
+            this.teampoints[2].value = 0
+            this.teampoints[3].value = 0
+            this.teampoints[4].value = 0
+            for (var i in this.payload.students) {
+                this.teampoints[2].value += this.payload.students[i].points[3].value / numStudents
+                this.teampoints[3].value += this.payload.students[i].points[4].value / numStudents
+                this.teampoints[4].value += this.payload.students[i].points[5].value / numStudents
+            }
+            this.radarData[2].value = this.teampoints[2].value
+            this.radarData[3].value = this.teampoints[3].value
+            this.radarData[4].value = this.teampoints[4].value
         }
+
 
     },
     created() {
@@ -130,12 +147,12 @@ export default {
             }
             return sum
         }
-
     },
     watch: {
-        radarData(change) {
-            console.log(change)
-        },
+        keyz(k) {
+            console.log(this.teampoints[2].value)
+            console.log(k)
+        }
     }
 }
 </script>

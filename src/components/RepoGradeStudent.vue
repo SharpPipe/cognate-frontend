@@ -14,6 +14,7 @@
                 max="5"
                 v-model="points[3].value"
                 class="form-control-range mb-3"
+                @change="$emit('pointsChanged')"
             />
 
             <label 
@@ -28,6 +29,7 @@
                 max="5"
                 v-model="points[4].value"
                 class="form-control-range mb-3"
+                @change="$emit('pointsChanged')"
             />
 
             <label 
@@ -42,6 +44,7 @@
                 max="5"
                 v-model="points[5].value"
                 class="form-control-range mb-3"
+                @change="$emit('pointsChanged')"
             />
             <label 
                 class="mb-1"
