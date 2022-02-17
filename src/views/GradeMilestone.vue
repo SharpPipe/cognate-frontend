@@ -1,109 +1,129 @@
 <template>
     <div class="container">
         <h4>{{ APIData.project_name }}</h4>
-        <ProgressBar
-            class="mb-2"
-            :currentPoints="currentPointsNew"
-            :minPoints="minCoursePoints"
-            :maxPoints="maxCoursePoints"
-        />
+
         <div class="row m-1">
             <div class="col-4 p-0">
                 <RepoRadar :radardata="radarData" />
-                <div class="form-group">
-                    <label>Management</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[0].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Tests</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[1].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Issues</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[2].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Time Spent</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[3].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Code lines</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[4].value"
-                        class="form-control-range"
-                    />
-
-                    <label>Style</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        v-model="radarData[5].value"
-                        class="form-control-range"
-                    />
-                </div>
             </div>
-            <div class="col-8 p-0">
+            <div class="col-8 px-3">
                 <GitTime />
             </div>
+        </div>
+
+        <div class="row m-1">
+            <div class="col" v-for="dev in 3" :key="dev">
+                <RepoGradeStudent
+                    :points="payload.students[dev - 1].points"
+                    :devName="payload.students[dev - 1].name"
+                    :key="key"
+                />
+            </div>
+        </div>
+        <div class="row mx-3 p-1">
+            <RepoGradeTeam :radarData="radarData" :teampoints="teampoints" />
+        </div>
+        <div class="row mx-3 p-1 d-flex float-right">
+            <button class="btn btn-success">
+                Sumbit
+            </button>
+
         </div>
     </div>
 </template>
 
 <script>
-import ProgressBar from "../components/ProgressBar";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
+import RepoGradeStudent from "../components/RepoGradeStudent.vue";
+import RepoGradeTeam from "../components/RepoGradeTeam.vue";
+
 export default {
     name: 'Repo',
     components: {
-        ProgressBar,
         GitTime,
         RepoRadar,
+        RepoGradeStudent,
+        RepoGradeTeam,
     },
     data() {
         return {
+            key: 0,  // to force update
+            teampoints: [
+                { axis: "Retro", value: 0 },
+                { axis: "Meeting", value: 0 },
+            ],
+            payload: {
+                students: [
+                    {
+                        name: "virve",
+                        points: [
+                            { axis: "Contribution", value: 0 },
+                            { axis: "Retro", value: 0 },
+                            { axis: "Meeting", value: 0 },
+                            { axis: "Git Management", value: 0 },
+                            { axis: "Planning", value: 0 },
+                            { axis: "Tasks", value: 0 },
+
+                        ]
+                    },
+                    {
+                        name: "peeter",
+                        points: [
+                            { axis: "Contribution", value: 0 },
+                            { axis: "Retro", value: 0 },
+                            { axis: "Meeting", value: 0 },
+                            { axis: "Git Management", value: 0 },
+                            { axis: "Planning", value: 0 },
+                            { axis: "Tasks", value: 0 },
+
+                        ]
+                    },
+                    {
+                        name: "virsik",
+                        points: [
+                            { axis: "Contribution", value: 0 },
+                            { axis: "Retro", value: 0 },
+                            { axis: "Meeting", value: 0 },
+                            { axis: "Git Management", value: 0 },
+                            { axis: "Planning", value: 0 },
+                            { axis: "Tasks", value: 0 },
+
+                        ]
+                    },
+                ]
+            },
             radarData: [
-                { axis: "Management", value: 8 },
-                { axis: "Tests", value: 5 },
-                { axis: "Issues", value: 10 },
-                { axis: "Time Spent", value: 8 },
-                { axis: "Codelines", value: 8 },
-                { axis: "Style", value: 4 }
+                { axis: "Retro", value: 0 },
+                { axis: "Meeting", value: 0 },
+                { axis: "Git Management", value: 0 },
+                { axis: "Planning", value: 0 },
+                { axis: "Tasks", value: 0 },
             ],
             APIData: {
                 'project_name': 'Minecraft',
             },
-            currentPoints: 34,
             minCoursePoints: 0,
             maxCoursePoints: 55,
         }
     },
+    methods: {
+        onTeamPointsChange() {
+            console.log("teampoints change")
+            for (var i in this.payload.students) {
+                this.payload.students[i].points[1] = this.teampoints[0]
+                this.payload.students[i].points[2] = this.teampoints[1]
+                console.log(this.payload.students[i].points[2])
+            }
+            this.key++;
+        }
+
+    },
+    created() {
+        this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
+    },
     computed: {
-        currentPointsNew() {
+        currentPoints() {
             let sum = 0
             for (var thing in this.radarData) {
                 sum += +this.radarData[thing].value
@@ -115,12 +135,12 @@ export default {
     watch: {
         radarData(change) {
             console.log(change)
-        }
+        },
     }
 }
 </script>
 
-<style scoped>
+<style >
 input[type="range"] {
     -webkit-appearance: none;
     background-color: #dddddd;

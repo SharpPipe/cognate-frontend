@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg :viewBox="`0 0 400 400`" id="reporadar"/>
+    <svg :viewBox="`0 0 400 400`" id="reporadar" />
   </div>
 </template>
 
@@ -8,23 +8,10 @@
 <script>
 import * as d3 from 'd3'
 
-let data = [[
-  { axis: "Management", value: 8 },
-  { axis: "Tests", value: 5 },
-  { axis: "Issues", value: 10 },
-  { axis: "Time Spent", value: 8 },
-  { axis: "Codelines", value: 8 },
-  { axis: "Style", value: 4 }]
-];
 
 export default {
   name: "RepoRadar",
   props: ['radardata'],
-  data() {
-    return {
-      data,
-    }
-  },
 
   mounted() {
     this.drawChart(this.radardata)
@@ -34,52 +21,24 @@ export default {
   },
   methods: {
     onRadarDataChange() {
-      d3.select('svg').selectAll("*").remove()
+      d3.select('#reporadar').selectAll("*").remove()
+      console.log("change")
       this.drawChart(this.radardata)
     },
     drawChart(radardata) {
       // Radar code inspired by and definitely not directly stolen from 
       // https://observablehq.com/@jacobtfisher/brand-identity-radar-chart
-      data[0] = radardata
       const height = 400
       const width = 400
       const margin = 0
       const radius = (height - (margin * 2)) / 2 - 1
       const dotRadius = 4
       const axisCircles = 10
-      //const axisLabelFactor = 1.3
+      const axisLabelFactor = 1.3
       //const wrapWidth = 200
-      const axesLength = 6
-      const axesDomain = data[0].map(d => d.axis)
-      const maxValue = 10
-      /*
-      function wrap(text, width) {
-        text.each(function () {
-          var text = d3.select(this),
-            words = text.text().split(/\s+/).reverse(),
-            word,
-            line = [],
-            lineNumber = 0,
-            lineHeight = 1.4, // ems
-            y = text.attr("y"),
-            x = text.attr("x"),
-            dy = parseFloat(text.attr("dy")),
-            tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-  
-          while (words) {
-            word = words.pop()
-            line.push(word);
-            tspan.text(line.join(" "));
-            if (tspan.node().getComputedTextLength() > width) {
-              line.pop();
-              tspan.text(line.join(" "));
-              line = [word];
-              tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-            }
-          }
-        });
-      }//wrap	
-      */
+      const axesLength = 5
+      const axesDomain = radardata.map(d => d.axis)
+      const maxValue = 5
 
       let rScale = d3.scaleLinear()
         .domain([0, maxValue])
@@ -129,26 +88,24 @@ export default {
         .style("stroke", "#191d21")
         .style("stroke-width", "4px");
 
-      /*
-      setTimeout(() => {
-        axis.append("text")
-          .attr("class", "legend")
-          .style("font-size", "24px")
-          .style("font-weight", "600")
-          .attr("text-anchor", "middle")
-          .attr("font-family", "sans-serif")
-          .attr("dy", "0.35em")
-          .attr("x", (d, i) => rScale(maxValue * axisLabelFactor * 1.11) * Math.cos(angleSlice * i - Math.PI / 2))
-          .attr("y", (d, i) => rScale(maxValue * axisLabelFactor * 0.9) * Math.sin(angleSlice * i - Math.PI / 2))
-          .text(d => d)
-          .call(wrap, wrapWidth)
-      }, 0);
-      */
+      axis.append("text")
+        .attr("class", "legend")
+        .style("font-size", "20px")
+        .style("font-weight", "400")
+        .style("fill", "#6e6")
+        .style("opacity", "0.3")
+        .attr("text-anchor", "middle")
+        .attr("font-family", "sans-serif")
+        .attr("dy", "-0.35em")
+        .attr("x", (d, i) => rScale(maxValue * axisLabelFactor * 0.65) * Math.cos(angleSlice * i - Math.PI / 2))
+        .attr("y", (d, i) => rScale(maxValue * axisLabelFactor * 0.70) * Math.sin(angleSlice * i - Math.PI / 2)+ 10)
+        .text(d => d)
 
       let c = '#66ee66'
       const plots = container.append('g')
         .selectAll('g')
-        .data(data)
+        .data([radardata])
+        //.data(data)
         .join('g')
         .attr("fill", c)
         .style("fill-opacity", 0.8)

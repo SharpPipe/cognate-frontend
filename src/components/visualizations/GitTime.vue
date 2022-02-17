@@ -50,7 +50,7 @@ export default {
         .range([margins.left, width - margins.right])
 
       let y = d3.scaleLinear()
-        .domain([0, 24])
+        .domain([24, 0])
         .range([height - margins.bottom, margins.top])
 
       let z = (datetime) => {
