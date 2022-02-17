@@ -13,13 +13,14 @@
           <RepoRadar class="p-1" :radardata="radarData" />
         </div>
         <div class="col-5 p-0">
-          <ProjectDevs class="m-2" />
+          <div class="d-flex flex-column justify-content-end flex-grow-1">
+            <div v-for="dev in 3" :key="dev">
+              <RepoDeveloper name="Dev" spentTime="23" class="m-2" />
+            </div>
+          </div>
         </div>
         <div class="col-3 p-0">
-          <RepoTotalStats 
-            spent=33
-            codelines=6344
-          />
+          <RepoTotalStats spent="33" codelines="6344" />
         </div>
       </div>
       <table class="table">
@@ -53,7 +54,7 @@
 
 <script>
 import ProgressBar from "../components/ProgressBar";
-import ProjectDevs from "../components/ProjectDevs";
+import RepoDeveloper from "../components/RepoDeveloper";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
 import RepoTotalStats from "../components/RepoTotalStats.vue";
@@ -64,7 +65,7 @@ export default {
     ProgressBar,
     GitTime,
     RepoRadar,
-    ProjectDevs,
+    RepoDeveloper,
     RepoTotalStats,
     RepoMilestoneCard
   },
