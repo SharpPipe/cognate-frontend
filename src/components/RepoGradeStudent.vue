@@ -7,7 +7,7 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 title="merge request + code review + branches + commits linked to tasks"
-            >{{ points[3].name}} </label>
+            >{{points[3].name}}</label>
             <input
                 type="range"
                 min="0"
@@ -22,7 +22,7 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 title="tasks chosen, assigned, prioritized + estimate given + goal set"
-            >{{ points[4].name}} </label>
+            >{{points[4].name}} </label>
             <input
                 type="range"
                 min="0"
