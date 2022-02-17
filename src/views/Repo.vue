@@ -72,12 +72,12 @@ export default {
   data() {
     return {
       radarData: [
-        { axis: "Management", value: 8 },
-        { axis: "Tests", value: 5 },
-        { axis: "Issues", value: 10 },
-        { axis: "Time Spent", value: 8 },
-        { axis: "Codelines", value: 8 },
-        { axis: "Style", value: 4 }
+        { axis: "Management", value: 1 },
+        { axis: "Tests", value: 1 },
+        { axis: "Issues", value: 1 },
+        { axis: "Time Spent", value: 1 },
+        { axis: "Codelines", value: 1 },
+        { axis: "Style", value: 1 }
       ],
       APIData: {
         'project_name': 'Minecraft',
