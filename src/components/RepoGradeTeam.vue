@@ -1,12 +1,15 @@
 <template>
     <div class="w-100">
         <div class="form-group">
-            <label 
-                class="mb-1"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="actionable tickets"
-            >Retro</label>
+            <div class="row no-gutters">
+                <label
+                    class="mb-1"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="actionable tickets"
+                >Retro</label>
+                <p class="ml-auto mr-0 text-muted">{{ teampoints[0].value }}/5</p>
+            </div>
             <input
                 type="range"
                 min="0"
@@ -15,12 +18,15 @@
                 class="form-control-range mb-3"
             />
 
-            <label 
-                class="mb-1"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="everyone present + prepared + asking questions"
-            >Meeting the Mentor</label>
+            <div class="row no-gutters">
+                <label
+                    class="mb-1"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="everyone present + prepared + asking questions"
+                >Meeting the Mentor</label>
+                <p class="ml-auto mr-0 text-muted">{{ teampoints[1].value }}/5</p>
+            </div>
             <input
                 type="range"
                 min="0"

@@ -17,14 +17,19 @@
                     :spentTime="dev.spent_time"
                     :key="key"
                     v-on:pointsChanged="updateRadar"
-                />
+                /> 
+<!--                 <textarea class="form-control" aria-label="With textarea" placeholder="Comment (WIP does not work yet)"></textarea> -->
             </div>
         </div>
         <div class="row mx-3 p-1">
             <RepoGradeTeam :radarData="radarData" :teampoints="teampoints" />
         </div>
-        <div class="row mx-3 p-1 d-flex float-right">
-            <button class="btn btn-success" @click="submitGrades">Sumbit</button>
+        <div class="row mx-3 p-1 ml-1">
+            <div v-if="msg" class="alert alert-success" role="alert">{{msg}}</div>
+
+            <div class="ml-auto mr-0">
+                <button class="btn btn-success" @click="submitGrades">Submit</button>
+            </div>
         </div>
     </div>
 </template>
@@ -48,52 +53,37 @@ export default {
     data() {
         return {
             key: 0,  // to force update
+            msg: null,
             teampoints: [
                 { axis: "Retro", value: 0 },
                 { axis: "Meeting", value: 0 },
-                { axis: "Git Management", value: 0 },
+                { axis: "Branch management", value: 0 },
                 { axis: "Planning", value: 0 },
-                { axis: "Tasks", value: 0 },
+                { axis: "Issues", value: 0 },
             ],
             radarData: [
                 { axis: "Retro", value: 0 },
                 { axis: "Meeting", value: 0 },
-                { axis: "Git Management", value: 0 },
+                { axis: "Branch management", value: 0 },
                 { axis: "Planning", value: 0 },
-                { axis: "Tasks", value: 0 },
+                { axis: "Issues", value: 0 },
             ],
             students: [],
             minCoursePoints: 0,
             maxCoursePoints: 55,
-            pl: [
-                {
-                    "user_group_id": 0,
-                    "grade_id": 35,
-                    "points": 10
-                },
-                {
-                    "user_group_id": 445,
-                    "grade_id": 35,
-                    "points": 15
-                }
-            ]
         }
     },
     methods: {
         submitGrades() {
-            console.log('submiting grades watch out')
-
             let pl = this.makePayload()
-
             Api.post('/bulk_grade/', pl)
                 .then(() => {
+                    this.msg = "Points saved!"
                     console.log("Grades posted")
                 })
                 .catch(err => {
                     console.log(err)
                 })
-
-
         },
         onTeamPointsChange() {
             for (var i in this.APIData) {
@@ -109,7 +99,7 @@ export default {
             this.teampoints[2].value = 0
             this.teampoints[3].value = 0
             this.teampoints[4].value = 0
-            for (var i in this.data) {
+            for (var i in this.APIData) {
                 this.teampoints[2].value += this.APIData[i].data[3].given_points / numStudents
                 this.teampoints[3].value += this.APIData[i].data[4].given_points / numStudents
                 this.teampoints[4].value += this.APIData[i].data[5].given_points / numStudents
@@ -117,6 +107,7 @@ export default {
             this.radarData[2].value = this.teampoints[2].value
             this.radarData[3].value = this.teampoints[3].value
             this.radarData[4].value = this.teampoints[4].value
+            this.key++;
         },
         makePayload() {
             let payload = []
@@ -142,7 +133,7 @@ export default {
         Api.get('/projects/' + this.$route.params.repoid + "/milestone/1")
             .then(response => {
                 this.$store.state.APIData = response.data.data
-                this.$store.state.APIData.forEach(d => d.data.forEach(d=>{return d.given_points = +d.given_points}))
+                this.$store.state.APIData.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
             })
             .catch(err => {
                 console.log(err)
