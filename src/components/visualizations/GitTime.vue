@@ -1,5 +1,7 @@
 <template>
+
   <svg :viewBox="`0 0 ${width} ${height}`" id="gittime" />
+
 </template>
 
 <script>
@@ -24,7 +26,6 @@ export default {
         this.dataLoaded = true
         d.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
       })
-
   },
   mounted() {
     this.renderGraph()
@@ -88,8 +89,11 @@ export default {
         .enter().append("circle")
         .attr("cx", d => x(d.datetime))
         .attr("cy", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60))
-        .attr("fill", d => z(d.datetime) == 1 ? '#66ee66' : "#0c6e0c")
+        //.attr("fill", d => z(d.datetime) == 1 ? '#66ee66' : "#0c6e0c")
+        .attr("fill", d => z(d.datetime) == 1 ? '#666' : "#444")
         .attr("r", 4);
+
+      
 
       return svg.node();
     }

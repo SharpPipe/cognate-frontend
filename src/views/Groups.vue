@@ -16,7 +16,7 @@
             <td>
               <div class="row justify-content-between">
                 <div class="col-auto">
-                  <img src="//placehold.it/120" class="img-fluid" alt />
+                  <img src="//place-hold.it/120" class="img-fluid" alt />
                 </div>
 
                 <div class="col my-auto">
@@ -68,7 +68,6 @@ export default {
     Api.get('groups/')
       .then(response => {
         this.$store.state.APIData = response.data
-        console.log(response.data)
       })
       .catch(err => {
         console.log(err)

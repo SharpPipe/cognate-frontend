@@ -1,7 +1,7 @@
 <template>
   <div class="repo">
     <div class="container">
-      <h4>{{ APIData.name }}</h4>
+      <h4 v-if="APIData">{{ APIData.name }}</h4>
       <ProgressBar
         class="mb-2 mx-2"
         :currentPoints="currentPoints"
@@ -15,12 +15,12 @@
         <div class="col-5 p-0">
           <div class="d-flex flex-column justify-content-end flex-grow-1">
             <div v-for="dev in 3" :key="dev">
-              <RepoDeveloper name="Dev" spentTime="23" class="m-2" />
+              <RepoDeveloper name="Dev" spentTime="--" class="m-2" />
             </div>
           </div>
         </div>
         <div class="col-3 p-0">
-          <RepoTotalStats spent="33" codelines="6344" />
+          <RepoTotalStats spent="----" codelines="----" />
         </div>
       </div>
       <table class="table">
@@ -35,18 +35,18 @@
               }
             }"
           >
-            <td class="p-1">
-              <RepoMilestoneCard nr="1" ms_status="ungraded" points="0" :ms_data="firstMS"/>
+            <td class="m-0 p-0">
+              <RepoMilestoneCard class=" m-0" nr="1" ms_status="ungraded" points="-" :ms_data="firstMS"/>
             </td>
           </router-link>
 
-          <td class="p-1" v-for="n in 6" :key="n">
-            <RepoMilestoneCard :nr="n+1" ms_status="TBA" points="0" />
+          <td class="m-0 p-0 h-100" v-for="n in 6" :key="n">
+            <RepoMilestoneCard :nr="n+1" ms_status="TBA" points="-" />
           </td>
         </tr>
       </table>
       <div class="row">
-        <GitTime />
+        <GitTime  class="w-100"/>
       </div>
     </div>
   </div>
@@ -78,9 +78,9 @@ export default {
       radarData: [
         { axis: "Retro", value: 0 },
         { axis: "Meeting", value: 0 },
-        { axis: "Git Management", value: 0 },
+        { axis: "Branch management", value: 0 },
         { axis: "Planning", value: 0 },
-        { axis: "Tasks", value: 0 },
+        { axis: "Issues", value: 0 },
       ],
       currentPoints: 30,
       minCoursePoints: 0,
@@ -93,8 +93,6 @@ export default {
     Api.get(url)
       .then(response => {
         this.$store.state.APIData = response.data.data
-        console.log(response.data.data)
-
       })
       .catch(err => {
         console.log(err)
@@ -103,7 +101,6 @@ export default {
     Api.get("/projects/" + this.$route.params.repoid + "/milestones/")
       .then(response => {
         this.firstMS = response.data[response.data.length-1]
-        console.log(response.data)
       })
       .catch(err => {
         console.log(err)
@@ -118,3 +115,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+table {
+  table-layout: fixed;
+}
+</style>

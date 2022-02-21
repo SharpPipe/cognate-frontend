@@ -10,7 +10,6 @@
             </h2>
             Codelines:
             <h4>
-
             {{ codelines }}
             </h4>
         </div>
@@ -23,7 +22,7 @@ export default {
     props: ["spent", "codelines"],
     computed : {
         eap() {
-            return (this.spent / 26).toFixed(1)
+            return "--.-" //(this.spent / 26).toFixed(1)
         }
     }
 }

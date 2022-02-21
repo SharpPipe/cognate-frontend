@@ -12,7 +12,7 @@
         <table class="table">
           <tr v-for="repo in APIData" :key="repo.id">
             <td class="p-1">
-              <img src="//placehold.it/80" class="img-fluid" alt />
+              <img src="//place-hold.it/60" class="img-fluid" alt />
             </td>
 
             <td class="p-1">

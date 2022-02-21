@@ -6,7 +6,7 @@
             </svg>
             {{ name }}
             <br />
-            Spent: {{ spentTime }}h
+            Spent: {{ spent }}h
         </div>
     </div>
 </template>
@@ -14,7 +14,13 @@
 <script>
 export default {
     name: "RepoDeveloper",
-    props: ["name", "spentTime"]
+    props: ["name", "spentTime"],
+    computed: {
+        spent() {
+            if (isNaN(this.spentTime)) return this.spentTime
+            return this.spentTime.toFixed(2)
+        }
+    }
 
 }
 </script>
