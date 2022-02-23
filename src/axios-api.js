@@ -4,7 +4,7 @@ import router from './routes'
 
 const Api = axios.create({
     baseURL: 'http://193.40.156.179:8081/',
-    timeout: 1000,
+    timeout: 5000,
     headers: {
         'Content-type': 'application/json'
     }
@@ -30,7 +30,7 @@ Api.interceptors.response.use(
             originalRequest.url.includes("api/token/refresh/")
         ) {
             store.commit("destroyToken");
-            router.push({name: 'home'});
+            router.push({ name: 'home' });
             return Promise.reject(error);
         } else if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
