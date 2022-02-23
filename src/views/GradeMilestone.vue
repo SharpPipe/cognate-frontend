@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <h3 v-if="APIData.project_name">{{APIData.project_name}}</h3>
         <div class="row m-1">
             <div class="col-4 p-0">
                 <RepoRadar :radardata="radarData" :key="key" />
@@ -10,7 +11,7 @@
         </div>
 
         <div class="row m-1">
-            <div class="col" :v-if="APIData" v-for="dev in APIData" :key="dev.id">
+            <div class="col" :v-if="APIData.project_data" v-for="dev in APIData.project_data" :key="dev.id">
                 <RepoGradeStudent
                     :points="dev.data"
                     :devName="dev.username"
@@ -86,23 +87,23 @@ export default {
                 })
         },
         onTeamPointsChange() {
-            for (var i in this.APIData) {
-                this.APIData[i].data[1].given_points = this.teampoints[0].value
-                this.APIData[i].data[2].given_points = this.teampoints[1].value
+            for (var i in this.APIData.project_data) {
+                this.APIData.project_data[i].data[1].given_points = this.teampoints[0].value
+                this.APIData.project_data[i].data[2].given_points = this.teampoints[1].value
             }
             this.radarData[0] = this.teampoints[0]
             this.radarData[1] = this.teampoints[1]
             this.key++;
         },
         updateRadar() {
-            var numStudents = this.APIData.length
+            var numStudents = this.APIData.project_data.length
             this.teampoints[2].value = 0
             this.teampoints[3].value = 0
             this.teampoints[4].value = 0
-            for (var i in this.APIData) {
-                this.teampoints[2].value += this.APIData[i].data[3].given_points / numStudents
-                this.teampoints[3].value += this.APIData[i].data[4].given_points / numStudents
-                this.teampoints[4].value += this.APIData[i].data[5].given_points / numStudents
+            for (var i in this.APIData.project_data) {
+                this.teampoints[2].value += this.APIData.project_data[i].data[3].given_points / numStudents
+                this.teampoints[3].value += this.APIData.project_data[i].data[4].given_points / numStudents
+                this.teampoints[4].value += this.APIData.project_data[i].data[5].given_points / numStudents
             }
             this.radarData[2].value = this.teampoints[2].value
             this.radarData[3].value = this.teampoints[3].value
@@ -111,13 +112,13 @@ export default {
         },
         makePayload() {
             let payload = []
-            for (let i in this.APIData) {
+            for (let i in this.APIData.project_data) {
                 let studentpoints = []
-                for (let p in this.APIData[i].data) {
+                for (let p in this.APIData.project_data[i].data) {
                     studentpoints[p] = {
-                        "user_group_id": this.APIData[i].id,
-                        "grade_id": this.APIData[i].data[p].id,
-                        "points": +this.APIData[i].data[p].given_points
+                        "user_group_id": this.APIData.project_data[i].id,
+                        "grade_id": this.APIData.project_data[i].data[p].id,
+                        "points": +this.APIData.project_data[i].data[p].given_points
                     }
                 }
                 payload.push.apply(payload, studentpoints)
@@ -130,10 +131,10 @@ export default {
     created() {
         this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
 
-        Api.get('/projects/' + this.$route.params.repoid + "/milestone/1")
+        Api.get('/projects/' + this.$route.params.repoid + "/milestone/1/")
             .then(response => {
                 this.$store.state.APIData = response.data.data
-                this.$store.state.APIData.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
+                this.$store.state.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
             })
             .catch(err => {
                 console.log(err)
