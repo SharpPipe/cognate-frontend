@@ -3,6 +3,7 @@
         <div class="milestone-card border rounded p-2 text-center">
             <label v-if="ms_data">{{ms_data.title}}</label>
             <label v-if="!ms_data">Milestone {{ nr }}</label>
+            <br>
             <div v-if="ms_status =='graded'" class="badge badge-pill badge-success">Graded</div>
             <div v-if="ms_status =='ungraded'" class="badge badge-pill badge-warning">Not Graded</div>
             <div v-if="ms_status =='TBA'" class="badge badge-pill badge-dark milestone">TBA</div>
