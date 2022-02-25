@@ -12,7 +12,7 @@
 <script>
 //import * as d3 from 'd3'
 const width  = 320
-const height = 60
+const height = 40
 const barN   = 64
 let barWidth = width / barN
 

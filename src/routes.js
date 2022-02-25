@@ -5,6 +5,7 @@ import Groups    from './views/Groups'
 import Browse    from './views/Browse'
 import Home      from './views/Home'
 import Repo_management from "./views/Repo_management";
+import GroupMilestoneSummary from "./views/GroupMilestoneSummary";
 import Repo      from "./views/Repo";
 import Milestone from "./views/Milestone";
 import GradeMS   from "./views/GradeMilestone";
@@ -92,6 +93,14 @@ export default new VueRouter({
             path: '/group/:id/',
             name: 'group-repos',
             component: Repo_management,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/group/:id/milestone/:msid/',
+            name: 'group-milestone-summary',
+            component: GroupMilestoneSummary,
             meta: {
                 requiresAuth: true
             }
