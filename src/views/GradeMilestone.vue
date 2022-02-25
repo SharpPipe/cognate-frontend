@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h3 v-if="APIData.project_name">{{APIData.project_name}}</h3>
+        <h3 v-if="APIData">{{APIData.project_name}}</h3>
         <div class="row m-1">
             <div class="col-4 p-0">
                 <RepoRadar :radardata="radarData" :key="key" />
@@ -11,7 +11,7 @@
         </div>
 
         <div class="row m-1">
-            <div class="col" :v-if="APIData.project_data" v-for="dev in APIData.project_data" :key="dev.id">
+            <div class="col" :v-if="APIData" v-for="dev in APIData.project_data" :key="dev.id">
                 <RepoGradeStudent
                     :points="dev.data"
                     :devName="dev.username"
@@ -130,10 +130,12 @@ export default {
     },
     created() {
         this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
+        this.$store.APIData = null
 
         Api.get('/projects/' + this.$route.params.repoid + "/milestone/1/")
             .then(response => {
                 this.$store.state.APIData = response.data.data
+                console.log(response.data)
                 this.$store.state.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
             })
             .catch(err => {
