@@ -29,6 +29,8 @@ export default new Vuex.Store({
         destroyToken (state) {
             state.accessToken  = null
             state.refreshToken = null
+            state.APIData = null
+            state.username = null
         },
     },
     getters: {
