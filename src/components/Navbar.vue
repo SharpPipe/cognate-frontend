@@ -21,7 +21,7 @@
             <router-link :to="{ name:'pricing' }" exact>Pricing</router-link>
           </li>
           <li class="nav-item nav-link">
-            <router-link :to="{ name:'feedback' }" exact>Feedback!</router-link>
+            <router-link :to="{ name:'feedback' }" exact>Feedback</router-link>
           </li>
         </ul>
 
