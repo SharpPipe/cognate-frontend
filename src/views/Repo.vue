@@ -23,30 +23,33 @@
           <RepoTotalStats spent="----" codelines="----" />
         </div>
       </div>
-      <table class="table">
+      <table class="table table-borderless">
         <tr>
-          <router-link
-            :to="{
-              name: 'grade-milestone',
-              params: {
-                groupid: $route.params.groupid,
-                repoid: $route.params.repoid,
-                msid: 1
-              }
-            }"
-          >
-            <td class="m-0 p-0">
-              <RepoMilestoneCard class=" m-0" nr="1" ms_status="ungraded" points="-" :ms_data="firstMS"/>
-            </td>
-          </router-link>
-
-          <td class="m-0 p-0 h-100" v-for="n in 6" :key="n">
-            <RepoMilestoneCard :nr="n+1" ms_status="TBA" points="-" />
+          <td v-for="(milestone, i) in milestones" :key="i" class="m-0 p-0">
+            <router-link
+              :to="{
+                name: 'grade-milestone',
+                params: {
+                  groupid: $route.params.groupid,
+                  repoid: $route.params.repoid,
+                  msid: i + 1
+                }
+              }"
+            >
+              <RepoMilestoneCard
+                class="m-0"
+                nr="1"
+                ms_status="ungraded"
+                points="-"
+                :ms_data=milestone
+              />
+            </router-link>
           </td>
+
         </tr>
       </table>
       <div class="row">
-        <GitTime  class="w-100"/>
+        <GitTime class="w-100" />
       </div>
     </div>
   </div>
@@ -85,7 +88,7 @@ export default {
       currentPoints: 30,
       minCoursePoints: 0,
       maxCoursePoints: 2000,
-      firstMS: null,
+      milestones: null,
     }
   },
   created() {
@@ -100,7 +103,7 @@ export default {
 
     Api.get("/projects/" + this.$route.params.repoid + "/milestones/")
       .then(response => {
-        this.firstMS = response.data[response.data.length-1]
+        this.milestones = response.data.reverse()
       })
       .catch(err => {
         console.log(err)

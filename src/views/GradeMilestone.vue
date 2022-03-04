@@ -16,7 +16,6 @@
                     :points="dev.data"
                     :devName="dev.username"
                     :spentTime="dev.spent_time"
-                    :key="key"
                     v-on:pointsChanged="updateRadar"
                 /> 
 <!--                 <textarea class="form-control" aria-label="With textarea" placeholder="Comment (WIP does not work yet)"></textarea> -->
@@ -137,6 +136,9 @@ export default {
                 this.$store.state.APIData = response.data.data
                 console.log(response.data)
                 this.$store.state.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
+                this.teampoints[0].value = this.APIData.project_data[0].data[1].given_points
+                this.teampoints[1].value = this.APIData.project_data[0].data[2].given_points
+                this.updateRadar()
             })
             .catch(err => {
                 console.log(err)
