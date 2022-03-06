@@ -41,15 +41,14 @@
                 nr="1"
                 ms_status="ungraded"
                 points="-"
-                :ms_data=milestone
+                :ms_data="milestone"
               />
             </router-link>
           </td>
-
         </tr>
       </table>
       <div class="row">
-        <GitTime class="w-100" />
+        <GitTime class="w-100" :milestones="milestones"/>
       </div>
     </div>
   </div>
@@ -89,6 +88,7 @@ export default {
       minCoursePoints: 0,
       maxCoursePoints: 2000,
       milestones: null,
+      issueData: [],
     }
   },
   created() {
@@ -111,11 +111,6 @@ export default {
 
 
   },
-  watch: {
-    radarData(change) {
-      console.log(change)
-    }
-  }
 }
 </script>
 
