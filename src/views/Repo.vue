@@ -48,7 +48,7 @@
         </tr>
       </table>
       <div class="row">
-        <GitTime class="w-100" :milestones="milestones"/>
+        <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/>
       </div>
     </div>
   </div>
@@ -89,6 +89,7 @@ export default {
       maxCoursePoints: 2000,
       milestones: null,
       issueData: [],
+      projectTimeRange: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
     }
   },
   created() {
