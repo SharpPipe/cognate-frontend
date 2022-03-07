@@ -6,7 +6,7 @@
                 <RepoRadar :radardata="radarData" :key="key" />
             </div>
             <div class="col-8 px-3">
-                <GitTime />
+                <GitTime :timeRange="range"/>
             </div>
         </div>
 
@@ -71,6 +71,7 @@ export default {
             students: [],
             minCoursePoints: 0,
             maxCoursePoints: 55,
+            range: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
         }
     },
     methods: {
@@ -130,6 +131,7 @@ export default {
     created() {
         this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
         this.$store.APIData = null
+        this.range = [this.$route.params.start, this.$route.params.end]
 
         Api.get('/projects/' + this.$route.params.repoid + "/milestone/1/")
             .then(response => {

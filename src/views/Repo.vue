@@ -25,14 +25,16 @@
       </div>
       <table class="table table-borderless">
         <tr>
-          <td v-for="(milestone, i) in milestones" :key="i" class="m-0 p-0">
+          <td v-for="(milestone, i) in gradeMilestones" :key="i" class="m-0 p-0">
             <router-link
               :to="{
                 name: 'grade-milestone',
                 params: {
                   groupid: $route.params.groupid,
                   repoid: $route.params.repoid,
-                  msid: i + 1
+                  msid: i + 1,
+                  start: milestone.start,
+                  end: milestone.end,
                 }
               }"
             >
@@ -41,14 +43,13 @@
                 nr="1"
                 ms_status="ungraded"
                 points="-"
-                :ms_data="milestone"
               />
             </router-link>
           </td>
         </tr>
       </table>
       <div class="row">
-        <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/>
+<!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
       </div>
     </div>
   </div>
@@ -58,7 +59,7 @@
 import ProgressBar from "../components/ProgressBar";
 import RepoDeveloper from "../components/RepoDeveloper";
 import RepoRadar from "../components/visualizations/RepoRadar";
-import GitTime from "../components/visualizations/GitTime";
+//import GitTime from "../components/visualizations/GitTime";
 import RepoTotalStats from "../components/RepoTotalStats.vue";
 import RepoMilestoneCard from "../components/RepoMilestoneCard.vue";
 
@@ -68,7 +69,7 @@ export default {
   name: 'Repo',
   components: {
     ProgressBar,
-    GitTime,
+    //GitTime,
     RepoRadar,
     RepoDeveloper,
     RepoTotalStats,
@@ -88,7 +89,9 @@ export default {
       minCoursePoints: 0,
       maxCoursePoints: 2000,
       milestones: null,
+      gradeMilestones: null,
       issueData: [],
+      
       projectTimeRange: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
     }
   },
@@ -102,9 +105,10 @@ export default {
         console.log(err)
       })
 
-    Api.get("/projects/" + this.$route.params.repoid + "/milestones/")
+    Api.get("/projects/" + this.$route.params.repoid + "/milestone_connections/")
       .then(response => {
-        this.milestones = response.data.reverse()
+        this.milestones = response.data.milestones
+        this.gradeMilestones = response.data.grade_milestones
       })
       .catch(err => {
         console.log(err)

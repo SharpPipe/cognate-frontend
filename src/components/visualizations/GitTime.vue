@@ -30,6 +30,8 @@ export default {
     this.renderGraph()
   },
   created() {
+    this.timeRange[0] = d3.isoParse(this.timeRange[0])
+    this.timeRange[1] = d3.isoParse(this.timeRange[1])
     Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + 1 + "/time_spent/")
       .then(response => {
         this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
