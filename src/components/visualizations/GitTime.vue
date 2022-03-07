@@ -92,7 +92,7 @@ export default {
 
       // Tooltip
       let div = d3.select("body").append("div")
-        .attr("class", "tooltip")
+        .attr("class", "gittime-tooltip")
         .style("opacity", 0)
 
       // Lines
@@ -129,11 +129,11 @@ export default {
 
         })
 
-      svg.append("text")
+/*       svg.append("text")
         .attr("dy", 15)
         .attr("dx", width / 2 - 60)
         .attr("fill", "#666")
-        .text("Sprint 1 time data")
+        .text("Sprint 1 time data") */
 
 
       return svg.node();
@@ -143,7 +143,7 @@ export default {
 </script>
 
 <style >
-.tooltip {
+.gittime-tooltip {
   position: absolute;
   text-align: center;
   padding: 2px;

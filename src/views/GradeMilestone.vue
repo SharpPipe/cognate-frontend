@@ -17,6 +17,7 @@
                     :devName="dev.username"
                     :spentTime="dev.spent_time"
                     v-on:pointsChanged="updateRadar"
+                    v-on:devHover="highlightDev"
                 /> 
 <!--                 <textarea class="form-control" aria-label="With textarea" placeholder="Comment (WIP does not work yet)"></textarea> -->
             </div>
@@ -75,6 +76,10 @@ export default {
         }
     },
     methods: {
+        highlightDev(dev) {
+            return dev
+
+        },
         submitGrades() {
             let pl = this.makePayload()
             Api.post('/bulk_grade/', pl)
@@ -133,7 +138,7 @@ export default {
         this.$store.APIData = null
         this.range = [this.$route.params.start, this.$route.params.end]
 
-        Api.get('/projects/' + this.$route.params.repoid + "/milestone/1/")
+        Api.get('/projects/' + this.$route.params.repoid + "/milestone/"+this.$route.params.msid+"/")
             .then(response => {
                 this.$store.state.APIData = response.data.data
                 console.log(response.data)

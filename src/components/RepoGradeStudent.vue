@@ -1,6 +1,8 @@
 <template>
     <div>
-        <RepoDeveloper :name="devName" :spentTime="spentTime" />
+        <RepoDeveloper :name="devName" :spentTime="spentTime" 
+                        @mouseover.native="$emit('devHover', devName)"
+        />
         <div v-if="points" class="form-group">
             <div class="row no-gutters">
                 <label

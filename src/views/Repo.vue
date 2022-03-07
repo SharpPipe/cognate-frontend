@@ -40,7 +40,7 @@
             >
               <RepoMilestoneCard
                 class="m-0"
-                nr="1"
+                :nr="milestone.milestone_order_id"
                 ms_status="ungraded"
                 points="-"
               />
