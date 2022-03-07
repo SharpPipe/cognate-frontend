@@ -6,7 +6,7 @@
                 <RepoRadar :radardata="radarData" :key="key" />
             </div>
             <div class="col-8 px-3">
-                <GitTime />
+                <GitTime :timeRange="range"/>
             </div>
         </div>
 
@@ -17,6 +17,7 @@
                     :devName="dev.username"
                     :spentTime="dev.spent_time"
                     v-on:pointsChanged="updateRadar"
+                    v-on:devHover="highlightDev"
                 /> 
 <!--                 <textarea class="form-control" aria-label="With textarea" placeholder="Comment (WIP does not work yet)"></textarea> -->
             </div>
@@ -71,9 +72,14 @@ export default {
             students: [],
             minCoursePoints: 0,
             maxCoursePoints: 55,
+            range: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
         }
     },
     methods: {
+        highlightDev(dev) {
+            return dev
+
+        },
         submitGrades() {
             let pl = this.makePayload()
             Api.post('/bulk_grade/', pl)
@@ -130,8 +136,9 @@ export default {
     created() {
         this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
         this.$store.APIData = null
+        this.range = [this.$route.params.start, this.$route.params.end]
 
-        Api.get('/projects/' + this.$route.params.repoid + "/milestone/1/")
+        Api.get('/projects/' + this.$route.params.repoid + "/milestone/"+this.$route.params.msid+"/")
             .then(response => {
                 this.$store.state.APIData = response.data.data
                 console.log(response.data)
