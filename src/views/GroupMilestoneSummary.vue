@@ -6,7 +6,7 @@
             <h4>Teams</h4>
 
             <div>
-                <table class="table">
+                <table class="table table-sm">
                     <thead class="thead">
                         <th scope="col">Team</th>
                         <td scoee="col">Developer</td>
@@ -21,10 +21,6 @@
                     <tbody>
                         <template v-for="repo in APIData">
                             <tr v-for="(dev, i) in repo.project_data" :key="dev.id">
-                                <!--             <td class="p-1">
-              <img src="//place-hold.it/40" class="img-fluid" alt />
-                                </td>-->
-
                                 <th
                                     scope="row"
                                     v-if="i === 0"
