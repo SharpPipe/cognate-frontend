@@ -61,14 +61,16 @@ export default {
       data = this.data
       let svg = d3.select('#gittime')
       let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
-      // axis
-      let ex = d3.extent(data, d=>d.datetime)
-      console.log(ex)
-      console.log(new Date(ex[1].toISOString().substring(0, 10)))
+
+      // Axis
+      let domainExtent = d3.extent(data, d=> new Date(d.datetime.toLocaleDateString()))
+      domainExtent[0] = new Date(domainExtent[0].getTime() - 24 * 60 * 60 * 1000)
+      domainExtent[1] = new Date(domainExtent[1].getTime() + 24 * 60 * 60 * 1000)
 
       let x = d3.scaleTime()
-        .domain(d3.extent(data, d => new Date(d.datetime.toLocaleDateString())))
+        //.domain(d3.extent(data, d => new Date(d.datetime.toLocaleDateString())))
         //.domain(d3.extent(this.timeRange))
+        .domain(domainExtent)
         .range([margins.left, width - margins.right])
         
 
@@ -155,7 +157,7 @@ export default {
           div.transition()
             .duration(100)
             .style("opacity", 1);
-          div.html(d.subject + "<br/>" + d.amount + "min" + "<br/>" + d.datetime)
+          div.html(d.subject + "<br/>" + d.amount + "min")
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 60) + "px");
         })
