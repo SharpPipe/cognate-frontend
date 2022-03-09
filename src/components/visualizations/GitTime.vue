@@ -31,16 +31,26 @@ export default {
     this.renderGraph()
   },
   created() {
-    this.timeRange[0] = d3.isoParse(this.timeRange[0])
-    this.timeRange[1] = d3.isoParse(this.timeRange[1])
-    Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
-      .then(response => {
-        this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
-        this.dataLoaded = true
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    //this.timeRange[0] = d3.isoParse(this.timeRange[0])
+    //this.timeRange[1] = d3.isoParse(this.timeRange[1])
+    if (Object.keys(this.$route.params).length !== 0) {
+      Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
+        .then(response => {
+          this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
+          this.dataLoaded = true
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {  // DEBUG
+      d3.json("/gittime.json")
+        .then(response => {
+          this.data = response.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
+          this.dataLoaded = true
+        }
+        )
+
+    }
 
   },
   methods: {
@@ -50,15 +60,17 @@ export default {
       if (!this.dataLoaded) return
       data = this.data
       let svg = d3.select('#gittime')
-      let margins = ({ top: 20, right: 50, bottom: 30, left: 50 })
+      let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
       // axis
+      let ex = d3.extent(data, d=>d.datetime)
+      console.log(ex)
+      console.log(new Date(ex[1].toISOString().substring(0, 10)))
 
       let x = d3.scaleTime()
-        .domain(d3.extent(data, d => d.datetime))
+        .domain(d3.extent(data, d => new Date(d.datetime.toLocaleDateString())))
         //.domain(d3.extent(this.timeRange))
         .range([margins.left, width - margins.right])
-
-
+        
 
       let y = d3.scaleLinear()
         .domain([24, 0])
@@ -122,20 +134,20 @@ export default {
         .attr("fill", d => c(Object.keys(groups).find(key => groups[key] === d.data), false))
 
       // Lines
-      let dayWidth = x(data[0].datetime) - x(data[0].datetime.setDate(data[0].datetime.getDate() + 1))
+      let dayWidth = x(new Date("2000-01-01")) - x(new Date("2000-01-02"))
 
       svg.append("g")
         .attr("stroke", "#000")
         .selectAll("circle")
         .data(data)
         .enter().append("line")
-        .attr("x1", d => x(d.datetime))
+        .attr("x1", d => x(new Date(d.datetime.toLocaleDateString())))
+        //.attr("x1", d => x(new Date(d.datetime.toISOString().substring(0, 10))) - 2)
         .attr("y1", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60))
-        .attr("x2", d => x(new Date(d.datetime.getTime() - d.amount * 1000 * 60)))
-        .attr("y2", d => y((d.datetime.getHours() + d.datetime.getMinutes() / 60) - (d.amount / 60)))
+        .attr("x2", d => x(new Date(d.datetime.toLocaleDateString())))
+        .attr("y2", d => y((d.datetime.getHours() + d.datetime.getMinutes() / 60 - (d.amount / 60))))
         .attr("stroke", d => c(d.author, false))
         .attr("stroke-width", -dayWidth)
-        .attr("r", 8)
         .attr("ref", "line")
         .on("mouseover", (event, d) => {
           //d3.select(this.$refs.line).style("fill", "aliceblue")
