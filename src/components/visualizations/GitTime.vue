@@ -131,7 +131,7 @@ export default {
         .enter().append("line")
         .attr("x1", d => x(d.datetime))
         .attr("y1", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60))
-        .attr("x2", d => x(d.datetime))
+        .attr("x2", d => x(new Date(d.datetime.getTime() - d.amount * 1000 * 60)))
         .attr("y2", d => y((d.datetime.getHours() + d.datetime.getMinutes() / 60) - (d.amount / 60)))
         .attr("stroke", d => c(d.author, false))
         .attr("stroke-width", -dayWidth)
@@ -143,7 +143,7 @@ export default {
           div.transition()
             .duration(100)
             .style("opacity", 1);
-          div.html(d.subject + "<br/>" + d.amount + "min")
+          div.html(d.subject + "<br/>" + d.amount + "min" + "<br/>" + d.datetime)
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 60) + "px");
         })
