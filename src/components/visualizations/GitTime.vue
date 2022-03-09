@@ -5,6 +5,7 @@
 <script>
 import * as d3 from 'd3'
 import { Api } from "../../axios-api";
+import _ from 'lodash'
 const width = 800
 const height = 400
 let data
@@ -32,7 +33,7 @@ export default {
   created() {
     this.timeRange[0] = d3.isoParse(this.timeRange[0])
     this.timeRange[1] = d3.isoParse(this.timeRange[1])
-    Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + 1 + "/time_spent/")
+    Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
       .then(response => {
         this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
         this.dataLoaded = true
@@ -53,8 +54,8 @@ export default {
       // axis
 
       let x = d3.scaleTime()
-        //.domain(d3.extent(data, d => d.datetime))
-        .domain(d3.extent(this.timeRange))
+        .domain(d3.extent(data, d => d.datetime))
+        //.domain(d3.extent(this.timeRange))
         .range([margins.left, width - margins.right])
 
 
@@ -69,9 +70,9 @@ export default {
         scaled = (360 / 26) * (devName.charCodeAt(0) - 97)
         scaled += (360 / 26 ** 2) * (devName.charCodeAt(1) - 97)
         if (highlight) {
-          return d3.hsl(scaled, 1, 0.7, 0.8)
+          return d3.hsl(scaled, 1, 0.7, 1)
         } else {
-          return d3.hsl(scaled, 0.7, 0.6, 0.8)
+          return d3.hsl(scaled, 0.7, 0.6, 0.75)
         }
       }
 
@@ -95,6 +96,31 @@ export default {
         .attr("class", "gittime-tooltip")
         .style("opacity", 0)
 
+      // Pie
+      let groups = _.groupBy(data, d => d.author)
+      _.forEach(groups, (value, key) => {
+        groups[key] = value.reduce((total, item) => item.amount + total, 0)
+      })
+      let effort = []
+      for (let k in groups) effort.push(groups[k])
+
+      let pie = d3.pie().sort(null).padAngle(Math.PI / 180 * 5)(effort)
+
+      let radius = height / 3;
+      let pieNode = svg.append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`)
+        .attr("opacity", 0.3)
+
+      let arcs = pieNode.selectAll(".arc")
+        .data(pie)
+        .enter()
+        .append("g")
+        .attr("class", "arc")
+
+      arcs.append("path")
+        .attr("d", d => d3.arc().outerRadius(radius).innerRadius(radius * 0.66)(d))
+        .attr("fill", d => c(Object.keys(groups).find(key => groups[key] === d.data), false))
+
       // Lines
       let dayWidth = x(data[0].datetime) - x(data[0].datetime.setDate(data[0].datetime.getDate() + 1))
 
@@ -110,7 +136,10 @@ export default {
         .attr("stroke", d => c(d.author, false))
         .attr("stroke-width", -dayWidth)
         .attr("r", 8)
+        .attr("ref", "line")
         .on("mouseover", (event, d) => {
+          //d3.select(this.$refs.line).style("fill", "aliceblue")
+          d3.select(event.target).attr("stroke", d => c(d.author, true))
           div.transition()
             .duration(100)
             .style("opacity", 1);
@@ -118,7 +147,8 @@ export default {
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 60) + "px");
         })
-        .on("mouseout", () => {
+        .on("mouseout", (event) => {
+          d3.select(event.target).attr("stroke", d => c(d.author, false))
           div.transition()
             .duration(500)
             .style("opacity", 0);
@@ -129,11 +159,13 @@ export default {
 
         })
 
-/*       svg.append("text")
-        .attr("dy", 15)
-        .attr("dx", width / 2 - 60)
-        .attr("fill", "#666")
-        .text("Sprint 1 time data") */
+
+
+      /*       svg.append("text")
+              .attr("dy", 15)
+              .attr("dx", width / 2 - 60)
+              .attr("fill", "#666")
+              .text("Sprint 1 time data") */
 
 
       return svg.node();
