@@ -1,0 +1,128 @@
+[
+	{
+		"datetime": "2022-02-16T14:13:52.172Z",
+		"author": "kaseed",
+		"amount": 180,
+		"subject": "Miscellaneous study material - kaseed"
+	},
+	{
+		"datetime": "2022-02-16T21:24:53.002Z",
+		"author": "kaseed",
+		"amount": 150,
+		"subject": "Miscellaneous study material - kaseed"
+	},
+	{
+		"datetime": "2022-02-16T12:59:49.553Z",
+		"author": "kaseed",
+		"amount": 600,
+		"subject": "Animations for characters"
+	},
+	{
+		"datetime": "2022-02-16T16:41:13.318Z",
+		"author": "kaseed",
+		"amount": 240,
+		"subject": "Improve inputs to move player"
+	},
+	{
+		"datetime": "2022-02-16T21:29:59.976Z",
+		"author": "jataki",
+		"amount": 120,
+		"subject": "Miscellaneous study material - jataki"
+	},
+	{
+		"datetime": "2022-02-05T16:00:00.000Z",
+		"author": "jataki",
+		"amount": 720,
+		"subject": "Miscellaneous study material - jataki"
+	},
+	{
+		"datetime": "2022-02-06T16:00:00.000Z",
+		"author": "aaaaaa",
+		"amount": 720,
+		"subject": "Miscellaneous study material - jataki"
+	},
+	{
+		"datetime": "2022-02-07T16:00:00.000Z",
+		"author": "svjaro",
+		"amount": 720,
+		"subject": "Miscellaneous study material - jataki"
+	},
+	{
+		"datetime": "2022-02-16T14:13:30.120Z",
+		"author": "jataki",
+		"amount": 120,
+		"subject": "Miscellaneous study material - jataki"
+	},
+	{
+		"datetime": "2022-02-10T19:30:25.495Z",
+		"author": "jataki",
+		"amount": 210,
+		"subject": "Basic folder structure and assets"
+	},
+	{
+		"datetime": "2022-02-10T19:28:11.975Z",
+		"author": "jataki",
+		"amount": 300,
+		"subject": "Basic folder structure and assets"
+	},
+	{
+		"datetime": "2022-02-03T08:59:34.512Z",
+		"author": "jataki",
+		"amount": 45,
+		"subject": "Set up GitLab"
+	},
+	{
+		"datetime": "2022-02-16T21:32:30Z",
+		"author": "jataki",
+		"amount": 90,
+		"subject": "Add libGDX basic physics engine"
+	},
+	{
+		"datetime": "2022-02-10T19:29:52.455Z",
+		"author": "jataki",
+		"amount": 60,
+		"subject": "Add libGDX basic physics engine"
+	},
+	{
+		"datetime": "2022-02-10T19:28:59.669Z",
+		"author": "jataki",
+		"amount": 120,
+		"subject": "Add libGDX basic physics engine"
+	},
+	{
+		"datetime": "2022-02-16T21:27:37.373Z",
+		"author": "jataki",
+		"amount": 120,
+		"subject": "Basic main menu"
+	},
+	{
+		"datetime": "2022-02-10T19:30:37.602Z",
+		"author": "jataki",
+		"amount": 90,
+		"subject": "Learn about Java game development"
+	},
+	{
+		"datetime": "2022-02-01T16:32:14.178Z",
+		"author": "jataki",
+		"amount": 60,
+		"subject": "Brainstorm for game idea"
+	},
+	{
+		"datetime": "2022-02-24T23:16:12.621Z",
+		"author": "jataki",
+		"amount": 60,
+		"subject": "Learn about Kryonet"
+	},
+	{
+		"datetime": "2022-02-16T21:25:52.408Z",
+		"author": "svjaro",
+		"amount": 150,
+		"subject": "Miscellaneous study material - svjaro"
+	},
+	{
+		"datetime": "2022-02-16T16:56:15.218Z",
+		"author": "svjaro",
+		"amount": 840,
+		"subject": "Add basic level to test in"
+	}
+]

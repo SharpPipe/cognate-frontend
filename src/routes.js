@@ -146,5 +146,11 @@ export default new VueRouter({
                 requiresAuth: true
             }
         },
+        {
+            path: '/gittime/',
+            name: 'gittime',
+            component: () => import("./components/visualizations/GitTime.vue")
+        },
+
     ]
 })
