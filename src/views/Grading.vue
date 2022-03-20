@@ -165,7 +165,12 @@ export default {
         });
     },
     addNode() {
-
+      // Milestone end time day inclusive
+      if (document.getElementById("ms_check").checked) {
+        this.payload.start = this.payload.start + "T00:00:00Z"
+        this.payload.end = this.payload.end + "T23:59:00Z"
+      }
+      
       if (this.payload.name && this.selectedNode.data.name) {
         Api.post(
           "grade_category/" + this.selectedNode.id + "/",
