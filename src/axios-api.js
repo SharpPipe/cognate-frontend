@@ -3,8 +3,8 @@ import store from './store'
 //import router from './routes'
 
 const Api = axios.create({
-    //baseURL: 'http://193.40.156.179:8081/',
-    baseURL: 'http://localhost:8081/',
+    baseURL: 'http://193.40.156.179:8081/',
+    //baseURL: 'http://localhost:8081/',
     timeout: 5000,
     headers: {
         'Content-type': 'application/json'
@@ -28,7 +28,6 @@ Api.interceptors.response.use(
     async (error) => {
         const originalConfig = error.config;
         if (originalConfig.url !== "/api/token/" && error.response) {
-            console.log("err respnse: " + error.response.status)
             if (error.response.status === 401 && !originalConfig._retry) {
                 originalConfig._retry = true;
                 try {
