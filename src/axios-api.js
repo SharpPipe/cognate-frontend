@@ -1,9 +1,10 @@
 import axios from 'axios'
 import store from './store'
-import router from './routes'
+//import router from './routes'
 
 const Api = axios.create({
     baseURL: 'http://193.40.156.179:8081/',
+    //baseURL: 'http://localhost:8081/',
     timeout: 5000,
     headers: {
         'Content-type': 'application/json'
@@ -21,23 +22,29 @@ Api.interceptors.request.use(
     error => Promise.reject(error)
 )
 
+// https://www.bezkoder.com/vue-refresh-token/
 Api.interceptors.response.use(
-    response => response,
-    async error => {
-        const originalRequest = error.config;
-        if (
-            error.response.status === 401 &&  // Unauthorized
-            originalRequest.url.includes("api/token/refresh/")
-        ) {
-            store.commit("destroyToken");
-            router.push({ name: 'home' });
-            return Promise.reject(error);
-        } else if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            await store.dispatch("refreshToken");
-            return axios(originalRequest);
+    (response) => response,
+    async (error) => {
+        const originalConfig = error.config;
+        if (originalConfig.url !== "/api/token/" && error.response) {
+            if (error.response.status === 401 && !originalConfig._retry) {
+                originalConfig._retry = true;
+                try {
+                    const rs = await Api.post("/api/token/refresh/", {
+                        refresh: store.state.refreshToken
+                    });
+                    const accessToken  = rs.data.access
+                    store.dispatch("refreshToken", accessToken)
+                    return Api(originalConfig)
+
+                } catch (_error) {
+                    return Promise.reject(_error)
+                }
+
+            }
+
         }
-        return Promise.reject(error);
     }
 )
 

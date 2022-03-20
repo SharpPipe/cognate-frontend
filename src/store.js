@@ -86,21 +86,8 @@ export default new Vuex.Store({
                     })
             })
         },
-        refreshToken (context) {
-            return new Promise( (resolve, reject) => {
-                Api.post('/api/token/refresh/', {
-                    refresh: context.state.refreshToken
-                })
-                    .then(response => {
-                        console.log('New access successfully generated')
-                        context.commit('updateAccess', response.data.access)
-                        resolve(response.data.access)
-                    })
-                    .catch(error => {
-                        console.log('Error in refreshToken Task')
-                        reject(error)
-                    })
-            })
+        refreshToken (context, newAccess) {
+            context.commit('updateAccess', newAccess)
         }
     }
 })

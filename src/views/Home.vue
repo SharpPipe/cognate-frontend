@@ -15,10 +15,20 @@
 </template>
 
 <script>
+import { Api } from '../axios-api'
+
 export default {
   name: 'Home',
   data() {
     return {}
+  },
+  created() {
+    // To check if we are still logged in
+    // and if not then refresh the tokens
+    Api.get("/")
+      .then(() => console.log("refreshed"))
+      .catch(err => console.log(err))
+
   },
 }
 </script>
