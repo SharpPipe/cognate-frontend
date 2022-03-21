@@ -1,7 +1,7 @@
 <template>
     <div class="group-milestone-summary">
         <div class="container">
-            <h4>Milestone 1</h4>
+            <h4>Milestone {{$route.params.msid}}</h4>
 
             <h4>Teams</h4>
 
