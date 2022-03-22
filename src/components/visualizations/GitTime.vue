@@ -31,13 +31,12 @@ export default {
     this.renderGraph()
   },
   created() {
-    //this.timeRange[0] = d3.isoParse(this.timeRange[0])
-    //this.timeRange[1] = d3.isoParse(this.timeRange[1])
     if (Object.keys(this.$route.params).length !== 0) {
       Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
         .then(response => {
           this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
           this.data = this.timezoneOffset(this.data)
+          this.data = this.underflow(this.data)
           this.dataLoaded = true
         })
         .catch(err => {
@@ -48,6 +47,7 @@ export default {
         .then(response => {
           this.data = response.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
           this.data = this.timezoneOffset(this.data)
+          this.data = this.underflow(this.data)
           this.dataLoaded = true
         }
         )
@@ -60,6 +60,27 @@ export default {
       _.forEach(data, d => { d.datetime = new Date(d.datetime.valueOf() + d.datetime.getTimezoneOffset() * 60 * 1000) })
       return data
     }, 
+    underflow(data) {
+      let newLines = []
+      _.forEach(data, d => {
+        let start = new Date(d.datetime.valueOf() - d.amount * 1000 * 60)
+        if (d.datetime.getDate() !== start.getDate()) {
+          let nextDayMinutes = d.datetime.getHours() * 60 + d.datetime.getMinutes() // + d.datetime.getSeconds() / 60 + d.datetime.getMilliseconds() / (60 * 1000)
+          let prevDayMinutes = d.amount - nextDayMinutes
+          newLines.push({
+            amount: prevDayMinutes,
+            author: d.author,
+            subject: d.subject,
+            datetime: new Date(new Date(d.datetime.toDateString()).valueOf() - 1)
+          })
+
+          d.amount = nextDayMinutes
+        }
+      })
+      data.push.apply(data, newLines)
+      return data
+
+    },
     renderGraph() {
       // Git Log code inspired by and definitely not directly stolen from 
       // https://observablehq.com/@webapelsin/git-log
@@ -69,7 +90,7 @@ export default {
       let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
 
       // Axis
-      let domainExtent = d3.extent(data, d=> new Date(d.datetime.toLocaleDateString()))
+      let domainExtent = d3.extent(data, d => new Date(d.datetime.toLocaleDateString()))
       domainExtent[0] = new Date(domainExtent[0].getTime() - 24 * 60 * 60 * 1000)
       domainExtent[1] = new Date(domainExtent[1].getTime() + 24 * 60 * 60 * 1000)
 
@@ -78,7 +99,7 @@ export default {
         //.domain(d3.extent(this.timeRange))
         .domain(domainExtent)
         .range([margins.left, width - margins.right])
-        
+
 
       let y = d3.scaleLinear()
         .domain([24, 0])
