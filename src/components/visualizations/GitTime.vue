@@ -35,6 +35,7 @@ export default {
       Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
         .then(response => {
           this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
+          this.data = this.timezoneOffset(this.data)
           this.data = this.underflow(this.data)
           this.dataLoaded = true
         })
@@ -45,6 +46,7 @@ export default {
       d3.json("/gittime.json")
         .then(response => {
           this.data = response.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
+          this.data = this.timezoneOffset(this.data)
           this.data = this.underflow(this.data)
           this.dataLoaded = true
         }
@@ -54,6 +56,10 @@ export default {
 
   },
   methods: {
+    timezoneOffset(data) {
+      _.forEach(data, d => { d.datetime = new Date(d.datetime.valueOf() + d.datetime.getTimezoneOffset() * 60 * 1000) })
+      return data
+    }, 
     underflow(data) {
       let newLines = []
       _.forEach(data, d => {
@@ -164,11 +170,11 @@ export default {
         .selectAll("circle")
         .data(data)
         .enter().append("line")
-        .attr("x1", d => x(new Date(d.datetime.toLocaleDateString())))
+        .attr("x1", d => x(new Date(d.datetime.getFullYear(), d.datetime.getMonth(), d.datetime.getDate())))
         //.attr("x1", d => x(new Date(d.datetime.toISOString().substring(0, 10))) - 2)
-        .attr("y1", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60))
-        .attr("x2", d => x(new Date(d.datetime.toLocaleDateString())))
-        .attr("y2", d => y((d.datetime.getHours() + d.datetime.getMinutes() / 60 - (d.amount / 60))))
+        .attr("y1", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60)) 
+        .attr("x2", d => x(new Date(d.datetime.getFullYear(), d.datetime.getMonth(), d.datetime.getDate())))
+        .attr("y2", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60 - (d.amount / 60))) 
         .attr("stroke", d => c(d.author, false))
         .attr("stroke-width", -dayWidth)
         .attr("ref", "line")
