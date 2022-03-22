@@ -36,7 +36,6 @@ export default {
         .then(response => {
           this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
           this.data = this.underflow(this.data)
-
           this.dataLoaded = true
         })
         .catch(err => {
