@@ -30,36 +30,49 @@
         </tr>
       </table>
 
+
+
+
       <h4>Teams</h4>
 
       <div>
         <table class="table">
           <tr v-for="repo in APIData" :key="repo.id">
             <td class="p-1">
-              <img src="//place-hold.it/40" class="img-fluid" alt />
+<!--               <img src="//place-hold.it/41" class="img-fluid" alt /> -->
+
+                <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`"/>
+              
+
             </td>
 
             <td class="p-1">
+
               <router-link
                 :to="{ name: 'repo', params: { groupid: $route.params.id, repoid: repo.id } }"
                 class="text-white"
               >{{ repo.name }}</router-link>
 
-              <br />
-              <!--               <div class="badge badge-dark">
-                Group ID:
-                <small class>{{ repo.project_group }}</small>
-              </div>-->
             </td>
 
-            <td class="p-1">
-              <div class="col my-auto">
-                <div class="text-secondary"></div>
+            <td class="p-1 col-4">
+              <div class="badge badge-dark">
+                MENTOR NAME
               </div>
+              <br/>
+              <span v-for="n in 3" :key=n>
+                <div class="badge badge-success">
+                  DEV {{n}}:
+                <small>190p</small>
+                </div>
+                
+
+              </span>
             </td>
 
+
             <td class="p-1">
-              <RepoChartMini class="float-right" />
+              <RepoChartMini :id="`repoms${repo.id}`" :k="`${repo.id}`"/>
             </td>
           </tr>
         </table>
@@ -72,12 +85,14 @@
 import { Api } from "../axios-api";
 import { mapState } from 'vuex'
 import RepoChartMini from "../components/visualizations/RepoChartMini";
+import PieChart from "../components/visualizations/PieChart.vue";
 
 export default {
   name: 'Home',
   components: {
     RepoChartMini,
-  },
+    PieChart
+},
   computed: mapState(['APIData']),
   created() {
     const url = 'projects/' + this.$route.params.id + "/"
