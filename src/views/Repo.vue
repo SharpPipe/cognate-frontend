@@ -49,8 +49,22 @@
         </tr>
       </table>
       <div class="row">
-<!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
+        <!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
       </div>
+
+      <div>
+        <h4>Comments</h4>
+        <div v-for="comment in comments" :key="comment.id" class="mb-2">
+          <span class="badge badge-info">{{comment.author}}
+            <small>{{comment.timestamp}}</small>
+          </span>
+          <br>
+          {{comment.content}}
+
+        </div>
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -91,8 +105,28 @@ export default {
       milestones: null,
       gradeMilestones: null,
       issueData: [],
-      
-      projectTimeRange: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
+
+      projectTimeRange: [new Date(2022, 0, 24, 0, 0, 0), new Date(2022, 5, 16, 0, 0, 0)],
+      comments: [
+        {
+          id: 0,
+          author: "MENTORNAME",
+          content: "This team is looks good, the developers are inspired and they have a good idea for the project",
+          timestamp: "2022-02-21T14:00:00.000Z"
+        },
+        {
+          id: 2,
+          author: "MENTORNAME",
+          content: "Team is falling behind. But not to worry, I believe in these guys they will pull themselves up",
+          timestamp: "2022-03-21T14:00:00.000Z"
+        },
+        {
+          id: 3,
+          author: "MENTORNAME",
+          content: "Team is fucked. They have not done anything on the project for the last 2 milestones. They don't answer my call and messages. They have blackedmailed me to give them points.",
+          timestamp: "2022-04-21T14:00:00.000Z"
+        },
+      ]
     }
   },
   created() {

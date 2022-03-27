@@ -25,6 +25,16 @@
         <div class="row mx-3 p-1">
             <RepoGradeTeam :radarData="radarData" :teampoints="teampoints" />
         </div>
+
+        <form class="form-group container m-2 pr-4">
+            <div class="form-group">
+                <textarea class="form-control" rows="3"
+                v-model="payload.feedback"
+                placeholder="What is the team doing right/wrong?"
+                ></textarea>
+            </div>
+        </form>
+
         <div class="row mx-3 p-1 ml-1">
             <div v-if="msg" class="alert alert-success" role="alert">{{msg}}</div>
 
@@ -72,13 +82,15 @@ export default {
             students: [],
             minCoursePoints: 0,
             maxCoursePoints: 55,
-            range: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
+            range: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)],
+            payload: {
+                feedback: "",
+            },
         }
     },
     methods: {
         highlightDev(dev) {
             return dev
-
         },
         submitGrades() {
             let pl = this.makePayload()
@@ -90,6 +102,16 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+            if (this.payload.feedback) {
+/*                 Api.post('/feedback/', this.payload)
+                    .then(() => {
+                        this.$router.push({ name: 'groups' })
+                    })
+                    .catch(err => {
+                        this.error = err
+                        console.log(err)
+                    }) */
+            }
         },
         onTeamPointsChange() {
             for (var i in this.APIData.project_data) {
