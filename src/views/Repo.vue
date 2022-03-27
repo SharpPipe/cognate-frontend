@@ -52,19 +52,18 @@
         <!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
       </div>
 
-      <div>
+      <div v-if="comments.length" class="border rounded p-3 my-2">
         <h4>Comments</h4>
-        <div v-for="comment in comments" :key="comment.id" class="mb-2">
-          <span class="badge badge-info">{{comment.author}}
-            <small>{{comment.timestamp}}</small>
+        <div v-for="comment in comments" :key="comment.time" class="mb-2">
+          <span class="badge badge-info">
+            {{ comment.commenter.username }}
+            <small>{{ formatedTime(comment.time) }}</small>
           </span>
-          <br>
-          {{comment.content}}
+          <br />
 
+          {{ comment.text }}
         </div>
-
       </div>
-
     </div>
   </div>
 </template>
@@ -89,7 +88,9 @@ export default {
     RepoTotalStats,
     RepoMilestoneCard
   },
-  computed: mapState(['APIData']),
+  computed: {
+    ...mapState(['APIData']),
+  },
   data() {
     return {
       radarData: [
@@ -107,30 +108,12 @@ export default {
       issueData: [],
 
       projectTimeRange: [new Date(2022, 0, 24, 0, 0, 0), new Date(2022, 5, 16, 0, 0, 0)],
-      comments: [
-        {
-          id: 0,
-          author: "MENTORNAME",
-          content: "This team is looks good, the developers are inspired and they have a good idea for the project",
-          timestamp: "2022-02-21T14:00:00.000Z"
-        },
-        {
-          id: 2,
-          author: "MENTORNAME",
-          content: "Team is falling behind. But not to worry, I believe in these guys they will pull themselves up",
-          timestamp: "2022-03-21T14:00:00.000Z"
-        },
-        {
-          id: 3,
-          author: "MENTORNAME",
-          content: "Team is fucked. They have not done anything on the project for the last 2 milestones. They don't answer my call and messages. They have blackedmailed me to give them points.",
-          timestamp: "2022-04-21T14:00:00.000Z"
-        },
-      ]
+      comments: []
     }
   },
   created() {
-    const url = 'repositories/' + this.$route.params.repoid + "/update/"
+    const repoid = this.$route.params.repoid
+    const url = 'repositories/' + repoid + "/update/"
     Api.get(url)
       .then(response => {
         this.$store.state.APIData = response.data.data
@@ -139,7 +122,7 @@ export default {
         console.log(err)
       })
 
-    Api.get("/projects/" + this.$route.params.repoid + "/milestone_connections/")
+    Api.get("/projects/" + repoid + "/milestone_connections/")
       .then(response => {
         this.milestones = response.data.milestones
         this.gradeMilestones = response.data.grade_milestones
@@ -148,7 +131,20 @@ export default {
         console.log(err)
       })
 
+    Api.get("/feedback/", { params: { type: "PA", project: repoid } })
+      .then(response => {
+        this.comments = response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
+
+  },
+  methods: {
+    formatedTime(timeString) {
+      return new Date(timeString).toUTCString()
+    }
   },
 }
 </script>
