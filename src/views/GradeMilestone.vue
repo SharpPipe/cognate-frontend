@@ -85,6 +85,9 @@ export default {
             range: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)],
             payload: {
                 feedback: "",
+                type: "PM", 
+                project: null,
+                gradeMilestone: null,
             },
         }
     },
@@ -103,14 +106,12 @@ export default {
                     console.log(err)
                 })
             if (this.payload.feedback) {
-/*                 Api.post('/feedback/', this.payload)
-                    .then(() => {
-                        this.$router.push({ name: 'groups' })
-                    })
+                this.payload.project = this.$route.params.repoid
+                this.payload.gradeMilestone = this.$route.params.msid
+                Api.post('/feedback/', this.payload)
                     .catch(err => {
-                        this.error = err
                         console.log(err)
-                    }) */
+                    })
             }
         },
         onTeamPointsChange() {
@@ -151,7 +152,6 @@ export default {
                 payload.push.apply(payload, studentpoints)
 
             }
-            console.log(payload)
             return payload
         }
     },
