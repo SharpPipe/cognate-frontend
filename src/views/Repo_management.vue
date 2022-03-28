@@ -60,7 +60,7 @@
                 MENTOR NAME
               </div>
               <br/>
-              <span v-for="n in 3" :key=n>
+              <span v-for="n in 3" :key=n class="pr-1">
                 <div class="badge badge-success">
                   DEV {{n}}:
                 <small>190p</small>

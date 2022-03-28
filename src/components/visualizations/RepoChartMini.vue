@@ -73,7 +73,7 @@ export default {
       let div = d3.select("body").append("div")
         .attr("class", "milestone-tooltip")
         .style("opacity", 0)
-
+      
       // Circles
       svg.append("g")
         .selectAll("circle")
@@ -83,18 +83,29 @@ export default {
         .attr("cy", height/2)
         .attr("r", 15)
         .attr("fill", d=>color[d.status])
+        .attr("stroke-width", 2)
+        .attr("stroke-opacity", 0.6)
         .on("mouseover", (event, d) => {
+          var c = event.target
+          var matrix = c.getScreenCTM()
+            .translate(+c.getAttribute("cx"), +c.getAttribute("cy"))
           div.transition()
             .duration(100)
             .style("opacity", 1);
-          div.html(d.message + "<br/>" + d.milestoneLinks)
-            .style("left", (event.pageX - 30) + "px")
-            .style("top", (event.pageY - 40) + "px");
+          let tooltip = div.html(d.message + "<br/>" + d.milestoneLinks)
+          let w = tooltip.node().getBoundingClientRect().width
+          tooltip.style("left", (window.pageXOffset + matrix.e - w / 2) + "px")
+                 .style("top", (window.pageYOffset + matrix.f - 40) + "px")
+
+
+          
+          d3.select(c).attr("stroke", "lightgray")
         })
-        .on("mouseout", () => {
+        .on("mouseout", (event) => {
           div.transition()
             .duration(100)
             .style("opacity", 0);
+          d3.select(event.target).attr("stroke", "")
         })
 
      return svg
