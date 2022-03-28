@@ -3,9 +3,7 @@
     <div class="container">
       <div class="row d-flex">
         <h3 class="flex-grow-1">Groups</h3>
-        <router-link
-          :to="{ name: 'groupadd'}"
-        >
+        <router-link :to="{ name: 'groupadd' }">
           <button class="btn btn-primary r-100">+</button>
         </router-link>
       </div>
@@ -31,12 +29,16 @@
                     <p class="text-muted m-0">Children type: {{ group.children_type }}</p>
                   </div>
                 </div>
-                <router-link
-                  :to="{ name: 'grading', params: { id: group.id, name: group.name } }"
-                  class="text-white"
-                >
-                  <button class="btn btn-primary">GradingTree</button>
-                </router-link>
+
+                <div class="col my-auto">
+                  <router-link
+                    :to="{ name: 'grading', params: { id: group.id, name: group.name } }"
+                    class="text-white"
+                    v-if="group.rights.includes('O') || group.rights.includes('A')"
+                  >
+                    <button class="btn btn-primary">GradingTree</button>
+                  </router-link>
+                </div>
 
                 <GroupChartMini />
               </div>

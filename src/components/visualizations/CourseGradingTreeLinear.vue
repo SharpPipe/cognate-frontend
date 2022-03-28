@@ -48,7 +48,7 @@ export default {
       height,
       selected: {
         id: null,
-        data: { name: "", total: 0, description: ""},
+        data: { name: "", total: 0, description: "", subnodecount: 0},
       },
       root,
     };
@@ -68,6 +68,12 @@ export default {
     }
   },
   methods: {
+    countSubnodes(node) {
+      if (node.children === undefined) return 1
+      let n = 0
+      for (let c of node.children) n += this.countSubnodes(c)
+      return n
+    },
     renderGraph() {
       // Tidy Tree code inspired by and definitely not directly stolen from
       // https://observablehq.com/@asktree/interactive-tree-diagram-d3v4-v5
@@ -135,6 +141,7 @@ export default {
           this.selected.data.name = d.data.name;
           this.selected.data.total = d.data.total;
           this.selected.data.description = d.data.description;
+          this.selected.data.subnodecount = this.countSubnodes(d)
           this.$emit('select', this.selected);
           this.update(d);
         });
