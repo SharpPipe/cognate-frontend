@@ -9,47 +9,10 @@ const height = 50
 
 export default {
   name: "GroupChartMini",
-  props: ["ms_data", "k"],
+  props: ["ms_data", "k", "milestones"],
   data() {
     return {
       width, height,
-      msdata: [
-        {
-          status: 4,
-          message: "All good",
-          milestoneLinks: [],
-        },
-        {
-          status: 3,
-          message: "Graded, but points not in Moodle",
-          milestoneLinks: [],
-        },
-        {
-          status: 2,
-          message: "Needs grading",
-          milestoneLinks: [],
-        },
-        {
-          status: 1,
-          message: "Noone did anything",
-          milestoneLinks: [],
-        },
-        {
-          status: 0,
-          message: "TBA",
-          milestoneLinks: [],
-        },
-        {
-          status: 0,
-          message: "TBA",
-          milestoneLinks: [],
-        },
-        {
-          status: 0,
-          message: "TBA",
-          milestoneLinks: [],
-        },
-      ]
     }
   },
   mounted() {
@@ -67,7 +30,15 @@ export default {
         .domain([0,6])
         .range([20, width - 20])
       
-      let color = ["#343a40", "#dc3545", "#fd7e14", "#ffc107", "#28a745"]
+      //let color = ["#343a40", "#dc3545", "#fd7e14", "#ffc107", "#28a745"]
+      let c = (points) => {
+        console.log(points)
+        if (points.reduce((x,y) => x+y, 0) === 0)
+          return "#dc3545"
+        if (points.includes(0)) 
+          return "#ffc107"
+        return "#28a745"
+      }
 
       // Tooltip
       let div = d3.select("body").append("div")
@@ -77,12 +48,12 @@ export default {
       // Circles
       svg.append("g")
         .selectAll("circle")
-        .data(this.msdata)
+        .data(this.milestones)
         .enter().append("circle")
         .attr("cx", (d, i)=> x(i))
         .attr("cy", height/2)
         .attr("r", 15)
-        .attr("fill", d=>color[d.status])
+        .attr("fill", d => c(d.user_points.map(u => +u.points)))
         .attr("stroke-width", 2)
         .attr("stroke-opacity", 0.6)
         .on("mouseover", (event, d) => {
@@ -92,7 +63,9 @@ export default {
           div.transition()
             .duration(100)
             .style("opacity", 1);
-          let tooltip = div.html(d.message + "<br/>" + d.milestoneLinks)
+          let text = d.user_points.map(u => "<br/>" + u.name + ": " + Math.round(u.points)).join("")
+          console.log(text)
+          let tooltip = div.html("<b>Milestone " + d.milestone_id + "</b>" + text + "<br/>")
           let w = tooltip.node().getBoundingClientRect().width
           tooltip.style("left", (window.pageXOffset + matrix.e - w / 2) + "px")
                  .style("top", (window.pageYOffset + matrix.f - 40) + "px")
@@ -118,7 +91,7 @@ export default {
 <style>
 .milestone-tooltip {
   position: absolute;
-  text-align: center;
+  text-align: left;
   width: 50;
   padding: 2px;
   font: 16px sans-serif;

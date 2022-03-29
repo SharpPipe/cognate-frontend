@@ -24,9 +24,7 @@ export default {
         makeChart() {
             if (this.k == undefined) return
 
-            //let data = Array.from(Array(3)).map(()=>Math.random())
             let data = this.users.map(o => +o.points) 
-            console.log(data)
 
             let svg = d3.select("#teampiechart" + this.k)
 

@@ -57,7 +57,7 @@
                 </span>
               <br/>
               </div>
-              <span v-for="dev in repo.users" :key=dev class="pr-1">
+              <span v-for="(dev, i) in repo.users" :key=i class="pr-1">
                 <div v-if="dev.points > 0" class="badge badge-success">
                   {{dev.name}}:
                 <small>{{Math.round(dev.points)}}</small>
@@ -67,7 +67,7 @@
 
 
             <td class="p-1">
-              <RepoChartMini :id="`repoms${repo.id}`" :k="`${repo.id}`"/>
+              <RepoChartMini :id="`repoms${repo.id}`" :k=repo.id :milestones=repo.milestones />
             </td>
           </tr>
         </table>
