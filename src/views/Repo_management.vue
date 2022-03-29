@@ -38,35 +38,30 @@
       <div>
         <table class="table">
           <tr v-for="repo in APIData" :key="repo.id">
+
             <td class="p-1">
-<!--               <img src="//place-hold.it/41" class="img-fluid" alt /> -->
-
-                <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`"/>
-              
-
+                <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users"/>
             </td>
 
             <td class="p-1">
-
               <router-link
                 :to="{ name: 'repo', params: { groupid: $route.params.id, repoid: repo.id } }"
                 class="text-white"
               >{{ repo.name }}</router-link>
-
             </td>
 
             <td class="p-1 col-4">
-              <div class="badge badge-dark">
-                MENTOR NAME
-              </div>
+              <div v-if="repo.mentors.length > 0">
+                <span class="badge badge-dark">
+                  {{repo.mentors[0]}} asdfa
+                </span>
               <br/>
-              <span v-for="n in 3" :key=n class="pr-1">
-                <div class="badge badge-success">
-                  DEV {{n}}:
-                <small>190p</small>
+              </div>
+              <span v-for="dev in repo.users" :key=dev class="pr-1">
+                <div v-if="dev.points > 0" class="badge badge-success">
+                  {{dev.name}}:
+                <small>{{Math.round(dev.points)}}</small>
                 </div>
-                
-
               </span>
             </td>
 

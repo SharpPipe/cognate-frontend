@@ -9,16 +9,10 @@ const height = 64
 
 export default {
     name: "PieChart",
-    props: ["points", "k"],
+    props: ["points", "k", "users"],
     data() {
         return {
             width, height,
-            point: [
-
-                { name: "dev1", points: 341 },
-                { name: "dev2", points: 130 },
-                { name: "dev3", points: 233 },
-            ]
         }
     },
     mounted() {
@@ -30,14 +24,16 @@ export default {
         makeChart() {
             if (this.k == undefined) return
 
-            let data = Array.from(Array(3)).map(()=>Math.random())
+            //let data = Array.from(Array(3)).map(()=>Math.random())
+            let data = this.users.map(o => +o.points) 
+            console.log(data)
 
             let svg = d3.select("#teampiechart" + this.k)
 
             const g = svg.append('g')
                 .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
 
-            let color = ["#6610f2", "#dc3545", "#fd7e14"]
+            let color = ["#6610f2", "#dc3545", "#fd7e14", "#abbc11"]
 
             let pie = d3.pie()
 
