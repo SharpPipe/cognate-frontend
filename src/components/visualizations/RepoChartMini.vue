@@ -53,7 +53,7 @@ export default {
         .attr("cx", (d, i)=> x(i))
         .attr("cy", height/2)
         .attr("r", 15)
-        .attr("fill", d => c(d.user_points.map(u => +u.points)))
+        .attr("fill", d => c(d.user_points.filter(u => !u.name.includes('project')).map(u => +u.points)))
         .attr("stroke-width", 2)
         .attr("stroke-opacity", 0.6)
         .on("mouseover", (event, d) => {
