@@ -30,13 +30,17 @@
         </tr>
       </table>
 
+
+
+
       <h4>Teams</h4>
 
       <div>
         <table class="table">
           <tr v-for="repo in APIData" :key="repo.id">
+
             <td class="p-1">
-              <img src="//place-hold.it/40" class="img-fluid" alt />
+                <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users"/>
             </td>
 
             <td class="p-1">
@@ -44,22 +48,26 @@
                 :to="{ name: 'repo', params: { groupid: $route.params.id, repoid: repo.id } }"
                 class="text-white"
               >{{ repo.name }}</router-link>
-
-              <br />
-              <!--               <div class="badge badge-dark">
-                Group ID:
-                <small class>{{ repo.project_group }}</small>
-              </div>-->
             </td>
 
-            <td class="p-1">
-              <div class="col my-auto">
-                <div class="text-secondary"></div>
+            <td class="p-1 col-4">
+              <div v-if="repo.mentors.length > 0">
+                <span class="badge badge-dark">
+                  {{repo.mentors[0]}} asdfa
+                </span>
+              <br/>
               </div>
+              <span v-for="(dev, i) in repo.users" :key=i class="pr-1">
+                <div v-if="dev.points > 0" class="badge badge-success">
+                  {{dev.name}}:
+                <small>{{Math.round(dev.points)}}</small>
+                </div>
+              </span>
             </td>
 
+
             <td class="p-1">
-              <RepoChartMini class="float-right" />
+              <RepoChartMini :id="`repoms${repo.id}`" :k=repo.id :milestones=repo.milestones />
             </td>
           </tr>
         </table>
@@ -72,12 +80,14 @@
 import { Api } from "../axios-api";
 import { mapState } from 'vuex'
 import RepoChartMini from "../components/visualizations/RepoChartMini";
+import PieChart from "../components/visualizations/PieChart.vue";
 
 export default {
   name: 'Home',
   components: {
     RepoChartMini,
-  },
+    PieChart
+},
   computed: mapState(['APIData']),
   created() {
     const url = 'projects/' + this.$route.params.id + "/"
