@@ -49,7 +49,20 @@
         </tr>
       </table>
       <div class="row">
-<!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
+        <!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
+      </div>
+
+      <div v-if="comments.length" class="border rounded p-3 my-2">
+        <h4>Comments</h4>
+        <div v-for="comment in comments" :key="comment.time" class="mb-2">
+          <span class="badge badge-info">
+            {{ comment.commenter.username }}
+            <small>{{ formatedTime(comment.time) }}</small>
+          </span>
+          <br />
+
+          {{ comment.text }}
+        </div>
       </div>
     </div>
   </div>
@@ -75,7 +88,9 @@ export default {
     RepoTotalStats,
     RepoMilestoneCard
   },
-  computed: mapState(['APIData']),
+  computed: {
+    ...mapState(['APIData']),
+  },
   data() {
     return {
       radarData: [
@@ -91,12 +106,14 @@ export default {
       milestones: null,
       gradeMilestones: null,
       issueData: [],
-      
-      projectTimeRange: [new Date(2022, 0, 24, 0,0,0), new Date(2022, 5, 16,0,0,0)]
+
+      projectTimeRange: [new Date(2022, 0, 24, 0, 0, 0), new Date(2022, 5, 16, 0, 0, 0)],
+      comments: []
     }
   },
   created() {
-    const url = 'repositories/' + this.$route.params.repoid + "/update/"
+    const repoid = this.$route.params.repoid
+    const url = 'repositories/' + repoid + "/update/"
     Api.get(url)
       .then(response => {
         this.$store.state.APIData = response.data.data
@@ -105,7 +122,7 @@ export default {
         console.log(err)
       })
 
-    Api.get("/projects/" + this.$route.params.repoid + "/milestone_connections/")
+    Api.get("/projects/" + repoid + "/milestone_connections/")
       .then(response => {
         this.milestones = response.data.milestones
         this.gradeMilestones = response.data.grade_milestones
@@ -114,7 +131,20 @@ export default {
         console.log(err)
       })
 
+    Api.get("/feedback/", { params: { type: "PA", project: repoid } })
+      .then(response => {
+        this.comments = response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
+
+  },
+  methods: {
+    formatedTime(timeString) {
+      return new Date(timeString).toUTCString()
+    }
   },
 }
 </script>
