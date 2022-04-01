@@ -32,7 +32,6 @@ export default {
       
       //let color = ["#343a40", "#dc3545", "#fd7e14", "#ffc107", "#28a745"]
       let c = (points) => {
-        console.log(points)
         if (points.reduce((x,y) => x+y, 0) === 0)
           return "#dc3545"
         if (points.includes(0)) 

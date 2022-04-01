@@ -39,7 +39,7 @@
         <table class="table">
           <tr v-for="repo in APIData" :key="repo.id">
 
-            <td class="p-1">
+            <td v-if="repo.users" class="p-1">
                 <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users"/>
             </td>
 
@@ -51,7 +51,7 @@
             </td>
 
             <td class="p-1 col-4">
-              <div v-if="repo.mentors.length > 0">
+              <div v-if="repo.mentors && repo.mentors.length > 0">
                 <span class="badge badge-dark">
                   {{repo.mentors[0]}} asdfa
                 </span>
@@ -90,11 +90,11 @@ export default {
 },
   computed: mapState(['APIData']),
   created() {
+    this.$store.state.APIData = null
     const url = 'projects/' + this.$route.params.id + "/"
     Api.get(url)
       .then(response => {
         this.$store.state.APIData = response.data
-
       })
       .catch(err => {
         console.log(err)
