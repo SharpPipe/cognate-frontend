@@ -91,7 +91,7 @@ export default {
   computed: mapState(['APIData']),
   created() {
     this.$store.state.APIData = null
-    const url = 'projects/' + this.$route.params.id + "/"
+    const url = 'groups/' + this.$route.params.id + "/"
     Api.get(url)
       .then(response => {
         this.$store.state.APIData = response.data
