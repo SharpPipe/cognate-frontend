@@ -4,8 +4,14 @@ import router from './routes.js'
 import store from './store'
 import '@forevolve/bootstrap-dark/dist/css/bootstrap-dark.css'
 import '@forevolve/bootstrap-dark/dist/js/bootstrap.js'
-import 'fontawesome-free/css/all.min.css'
 import 'popper.js/dist/popper.min.js'
+
+// https://fontawesome.com/v6/docs/web/use-with/vue/add-icons
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faGitlab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(faGitlab)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
