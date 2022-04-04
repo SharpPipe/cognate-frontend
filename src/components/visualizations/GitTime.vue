@@ -34,7 +34,7 @@ export default {
     if (Object.keys(this.$route.params).length !== 0) {
       Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
         .then(response => {
-          this.data = response.data.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
+          this.data = response.data.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
           this.data = this.timezoneOffset(this.data)
           this.data = this.underflow(this.data)
           this.dataLoaded = true
@@ -45,7 +45,7 @@ export default {
     } else {  // DEBUG
       d3.json("/gittime.json")
         .then(response => {
-          this.data = response.map(c => Object.assign(c, { datetime: d3.isoParse(c.datetime) }))
+          this.data = response.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
           this.data = this.timezoneOffset(this.data)
           this.data = this.underflow(this.data)
           this.dataLoaded = true
@@ -57,21 +57,21 @@ export default {
   },
   methods: {
     timezoneOffset(data) {
-      _.forEach(data, d => { d.datetime = new Date(d.datetime.valueOf() + d.datetime.getTimezoneOffset() * 60 * 1000) })
+      _.forEach(data, d => { d.time = new Date(d.time.valueOf() + d.time.getTimezoneOffset() * 60 * 1000) })
       return data
     }, 
     underflow(data) {
       let newLines = []
       _.forEach(data, d => {
-        let start = new Date(d.datetime.valueOf() - d.amount * 1000 * 60)
-        if (d.datetime.getDate() !== start.getDate()) {
-          let nextDayMinutes = d.datetime.getHours() * 60 + d.datetime.getMinutes() // + d.datetime.getSeconds() / 60 + d.datetime.getMilliseconds() / (60 * 1000)
+        let start = new Date(d.time.valueOf() - d.amount * 1000 * 60)
+        if (d.time.getDate() !== start.getDate()) {
+          let nextDayMinutes = d.time.getHours() * 60 + d.time.getMinutes() // + d.time.getSeconds() / 60 + d.time.getMilliseconds() / (60 * 1000)
           let prevDayMinutes = d.amount - nextDayMinutes
           newLines.push({
             amount: prevDayMinutes,
-            author: d.author,
-            subject: d.subject,
-            datetime: new Date(new Date(d.datetime.toDateString()).valueOf() - 1)
+            user: d.user,
+            title: d.title,
+            datetime: new Date(new Date(d.time.toDateString()).valueOf() - 1)
           })
 
           d.amount = nextDayMinutes
@@ -90,12 +90,12 @@ export default {
       let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
 
       // Axis
-      let domainExtent = d3.extent(data, d => new Date(d.datetime.toLocaleDateString()))
+      let domainExtent = d3.extent(data, d => new Date(d.time.toLocaleDateString()))
       domainExtent[0] = new Date(domainExtent[0].getTime() - 24 * 60 * 60 * 1000)
       domainExtent[1] = new Date(domainExtent[1].getTime() + 24 * 60 * 60 * 1000)
 
       let x = d3.scaleTime()
-        //.domain(d3.extent(data, d => new Date(d.datetime.toLocaleDateString())))
+        //.domain(d3.extent(data, d => new Date(d.time.toLocaleDateString())))
         //.domain(d3.extent(this.timeRange))
         .domain(domainExtent)
         .range([margins.left, width - margins.right])
@@ -138,7 +138,7 @@ export default {
         .style("opacity", 0)
 
       // Pie
-      let groups = _.groupBy(data, d => d.author)
+      let groups = _.groupBy(data, d => d.user)
       _.forEach(groups, (value, key) => {
         groups[key] = value.reduce((total, item) => item.amount + total, 0)
       })
@@ -170,32 +170,32 @@ export default {
         .selectAll("circle")
         .data(data)
         .enter().append("line")
-        .attr("x1", d => x(new Date(d.datetime.getFullYear(), d.datetime.getMonth(), d.datetime.getDate())))
-        //.attr("x1", d => x(new Date(d.datetime.toISOString().substring(0, 10))) - 2)
-        .attr("y1", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60)) 
-        .attr("x2", d => x(new Date(d.datetime.getFullYear(), d.datetime.getMonth(), d.datetime.getDate())))
-        .attr("y2", d => y(d.datetime.getHours() + d.datetime.getMinutes() / 60 - (d.amount / 60))) 
-        .attr("stroke", d => c(d.author, false))
+        .attr("x1", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
+        //.attr("x1", d => x(new Date(d.time.toISOString().substring(0, 10))) - 2)
+        .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60)) 
+        .attr("x2", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
+        .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60))) 
+        .attr("stroke", d => c(d.user, false))
         .attr("stroke-width", -dayWidth)
         .attr("ref", "line")
         .on("mouseover", (event, d) => {
           //d3.select(this.$refs.line).style("fill", "aliceblue")
-          d3.select(event.target).attr("stroke", d => c(d.author, true))
+          d3.select(event.target).attr("stroke", d => c(d.user, true))
           div.transition()
             .duration(100)
             .style("opacity", 1);
-          div.html(d.subject + "<br/>" + d.amount + "min")
+          div.html(d.title + "<br/>" + d.amount + "min")
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 60) + "px");
         })
         .on("mouseout", (event) => {
-          d3.select(event.target).attr("stroke", d => c(d.author, false))
+          d3.select(event.target).attr("stroke", d => c(d.user, false))
           div.transition()
             .duration(500)
             .style("opacity", 0);
         })
         .on("click", (e, d) => {
-          console.log(d.datetime)
+          console.log(d.time)
 
 
         })
