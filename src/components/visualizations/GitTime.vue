@@ -171,7 +171,6 @@ export default {
         .data(data)
         .enter().append("line")
         .attr("x1", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
-        //.attr("x1", d => x(new Date(d.time.toISOString().substring(0, 10))) - 2)
         .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60)) 
         .attr("x2", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
         .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60))) 
@@ -194,23 +193,12 @@ export default {
             .duration(500)
             .style("opacity", 0);
         })
-        .on("click", (e, d) => {
+        .on("dblclick", (e, d) => {
           if (d.gitlab_link !== null) {
-
-          console.log(d.gitlab_link)
-          window.open(d.gitlab_link, "_blank")
+            console.log(d.gitlab_link)
+            window.open(d.gitlab_link, "_blank")
           }
-
-
         })
-
-
-
-      /*       svg.append("text")
-              .attr("dy", 15)
-              .attr("dx", width / 2 - 60)
-              .attr("fill", "#666")
-              .text("Sprint 1 time data") */
 
 
       return svg.node();

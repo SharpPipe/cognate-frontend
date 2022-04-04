@@ -1,13 +1,15 @@
 <template>
   <div class="repo">
     <div class="container">
-      <h4 v-if="APIData">{{ APIData.name }}</h4>
-      <ProgressBar
-        class="mb-2 mx-2"
-        :currentPoints="currentPoints"
-        :minPoints="minCoursePoints"
-        :maxPoints="maxCoursePoints"
-      />
+      <h5 v-for="project in projectDetails" :key="project.gitlab_id">
+        <a :href=project.url target="_blank">
+          <font-awesome-icon icon="fa-brands fa-gitlab" />
+          {{ project.name }}
+        </a>
+      </h5>
+
+      
+
       <div class="row m-1">
         <div class="col-4 p-0">
           <RepoRadar class="p-1" :radardata="radarData" />
@@ -69,7 +71,6 @@
 </template>
 
 <script>
-import ProgressBar from "../components/ProgressBar";
 import RepoDeveloper from "../components/RepoDeveloper";
 import RepoRadar from "../components/visualizations/RepoRadar";
 //import GitTime from "../components/visualizations/GitTime";
@@ -81,7 +82,6 @@ import { Api } from "../axios-api";
 export default {
   name: 'Repo',
   components: {
-    ProgressBar,
     //GitTime,
     RepoRadar,
     RepoDeveloper,
@@ -108,7 +108,8 @@ export default {
       issueData: [],
 
       projectTimeRange: [new Date(2022, 0, 24, 0, 0, 0), new Date(2022, 5, 16, 0, 0, 0)],
-      comments: []
+      comments: [],
+      projectDetails: []
     }
   },
   created() {
@@ -139,6 +140,13 @@ export default {
         console.log(err)
       })
 
+    Api.get("/projects/" + repoid + "/")
+      .then(response => {
+        this.projectDetails = response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
   },
   methods: {
