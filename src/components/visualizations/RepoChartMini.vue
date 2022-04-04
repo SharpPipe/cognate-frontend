@@ -63,7 +63,6 @@ export default {
             .duration(100)
             .style("opacity", 1);
           let text = d.user_points.map(u => "<br/>" + u.name + ": " + Math.round(u.points)).join("")
-          console.log(text)
           let tooltip = div.html("<b>Milestone " + d.milestone_id + "</b>" + text + "<br/>")
           let w = tooltip.node().getBoundingClientRect().width
           tooltip.style("left", (window.pageXOffset + matrix.e - w / 2) + "px")
