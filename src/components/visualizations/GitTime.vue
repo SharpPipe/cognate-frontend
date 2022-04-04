@@ -71,7 +71,8 @@ export default {
             amount: prevDayMinutes,
             user: d.user,
             title: d.title,
-            datetime: new Date(new Date(d.time.toDateString()).valueOf() - 1)
+            gitlab_link: d.gitlab_link,
+            time: new Date(new Date(d.time.toDateString()).valueOf() - 1)
           })
 
           d.amount = nextDayMinutes
@@ -90,13 +91,12 @@ export default {
       let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
 
       // Axis
-      let domainExtent = d3.extent(data, d => new Date(d.time.toLocaleDateString()))
+      console.log(data)
+      let domainExtent = d3.extent(data, d => new Date(d.time.toDateString().valueOf()) )
       domainExtent[0] = new Date(domainExtent[0].getTime() - 24 * 60 * 60 * 1000)
       domainExtent[1] = new Date(domainExtent[1].getTime() + 24 * 60 * 60 * 1000)
 
       let x = d3.scaleTime()
-        //.domain(d3.extent(data, d => new Date(d.time.toLocaleDateString())))
-        //.domain(d3.extent(this.timeRange))
         .domain(domainExtent)
         .range([margins.left, width - margins.right])
 
@@ -195,7 +195,11 @@ export default {
             .style("opacity", 0);
         })
         .on("click", (e, d) => {
-          console.log(d.time)
+          if (d.gitlab_link !== null) {
+
+          console.log(d.gitlab_link)
+          window.open(d.gitlab_link, "_blank")
+          }
 
 
         })
