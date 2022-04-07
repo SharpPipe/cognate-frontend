@@ -34,11 +34,28 @@ test:
 deploy:
   tags:
     - cognate
+    - main-deploy
   stage: deploy
   only:
     refs:
       - main
   environment: main
+  before_script:
+    - docker-compose version
+  script:
+    - echo "Building Docker container"
+    - docker-compose down
+    - docker-compose up -d --build
+
+deploy-dev:
+  tags:
+    - cognate
+    - dev-deploy
+  stage: deploy
+  only:
+    refs:
+      - develop
+  environment: develop
   before_script:
     - docker-compose version
   script:
