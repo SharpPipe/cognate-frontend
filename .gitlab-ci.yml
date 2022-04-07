@@ -11,6 +11,10 @@ lint:
   tags:
     - cognate
   stage: lint
+  only:
+    refs:
+      - main
+      - develop
   image: node:latest
   before_script:
     - echo "Install npm"
@@ -23,6 +27,10 @@ test:
   tags:
     - cognate
   stage: test
+  only:
+    refs:
+      - main
+      - develop
   image: node:latest
   before_script:
     - echo "Install npm"
