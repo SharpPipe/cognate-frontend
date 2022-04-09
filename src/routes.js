@@ -7,7 +7,6 @@ import Home      from './views/Home'
 import ProjectRepos from "./views/ProjectRepos";
 import GroupMilestoneSummary from "./views/GroupMilestoneSummary";
 import Repo      from "./views/Repo";
-import Milestone from "./views/Milestone";
 import GradeMS   from "./views/GradeMilestone";
 import Pricing   from "./views/Pricing";
 import Grading   from "./views/Grading";
@@ -110,14 +109,6 @@ export default new VueRouter({
             path: '/group/:id/grading/',
             name: 'grading',
             component: Grading,
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: '/milestone/',
-            name: 'milestone',
-            component: Milestone,
             meta: {
                 requiresAuth: true
             }
