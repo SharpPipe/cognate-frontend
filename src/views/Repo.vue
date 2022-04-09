@@ -54,8 +54,8 @@
       </table>
 
       <!--  Graph  -->
-      <div class="row">
-        <!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
+      <div class="row" v-if=gittimedata >
+        <GitTime class="w-100" :gitdata=gittimedata />
       </div>
 
       <!--  Comments  -->
@@ -79,7 +79,7 @@
 <script>
 import RepoDeveloper from "../components/RepoDeveloper";
 import RepoRadar from "../components/visualizations/RepoRadar";
-//import GitTime from "../components/visualizations/GitTime";
+import GitTime from "../components/visualizations/GitTime";
 import RepoTotalStats from "../components/RepoTotalStats.vue";
 import RepoMilestoneCard from "../components/RepoMilestoneCard.vue";
 
@@ -88,7 +88,7 @@ import { Api } from "../axios-api";
 export default {
   name: 'Repo',
   components: {
-    //GitTime,
+    GitTime,
     RepoRadar,
     RepoDeveloper,
     RepoTotalStats,
@@ -113,9 +113,11 @@ export default {
       gradeMilestones: null,
       issueData: [],
 
-      projectTimeRange: [new Date(2022, 0, 24, 0, 0, 0), new Date(2022, 5, 16, 0, 0, 0)],
+      projectTimeRange: [new Date(2022, 0, 24, 0, 0, 0), new Date(2022, 7, 16, 0, 0, 0)],
       comments: [],
-      projectDetails: []
+      projectDetails: [],
+
+      gittimedata: null,
     }
   },
   created() {
@@ -149,6 +151,17 @@ export default {
     Api.get("/projects/" + repoid + "/")
       .then(response => {
         this.projectDetails = response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    
+    let start = this.projectTimeRange[0].toISOString()
+    let end   = this.projectTimeRange[1].toISOString()
+    Api.get('/projects/' + this.$route.params.repoid + "/time_spent/", 
+            { params: { start: start, end: end}})
+      .then(response => {
+        this.gittimedata = response.data
       })
       .catch(err => {
         console.log(err)
