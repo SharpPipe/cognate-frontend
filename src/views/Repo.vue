@@ -1,15 +1,15 @@
 <template>
   <div class="repo">
     <div class="container">
+      <!--  GitLab links  -->
       <h5 v-for="project in projectDetails" :key="project.gitlab_id">
-        <a :href=project.url target="_blank">
-          <font-awesome-icon icon="fa-brands fa-gitlab" />
-          {{ project.name }}
+        <a :href="project.url" target="_blank">
+          <font-awesome-icon icon="fa-brands fa-gitlab" /> GitLab:
+          <em>{{ project.name }}</em>
         </a>
       </h5>
 
-      
-
+      <!--  Overview data  -->
       <div class="row m-1">
         <div class="col-4 p-0">
           <RepoRadar class="p-1" :radardata="radarData" />
@@ -29,7 +29,7 @@
       <!--  Sprints  -->
       <table class="table table-borderless">
         <tr>
-          <td v-for="(milestone, i) in gradeMilestones" :key="i" class="m-0 p-0">
+          <td v-for="(milestone, i) in gradeMilestones" :key="i" class="m-1 p-1">
             <router-link
               :to="{
                 name: 'grade-milestone',
@@ -54,8 +54,8 @@
       </table>
 
       <!--  Graph  -->
-      <div class="row" v-if=gittimedata >
-        <GitTime class="w-100" :gitdata=gittimedata />
+      <div class="row" v-if="gittimedata">
+        <GitTime class="w-100" :gitdata="gittimedata" />
       </div>
 
       <!--  Comments  -->
@@ -67,11 +67,9 @@
             <small>{{ formatedTime(comment.time) }}</small>
           </span>
           <br />
-
           {{ comment.text }}
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -83,7 +81,6 @@ import GitTime from "../components/visualizations/GitTime";
 import RepoTotalStats from "../components/RepoTotalStats.vue";
 import RepoMilestoneCard from "../components/RepoMilestoneCard.vue";
 
-import { mapState } from 'vuex'
 import { Api } from "../axios-api";
 export default {
   name: 'Repo',
@@ -93,9 +90,6 @@ export default {
     RepoDeveloper,
     RepoTotalStats,
     RepoMilestoneCard
-  },
-  computed: {
-    ...mapState(['APIData']),
   },
   data() {
     return {
@@ -122,14 +116,6 @@ export default {
   },
   created() {
     const repoid = this.$route.params.repoid
-    const url = 'repositories/' + repoid + "/update/"
-    Api.get(url)
-      .then(response => {
-        this.$store.state.APIData = response.data.data
-      })
-      .catch(err => {
-        console.log(err)
-      })
 
     Api.get("/projects/" + repoid + "/milestone_connections/")
       .then(response => {
@@ -155,11 +141,14 @@ export default {
       .catch(err => {
         console.log(err)
       })
-    
-    let start = this.projectTimeRange[0].toISOString()
-    let end   = this.projectTimeRange[1].toISOString()
-    Api.get('/projects/' + this.$route.params.repoid + "/time_spent/", 
-            { params: { start: start, end: end}})
+
+    Api.get('/projects/' + repoid + "/time_spent/",
+      {
+        params: {
+          start: this.projectTimeRange[0].toISOString(),
+          end: this.projectTimeRange[1].toISOString()
+        }
+      })
       .then(response => {
         this.gittimedata = response.data
       })
