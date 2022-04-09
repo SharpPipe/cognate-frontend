@@ -25,6 +25,8 @@
           <RepoTotalStats spent="----" codelines="----" />
         </div>
       </div>
+
+      <!--  Sprints  -->
       <table class="table table-borderless">
         <tr>
           <td v-for="(milestone, i) in gradeMilestones" :key="i" class="m-0 p-0">
@@ -50,10 +52,13 @@
           </td>
         </tr>
       </table>
+
+      <!--  Graph  -->
       <div class="row">
         <!--         <GitTime class="w-100" :milestones="milestones" :timeRange="projectTimeRange"/> -->
       </div>
 
+      <!--  Comments  -->
       <div v-if="comments.length" class="border rounded p-3 my-2">
         <h4>Comments</h4>
         <div v-for="comment in comments" :key="comment.time" class="mb-2">
@@ -66,6 +71,7 @@
           {{ comment.text }}
         </div>
       </div>
+
     </div>
   </div>
 </template>
