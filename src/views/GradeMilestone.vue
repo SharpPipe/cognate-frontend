@@ -53,7 +53,6 @@ import GitTime from "../components/visualizations/GitTime";
 import RepoGradeStudent from "../components/RepoGradeStudent.vue";
 import RepoGradeTeam from "../components/RepoGradeTeam.vue";
 import { Api } from "../axios-api"
-import { mapState } from 'vuex'
 
 export default {
   name: 'Repo',
@@ -67,6 +66,7 @@ export default {
     return {
       key: 0,  // to force update
       msg: null,
+      APIData: null,
       teampoints: [
         { axis: "Retro", value: 0 },
         { axis: "Meeting", value: 0 },
@@ -158,13 +158,12 @@ export default {
   },
   created() {
     this.teampoints.forEach(d => this.$watch(() => d.value, this.onTeamPointsChange))
-    this.$store.APIData = null
     this.range = [this.$route.params.start, this.$route.params.end]
 
     Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/")
       .then(response => {
-        this.$store.state.APIData = response.data.data
-        this.$store.state.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
+        this.APIData = response.data.data
+        this.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
         this.teampoints[0].value = this.APIData.project_data[0].data[1].given_points
         this.teampoints[1].value = this.APIData.project_data[0].data[2].given_points
         this.updateRadar()
@@ -183,7 +182,6 @@ export default {
       })
   },
   computed: {
-    ...mapState(['APIData']),
     currentPoints() {
       let sum = 0
       for (var thing in this.radarData) {
