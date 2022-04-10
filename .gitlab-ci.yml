@@ -53,8 +53,7 @@ deploy:
   environment: main
   before_script:
     - docker-compose version
-    - chmod +x ./setup_env.sh
-    - ./setup_env.sh
+    - echo NODE_APP_API_URL=$API_URL >> .env
   script:
     - echo "Building Docker container"
     - docker-compose down
@@ -71,8 +70,7 @@ deploy-dev:
   environment: develop
   before_script:
     - docker-compose version
-    - chmod +x ./setup_env.sh
-    - ./setup_env.sh
+    - echo NODE_APP_API_URL=$API_URL >> .env
   script:
     - echo "Building Docker container"
     - docker-compose down
