@@ -23,24 +23,19 @@
                 }
               }"
             >
-              <p>Milestone {{n}}</p>
+              <p>Milestone {{ n }}</p>
             </router-link>
           </td>
-
         </tr>
       </table>
 
-
-
-
       <h4>Teams</h4>
 
-      <div v-if="APIData">
+      <div v-if="repos">
         <table class="table">
-          <tr v-for="repo in APIData" :key="repo.id">
-
+          <tr v-for="repo in repos" :key="repo.id">
             <td v-if="repo.users" class="p-1">
-                <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users"/>
+              <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users" />
             </td>
 
             <td class="p-1">
@@ -52,22 +47,19 @@
 
             <td class="p-1 col-4">
               <div v-if="repo.mentors && repo.mentors.length > 0">
-                <span class="badge badge-dark">
-                  {{repo.mentors[0]}} asdfa
-                </span>
-              <br/>
+                <span class="badge badge-dark">{{ repo.mentors[0] }} asdfa</span>
+                <br />
               </div>
-              <span v-for="(dev, i) in repo.users" :key=i class="pr-1">
+              <span v-for="(dev, i) in repo.users" :key="i" class="pr-1">
                 <div v-if="dev.points > 0" class="badge badge-success">
-                  {{dev.name}}:
-                <small>{{Math.round(dev.points)}}</small>
+                  {{ dev.name }}:
+                  <small>{{ Math.round(dev.points) }}</small>
                 </div>
               </span>
             </td>
 
-
             <td class="p-1">
-              <RepoChartMini :id="`repoms${repo.id}`" :k=repo.id :milestones=repo.milestones />
+              <RepoChartMini :id="`repoms${repo.id}`" :k="repo.id" :milestones="repo.milestones" />
             </td>
           </tr>
         </table>
@@ -78,7 +70,6 @@
 
 <script>
 import { Api } from "../axios-api";
-import { mapState } from 'vuex'
 import RepoChartMini from "../components/visualizations/RepoChartMini";
 import PieChart from "../components/visualizations/PieChart.vue";
 
@@ -87,14 +78,17 @@ export default {
   components: {
     RepoChartMini,
     PieChart
-},
-  computed: mapState(['APIData']),
+  },
+  data() {
+    return {
+      repos: null
+    }
+  },
   created() {
-    this.$store.state.APIData = null
     const url = 'groups/' + this.$route.params.id + "/"
     Api.get(url)
       .then(response => {
-        this.$store.state.APIData = response.data
+        this.repos = response.data
       })
       .catch(err => {
         console.log(err)

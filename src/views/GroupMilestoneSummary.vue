@@ -66,21 +66,23 @@
 
 <script>
 import { Api } from "../axios-api";
-import { mapState } from 'vuex'
 
 export default {
     name: 'Home',
-    computed: mapState(['APIData']),
+    data() {
+        return {
+            APIData: null
+        }
+    },
     created() {
         const url = 'groups/' + this.$route.params.id + "/milestone/" + this.$route.params.msid + "/"
         Api.get(url)
             .then(response => {
-                this.$store.state.APIData = response.data.data
+                this.APIData = response.data.data
             })
             .catch(err => {
                 console.log(err)
             })
-
     },
     methods: {
         sumpoints(data) {

@@ -26,7 +26,6 @@ export default {
     // To check if we are still logged in
     // and if not then refresh the tokens
     Api.get("/")
-      .then(() => console.log("refreshed"))
       .catch(err => console.log(err))
 
   },
