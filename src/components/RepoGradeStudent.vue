@@ -1,8 +1,7 @@
 <template>
     <div>
-        <RepoDeveloper :name="devName" :spentTime="spentTime" 
-                        @mouseover.native="$emit('devHover', devName)"
-        />
+        <RepoDeveloper :name="devName" :spentTime="spentTime" />
+
         <div v-if="points" class="form-group">
             <div class="row no-gutters">
                 <label
@@ -86,12 +85,12 @@
 
 <script>
 import ProgressBar from "./ProgressBar.vue";
-
-import $ from 'jquery';
 import RepoDeveloper from "./RepoDeveloper.vue";
+import $ from 'jquery';
+
 export default {
     name: "RepoGradeStudent",
-    props: ["points", "devName", "spentTime", "teampoints", "devAmount"],
+    props: ["points", "devName", "spentTime"],
     components: { ProgressBar, RepoDeveloper },
     computed: {
         currentPoints() {
@@ -109,3 +108,35 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+input[type="range"] {
+  -webkit-appearance: none;
+  background-color: #dddddd;
+  height: 10px;
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 15px;
+  width: 15px;
+  background: #66ee66;
+  box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  background: #66ee66;
+  box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
+</style>
