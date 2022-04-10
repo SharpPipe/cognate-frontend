@@ -2,6 +2,9 @@ image: docker
 services:
   - docker:dind
 
+variables:
+  API_URL: $API_URL
+
 stages:
   - lint
   - test
@@ -50,6 +53,8 @@ deploy:
   environment: main
   before_script:
     - docker-compose version
+    - chmod +x ./setup_env.sh
+    - ./setup_env.sh
   script:
     - echo "Building Docker container"
     - docker-compose down
@@ -66,6 +71,8 @@ deploy-dev:
   environment: develop
   before_script:
     - docker-compose version
+    - chmod +x ./setup_env.sh
+    - ./setup_env.sh
   script:
     - echo "Building Docker container"
     - docker-compose down

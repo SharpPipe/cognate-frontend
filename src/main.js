@@ -10,6 +10,8 @@ import 'popper.js/dist/popper.min.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faGitlab } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import dotenv from 'dotenv'
+dotenv.config()
 library.add(faGitlab)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
