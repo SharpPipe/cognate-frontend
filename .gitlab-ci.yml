@@ -3,7 +3,7 @@ services:
   - docker:dind
 
 variables:
-  API_URL: $API_URL
+  NODE_APP_API_URL: $NODE_APP_API_URL
 
 stages:
   - lint
@@ -53,7 +53,7 @@ deploy:
   environment: main
   before_script:
     - docker-compose version
-    - echo NODE_APP_API_URL=$API_URL >> .env
+    - cp .env.test .env
   script:
     - echo "Building Docker container"
     - docker-compose down
@@ -70,7 +70,7 @@ deploy-dev:
   environment: develop
   before_script:
     - docker-compose version
-    - echo NODE_APP_API_URL=$API_URL >> .env
+    - cp .env.test .env
   script:
     - echo "Building Docker container"
     - docker-compose down
