@@ -106,14 +106,6 @@ export default new VueRouter({
             }
         },
         {
-            path: '/group/:groupid/repo/:repoid/grade2/:msid/',
-            name: 'grade-milestoneII',
-            component: () => import("./views/GradeMilestoneII"),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
             path: '/groupadd/',
             name: 'groupadd',
             component: () => import("./views/GroupAdd"),

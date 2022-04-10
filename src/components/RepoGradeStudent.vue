@@ -1,8 +1,7 @@
 <template>
     <div>
-        <RepoDeveloper :name="devName" :spentTime="spentTime" 
-                        @mouseover.native="$emit('devHover', devName)"
-        />
+        <RepoDeveloper :name="devName" :spentTime="spentTime" />
+
         <div v-if="points" class="form-group">
             <div class="row no-gutters">
                 <label
@@ -86,12 +85,12 @@
 
 <script>
 import ProgressBar from "./ProgressBar.vue";
-
-import $ from 'jquery';
 import RepoDeveloper from "./RepoDeveloper.vue";
+import $ from 'jquery';
+
 export default {
     name: "RepoGradeStudent",
-    props: ["points", "devName", "spentTime", "teampoints", "devAmount"],
+    props: ["points", "devName", "spentTime"],
     components: { ProgressBar, RepoDeveloper },
     computed: {
         currentPoints() {

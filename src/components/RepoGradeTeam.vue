@@ -8,14 +8,15 @@
                     data-placement="top"
                     title="actionable tickets"
                 >Retro</label>
-                <p class="ml-auto mr-0 text-muted">{{ teampoints[0].value }}/5</p>
+                <p class="ml-auto mr-0 text-muted">{{ radarData[0].value }}/5</p>
             </div>
             <input
                 type="range"
                 min="0"
                 max="5"
-                v-model="teampoints[0].value"
+                v-model="radarData[0].value"
                 class="form-control-range mb-3"
+                @change="$emit('teamPointsChanged', radarData)"
             />
 
             <div class="row no-gutters">
@@ -25,14 +26,15 @@
                     data-placement="top"
                     title="everyone present + prepared + asking questions"
                 >Meeting the Mentor</label>
-                <p class="ml-auto mr-0 text-muted">{{ teampoints[1].value }}/5</p>
+                <p class="ml-auto mr-0 text-muted">{{ radarData[1].value }}/5</p>
             </div>
             <input
                 type="range"
                 min="0"
                 max="5"
-                v-model="teampoints[1].value"
+                v-model="radarData[1].value"
                 class="form-control-range mb-3"
+                @change="$emit('teamPointsChanged', radarData)"
             />
         </div>
     </div>
@@ -43,7 +45,7 @@ import $ from 'jquery'
 
 export default {
     name: "RepoGradeTeam",
-    props: ["teampoints", "radarData"],
+    props: ["radarData"],
     created() {
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

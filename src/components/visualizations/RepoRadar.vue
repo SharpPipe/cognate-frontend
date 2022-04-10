@@ -17,12 +17,10 @@ export default {
     this.drawChart(this.radardata)
     // add watcher for radardata
     this.radardata.forEach(d => this.$watch(() => d.value, this.onRadarDataChange))
-
   },
   methods: {
     onRadarDataChange() {
       d3.select('#reporadar').selectAll("*").remove()
-      console.log("change")
       this.drawChart(this.radardata)
     },
     drawChart(radardata) {
