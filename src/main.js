@@ -9,8 +9,12 @@ import 'popper.js/dist/popper.min.js'
 // https://fontawesome.com/v6/docs/web/use-with/vue/add-icons
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faGitlab } from '@fortawesome/free-brands-svg-icons'
+import { faClock } from '@fortawesome/free-regular-svg-icons'
+import { faCode } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faGitlab)
+library.add(faClock)
+library.add(faCode)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // env variables
