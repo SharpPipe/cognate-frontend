@@ -1,13 +1,20 @@
 <template>
     <div class="milestone-card">
         <div class="milestone-card border rounded p-2 text-center">
-            <label v-if="ms_data">{{ms_data.title}}</label>
-            <label v-if="!ms_data">Milestone {{ nr }}</label>
-            <br>
-<!--             <div v-if="ms_status =='graded'" class="badge badge-pill badge-success">Graded</div>
-            <div v-if="ms_status =='ungraded'" class="badge badge-pill badge-warning">Not Graded</div>
-            <div v-if="ms_status =='TBA'" class="badge badge-pill badge-dark milestone">TBA</div> -->
-            <h3>{{points}}</h3>
+            <div
+                v-if="msData.graded"
+                class="badge badge-pill badge-success"
+            >Milestone {{ msData.milestone_id }}</div>
+            <div
+                v-if="!msData.graded"
+                class="badge badge-pill badge-warning"
+            >Milestone {{ msData.milestone_id }}</div>
+            <div v-for="user in msData.user_points" :key="user.name">
+                <svg class="m-1" height="16" width="16">
+                    <circle cx="8" cy="8" r="8" :fill="`#${user.colour}`" />
+                </svg>
+                {{ (+user.points).toFixed(0) }}p
+            </div>
         </div>
     </div>
 </template>
@@ -15,7 +22,7 @@
 <script>
 export default {
     name: "RepoMilestoneCard",
-    props: ["nr", "ms_status", "points", "ms_data"],
+    props: ["msData"],
 }
 </script>
 

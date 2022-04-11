@@ -1,6 +1,6 @@
 <template>
   <div class="repo">
-    <div class="container">
+    <div v-if="projectDetails" class="container">
       <!--  GitLab links  -->
       <h5 v-for="gitlabrepo in projectDetails.repositories" :key="gitlabrepo.gitlab_id">
         <a :href="gitlabrepo.url" target="_blank">
@@ -28,31 +28,29 @@
         </div>
 
         <div class="col-3 p-0">
-          <RepoTotalStats spent="----" codelines="----" />
+          <RepoTotalStats :totalStats="projectDetails.project" />
         </div>
       </div>
 
       <!--  Sprints  -->
       <table class="table table-borderless">
         <tr>
-          <td v-for="(milestone, i) in gradeMilestones" :key="i" class="m-1 p-1">
+          <td v-for="milestone in projectDetails.milestones" :key="milestone.milestone_id" class="m-1 p-1">
             <router-link
               :to="{
                 name: 'grade-milestone',
                 params: {
                   groupid: $route.params.groupid,
                   repoid: $route.params.repoid,
-                  msid: i + 1,
-                  start: milestone.start,
-                  end: milestone.end,
+                  msid: milestone.milestone_id,
+                  start: milestone.start_time,
+                  end: milestone.end_time,
                 }
               }"
             >
               <RepoMilestoneCard
                 class="m-0"
-                :nr="milestone.milestone_order_id"
-                ms_status="ungraded"
-                points="-"
+                :msData="milestone"
               />
             </router-link>
           </td>
