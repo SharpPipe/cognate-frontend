@@ -2,10 +2,10 @@
   <div class="repo">
     <div class="container">
       <!--  GitLab links  -->
-      <h5 v-for="project in projectDetails" :key="project.gitlab_id">
-        <a :href="project.url" target="_blank">
-          <font-awesome-icon icon="fa-brands fa-gitlab" /> GitLab:
-          <em>{{ project.name }}</em>
+      <h5 v-for="gitlabrepo in projectDetails.repositories" :key="gitlabrepo.gitlab_id">
+        <a :href="gitlabrepo.url" target="_blank">
+          <font-awesome-icon icon="fa-brands fa-gitlab" />GitLab:
+          <em>{{ gitlabrepo.name }}</em>
         </a>
       </h5>
 
@@ -14,13 +14,19 @@
         <div class="col-4 p-0">
           <RepoRadar class="p-1" :radardata="radarData" />
         </div>
-        <div class="col-5 p-0">
-          <div class="d-flex flex-column justify-content-end flex-grow-1">
-            <div v-for="dev in 3" :key="dev">
-              <RepoDeveloper name="Dev" spentTime="--" class="m-2" />
+
+        <div class="col-5 p-0 d-flex flex-column align-content-stretch">
+          <div class>
+            <div
+              v-for="dev in projectDetails.developers"
+              :key="dev.username"
+              class="d-flex col m-0"
+            >
+              <RepoDeveloper :devData="dev" class="w-100 m-1" />
             </div>
           </div>
         </div>
+
         <div class="col-3 p-0">
           <RepoTotalStats spent="----" codelines="----" />
         </div>
@@ -116,15 +122,6 @@ export default {
   },
   created() {
     const repoid = this.$route.params.repoid
-
-    Api.get("/projects/" + repoid + "/milestone_connections/")
-      .then(response => {
-        this.milestones = response.data.milestones
-        this.gradeMilestones = response.data.grade_milestones
-      })
-      .catch(err => {
-        console.log(err)
-      })
 
     Api.get("/feedback/", { params: { type: "PA", project: repoid } })
       .then(response => {
