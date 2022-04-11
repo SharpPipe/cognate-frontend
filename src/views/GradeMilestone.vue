@@ -121,17 +121,17 @@ export default {
       this.radarData[3].value = 0
       this.radarData[4].value = 0
       for (var i in this.APIData.project_data) {
-        this.radarData[2].value += this.APIData.project_data[i].data[3].given_points / numStudents
-        this.radarData[3].value += this.APIData.project_data[i].data[4].given_points / numStudents
-        this.radarData[4].value += this.APIData.project_data[i].data[5].given_points / numStudents
+        this.radarData[2].value += this.APIData.project_data[i].data[2].given_points / numStudents
+        this.radarData[3].value += this.APIData.project_data[i].data[3].given_points / numStudents
+        this.radarData[4].value += this.APIData.project_data[i].data[4].given_points / numStudents
       }
       this.key++;
     },
     makePayload() {
       let payload = []
       for (let i in this.APIData.project_data) {
-        this.APIData.project_data[i].data[1].given_points = this.radarData[0].value
-        this.APIData.project_data[i].data[2].given_points = this.radarData[1].value
+        this.APIData.project_data[i].data[0].given_points = this.radarData[0].value
+        this.APIData.project_data[i].data[1].given_points = this.radarData[1].value
         let studentpoints = []
         for (let p in this.APIData.project_data[i].data) {
           studentpoints[p] = {
@@ -151,8 +151,9 @@ export default {
         this.APIData = response.data.data
         this.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
         // Initial team points
-        this.radarData[0].value = this.APIData.project_data[0].data[1].given_points 
-        this.radarData[1].value = this.APIData.project_data[0].data[2].given_points 
+        console.log(this.APIData.project_data)
+        this.radarData[0].value = this.APIData.project_data[0].data[0].given_points 
+        this.radarData[1].value = this.APIData.project_data[0].data[1].given_points 
         this.updateRadar()
       })
       .catch(err => {

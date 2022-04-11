@@ -45,14 +45,14 @@
                     data-toggle="tooltip"
                     data-placement="top"
                     title="tasks juicy, clear, meaningful + has acceptance criteria"
-                >{{ points[5].name }}</label>
-                <p class="ml-auto mr-0 text-muted">{{ points[5].given_points }}/5</p>
+                >{{ points[2].name }}</label>
+                <p class="ml-auto mr-0 text-muted">{{ points[2].given_points }}/5</p>
             </div>
             <input
                 type="range"
                 min="0"
                 max="5"
-                v-model="points[5].given_points"
+                v-model="points[2].given_points"
                 class="form-control-range mb-3"
                 @change="$emit('pointsChanged')"
             />
@@ -63,14 +63,14 @@
                     data-toggle="tooltip"
                     data-placement="top"
                     title="the hours + helped the project forward"
-                >{{ points[0].name }}</label>
-                <p class="ml-auto mr-0 text-muted">{{ points[0].given_points }}/30</p>
+                >{{ points[5].name }}</label>
+                <p class="ml-auto mr-0 text-muted">{{ points[5].given_points }}/30</p>
             </div>
             <input
                 type="range"
                 min="0"
                 max="30"
-                v-model="points[0].given_points"
+                v-model="points[5].given_points"
                 class="form-control-range mb-3"
             />
             <ProgressBar
