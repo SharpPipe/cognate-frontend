@@ -36,7 +36,8 @@
                     class="text-white"
                     v-if="group.rights.includes('O') || group.rights.includes('A')"
                   >
-                    <button class="btn btn-primary">GradingTree</button>
+                    <button class="btn-sm btn-primary m-1">GradingTree</button>
+
                   </router-link>
                 </div>
 
@@ -52,28 +53,26 @@
 
 <script>
 import { Api } from "../axios-api";
-import { mapState } from 'vuex'
 import GroupChartMini from "../components/visualizations/GroupChartMini";
 
 export default {
   name: 'Groups',
   data() {
     return {
+      APIData: null
     }
   },
   components: {
     GroupChartMini,
   },
-  computed: mapState(['APIData']),
   created() {
-    this.$store.state.APIData = null
     Api.get('groups/')
       .then(response => {
-        this.$store.state.APIData = response.data
+        this.APIData = response.data
       })
       .catch(err => {
         console.log(err)
       })
-  }
+  },
 }
 </script>

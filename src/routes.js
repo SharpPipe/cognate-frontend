@@ -1,23 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Groups    from './views/Groups'
-import Browse    from './views/Browse'
-import Home      from './views/Home'
-import Repo_management from "./views/Repo_management";
-import GroupMilestoneSummary from "./views/GroupMilestoneSummary";
-import Repo      from "./views/Repo";
-import Milestone from "./views/Milestone";
-import GradeMS   from "./views/GradeMilestone";
-import Pricing   from "./views/Pricing";
-import Grading   from "./views/Grading";
-import Profile   from "./views/Profile";
-import GroupAdd  from "./views/GroupAdd";
-import Feedback  from "./views/Feedback";
-import Login     from "./components/Login";
-import Register  from "./components/Register";
-import Logout    from "./components/Logout";
-
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -28,23 +11,23 @@ export default new VueRouter({
         {
             path: '/',
             name: 'home',
-            component: Home,
+            component: () => import("./views/Home"),
         },
         {
             path: '/pricing/',
             name: 'pricing',
-            component: Pricing,
+            component: () => import("./views/Pricing"),
         },
         {
             path: '/browse/',
             name: 'browse',
-            component: Browse,
+            component: () => import("./views/Browse"),
         },
         // authentications
         {
             path: '/login/',
             name: 'login',
-            component: Login,
+            component: () => import("./components/Login"),
             meta: {
                 requiresLogged: true
             }
@@ -52,23 +35,23 @@ export default new VueRouter({
         {
             path: '/register/',
             name: 'register',
-            component: Register,
+            component: () => import("./components/Register"),
             meta: {
                 requiresLogged: true
             }
         },
         {
-            path: '/profile/',
-            name: 'profile',
-            component: Profile,
+            path: '/logout/',
+            name: 'logout',
+            component: () => import("./components/Logout"),
             meta: {
                 requiresAuth: true
             }
         },
         {
-            path: '/logout/',
-            name: 'logout',
-            component: Logout,
+            path: '/profile/',
+            name: 'profile',
+            component: () => import("./views/Profile"),
             meta: {
                 requiresAuth: true
             }
@@ -77,7 +60,7 @@ export default new VueRouter({
         {
             path: '/groups/',
             name: 'groups',
-            component: Groups,
+            component: () => import("./views/Groups"),
             meta: {
                 requiresAuth: true
             }
@@ -85,7 +68,7 @@ export default new VueRouter({
         {
             path: '/group/:groupid/repo/:repoid/',
             name: 'repo',
-            component: Repo,
+            component: () => import("./views/Repo"),
             meta: {
                 requiresAuth: true
             }
@@ -93,7 +76,7 @@ export default new VueRouter({
         {
             path: '/group/:id/',
             name: 'group-repos',
-            component: Repo_management,
+            component: () => import("./views/ProjectRepos"),
             meta: {
                 requiresAuth: true
             }
@@ -101,7 +84,7 @@ export default new VueRouter({
         {
             path: '/group/:id/milestone/:msid/',
             name: 'group-milestone-summary',
-            component: GroupMilestoneSummary,
+            component: () => import("./views/GroupMilestoneSummary"),
             meta: {
                 requiresAuth: true
             }
@@ -109,15 +92,7 @@ export default new VueRouter({
         {
             path: '/group/:id/grading/',
             name: 'grading',
-            component: Grading,
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: '/milestone/',
-            name: 'milestone',
-            component: Milestone,
+            component: () => import("./views/Grading"),
             meta: {
                 requiresAuth: true
             }
@@ -125,7 +100,7 @@ export default new VueRouter({
         {
             path: '/group/:groupid/repo/:repoid/grade/:msid/',
             name: 'grade-milestone',
-            component: GradeMS,
+            component: () => import("./views/GradeMilestone"),
             meta: {
                 requiresAuth: true
             }
@@ -133,7 +108,7 @@ export default new VueRouter({
         {
             path: '/groupadd/',
             name: 'groupadd',
-            component: GroupAdd,
+            component: () => import("./views/GroupAdd"),
             meta: {
                 requiresAuth: true
             }
@@ -141,7 +116,7 @@ export default new VueRouter({
         {
             path: '/feedback/',
             name: 'feedback',
-            component: Feedback,
+            component: () => import("./views/Feedback"),
             meta: {
                 requiresAuth: true
             }

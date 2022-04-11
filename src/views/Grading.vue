@@ -149,7 +149,6 @@
 <script>
 import CourseGradingTree from "../components/visualizations/CourseGradingTreeLinear.vue";
 import { Api } from "../axios-api";
-import { mapState } from 'vuex'
 
 
 // https://github.com/ankurk91/vue-bootstrap-datetimepicker
@@ -164,7 +163,6 @@ export default {
   },
   computed: {
     // https://stackoverflow.com/a/47204204/5188258
-    ...mapState(['APIData']),
     formatedPoints() {
       return Math.round(this.selectedNode.data.total * 100) / 100
     }
@@ -214,7 +212,6 @@ export default {
     getTree() {
       Api.get("groups/" + this.groupid + "/grading/")
         .then((response) => {
-          this.$store.state.APIData = response.data;
           this.graphData = response.data
         })
         .catch((err) => {

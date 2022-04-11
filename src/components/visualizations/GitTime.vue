@@ -4,7 +4,6 @@
 
 <script>
 import * as d3 from 'd3'
-import { Api } from "../../axios-api";
 import _ from 'lodash'
 const width = 800
 const height = 400
@@ -12,54 +11,25 @@ let data
 
 export default {
   name: "GitTime",
-  props: ["timeRange", "milestones"],
+  props: ["gitdata"],
   data() {
     return {
       width, height,
       data: [],
-      dataLoaded: false,
-    }
-  },
-  watch: {
-    dataLoaded() {
-      if (!this.dataLoaded) return
-      this.renderGraph()
     }
   },
   mounted() {
-    if (!this.dataLoaded) return
+
+    this.data = this.gitdata.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
+    this.data = this.timezoneOffset(this.data)
+    this.data = this.underflow(this.data)
     this.renderGraph()
-  },
-  created() {
-    if (Object.keys(this.$route.params).length !== 0) {
-      Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/time_spent/")
-        .then(response => {
-          this.data = response.data.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
-          this.data = this.timezoneOffset(this.data)
-          this.data = this.underflow(this.data)
-          this.dataLoaded = true
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    } else {  // DEBUG
-      d3.json("/gittime.json")
-        .then(response => {
-          this.data = response.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
-          this.data = this.timezoneOffset(this.data)
-          this.data = this.underflow(this.data)
-          this.dataLoaded = true
-        }
-        )
-
-    }
-
   },
   methods: {
     timezoneOffset(data) {
       _.forEach(data, d => { d.time = new Date(d.time.valueOf() + d.time.getTimezoneOffset() * 60 * 1000) })
       return data
-    }, 
+    },
     underflow(data) {
       let newLines = []
       _.forEach(data, d => {
@@ -85,14 +55,13 @@ export default {
     renderGraph() {
       // Git Log code inspired by and definitely not directly stolen from 
       // https://observablehq.com/@webapelsin/git-log
-      if (!this.dataLoaded) return
+      if (!this.data.length) return
       data = this.data
       let svg = d3.select('#gittime')
       let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
 
       // Axis
-      console.log(data)
-      let domainExtent = d3.extent(data, d => new Date(d.time.toDateString().valueOf()) )
+      let domainExtent = d3.extent(data, d => new Date(d.time.toDateString().valueOf()))
       domainExtent[0] = new Date(domainExtent[0].getTime() - 24 * 60 * 60 * 1000)
       domainExtent[1] = new Date(domainExtent[1].getTime() + 24 * 60 * 60 * 1000)
 
@@ -171,9 +140,9 @@ export default {
         .data(data)
         .enter().append("line")
         .attr("x1", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
-        .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60)) 
+        .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60))
         .attr("x2", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
-        .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60))) 
+        .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60)))
         .attr("stroke", d => c(d.user, false))
         .attr("stroke-width", -dayWidth)
         .attr("ref", "line")

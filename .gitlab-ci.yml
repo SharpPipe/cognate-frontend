@@ -2,6 +2,9 @@ image: docker
 services:
   - docker:dind
 
+variables:
+  NODE_APP_API_URL: $NODE_APP_API_URL
+
 stages:
   - lint
   - test
@@ -11,6 +14,10 @@ lint:
   tags:
     - cognate
   stage: lint
+  only:
+    refs:
+      - main
+      - develop
   image: node:latest
   before_script:
     - echo "Install npm"
@@ -23,6 +30,10 @@ test:
   tags:
     - cognate
   stage: test
+  only:
+    refs:
+      - main
+      - develop
   image: node:latest
   before_script:
     - echo "Install npm"
@@ -34,6 +45,7 @@ test:
 deploy:
   tags:
     - cognate
+    - main-deploy
   stage: deploy
   only:
     refs:
@@ -41,6 +53,24 @@ deploy:
   environment: main
   before_script:
     - docker-compose version
+    - echo VUE_APP_API_URL=$NODE_APP_API_URL >> .env
+  script:
+    - echo "Building Docker container"
+    - docker-compose down
+    - docker-compose up -d --build
+
+deploy-dev:
+  tags:
+    - cognate
+    - dev-deploy
+  stage: deploy
+  only:
+    refs:
+      - develop
+  environment: develop
+  before_script:
+    - docker-compose version
+    - echo VUE_APP_API_URL=$NODE_APP_API_URL >> .env
   script:
     - echo "Building Docker container"
     - docker-compose down

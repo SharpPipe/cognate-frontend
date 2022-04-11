@@ -1,16 +1,13 @@
 <template>
     <div>
         <div class="m-2 p-2 text-right">
-            Spent: 
-            <div class="display-3">
-            {{ spent }}h
-            </div>
-            <h2>
-            {{eap}}EAP
-            </h2>
-            Codelines:
+            Total Time Spent:
+            <div class="display-3">{{ round(totalStats.time_spent) }}h</div>
+            <h2>{{ eap(totalStats.time_spent) }}EAP</h2>Codelines:
             <h4>
-            {{ codelines }}
+                <font-awesome-icon icon="fa-solid fa-code" />
+                <span class="text-success"> +{{ totalStats.lines_added }}</span>
+                <span class="text-danger"> -{{ totalStats.lines_removed }}</span>
             </h4>
         </div>
     </div>
@@ -19,10 +16,13 @@
 <script>
 export default {
     name: "ProjectDevs",
-    props: ["spent", "codelines"],
-    computed : {
-        eap() {
-            return "--.-" //(this.spent / 26).toFixed(1)
+    props: ["totalStats"],
+    methods: {
+        eap(spent) {
+            return (spent / 26).toFixed(1)
+        },
+        round(spent) {
+            return spent.toFixed(0)
         }
     }
 }
