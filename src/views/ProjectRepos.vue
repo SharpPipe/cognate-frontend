@@ -1,14 +1,20 @@
 <template>
   <div class="repos">
     <div class="container">
-      <div class="row d-flex">
-        <div class="flex-grow-1">
-          <h2>{{ $route.params.name }}</h2>
-        </div>
-        <div class="text-muted">Group ID: {{ $route.params.group_id }}</div>
+      <div class="row justify-content-between">
+        <span class="h4 my-1 mr-3">Milestones</span>
+        <ProgressBar
+          v-if="refreshIsOngoing"
+          :currentPoints="(+refreshDetail.process.completion_percentage)"
+          :minPoints="0"
+          :maxPoints="100"
+          class="w-75 my-auto"
+        />
+        <button
+          class="btn-sm btn-primary float-right"
+          @click="refreshGroup($route.params.id)"
+        >Refresh</button>
       </div>
-
-      <h4>Milestones</h4>
 
       <table class="table table-borderless">
         <tr>
@@ -72,16 +78,27 @@
 import { Api } from "../axios-api";
 import RepoChartMini from "../components/visualizations/RepoChartMini";
 import PieChart from "../components/visualizations/PieChart.vue";
+import ProgressBar from "../components/ProgressBar.vue";
 
 export default {
   name: 'Home',
   components: {
     RepoChartMini,
-    PieChart
+    PieChart,
+    ProgressBar,
   },
   data() {
     return {
-      repos: null
+      repos: null,
+      refreshMeta: null,
+      refreshDetail: {
+        process: {
+          completion_percentage: 0,
+          status: "F"
+        }
+      },
+      refreshIsOngoing: false,
+      i: 0
     }
   },
   created() {
@@ -93,7 +110,33 @@ export default {
       .catch(err => {
         console.log(err)
       })
-
-  }
+  },
+  methods: {
+    async refreshGroup(id) {
+      Api.get('projects/' + id + "/update/")
+        .then(response => {
+          this.refreshMeta = response.data
+          this.refreshIsOngoing = true
+          console.log(this.refreshMeta)
+        })
+        .then(() => {
+          var int = setInterval(() => {
+            if (this.refreshIsOngoing) {
+              Api.get('process/' + this.refreshMeta.id + '/' + this.refreshMeta.hash + '/')
+                .then(res => {
+                  this.refreshDetail = res.data
+                  this.refreshIsOngoing = this.refreshDetail.process.status == "O"
+                })
+            }
+            else {
+              clearInterval(int)
+            }
+          }, 2000)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+  },
 }
 </script>

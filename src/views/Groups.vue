@@ -36,7 +36,8 @@
                     class="text-white"
                     v-if="group.rights.includes('O') || group.rights.includes('A')"
                   >
-                    <button class="btn btn-primary">GradingTree</button>
+                    <button class="btn-sm btn-primary m-1">GradingTree</button>
+
                   </router-link>
                 </div>
 
@@ -72,6 +73,6 @@ export default {
       .catch(err => {
         console.log(err)
       })
-  }
+  },
 }
 </script>
