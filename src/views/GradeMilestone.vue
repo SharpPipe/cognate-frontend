@@ -23,6 +23,7 @@
           :points="dev.data"
           :devName="dev.username"
           :spentTime="dev.spent_time"
+          :newendpoint="newendpoint"
           v-on:pointsChanged="updateRadar"
         />
       </div>
@@ -30,10 +31,7 @@
 
     <!--  Grade the whole team  -->
     <div class="row mx-3 p-1">
-      <RepoGradeTeam 
-        :radarData="radarData" 
-        v-on:teamPointsChanged="updateTeamPoints($event)"
-      />
+      <RepoGradeTeam :radarData="radarData" v-on:teamPointsChanged="updateTeamPoints($event)" />
     </div>
 
     <!--  Add Helpful Comment  -->
@@ -91,6 +89,7 @@ export default {
         project: null,
       },
       gittimedata: null,
+      newendpoint: false,
     }
   },
   methods: {
@@ -121,17 +120,28 @@ export default {
       this.radarData[3].value = 0
       this.radarData[4].value = 0
       for (var i in this.APIData.project_data) {
-        this.radarData[2].value += this.APIData.project_data[i].data[2].given_points / numStudents
-        this.radarData[3].value += this.APIData.project_data[i].data[3].given_points / numStudents
-        this.radarData[4].value += this.APIData.project_data[i].data[4].given_points / numStudents
+        if (this.newendpoint) {
+          this.radarData[2].value += this.APIData.project_data[i].data[2].given_points / numStudents
+          this.radarData[3].value += this.APIData.project_data[i].data[3].given_points / numStudents
+          this.radarData[4].value += this.APIData.project_data[i].data[4].given_points / numStudents
+        } else {
+          this.radarData[2].value += this.APIData.project_data[i].data[3].given_points / numStudents
+          this.radarData[3].value += this.APIData.project_data[i].data[4].given_points / numStudents
+          this.radarData[4].value += this.APIData.project_data[i].data[5].given_points / numStudents
+        }
       }
       this.key++;
     },
     makePayload() {
       let payload = []
       for (let i in this.APIData.project_data) {
-        this.APIData.project_data[i].data[0].given_points = this.radarData[0].value
-        this.APIData.project_data[i].data[1].given_points = this.radarData[1].value
+        if (this.newendpoint) {
+          this.APIData.project_data[i].data[0].given_points = this.radarData[0].value
+          this.APIData.project_data[i].data[1].given_points = this.radarData[1].value
+        } else {
+          this.APIData.project_data[i].data[1].given_points = this.radarData[0].value
+          this.APIData.project_data[i].data[2].given_points = this.radarData[1].value
+        }
         let studentpoints = []
         for (let p in this.APIData.project_data[i].data) {
           studentpoints[p] = {
@@ -146,14 +156,23 @@ export default {
     }
   },
   created() {
+    // Since Kristjan is a spicy boi, he decided it would be a good idea 
+    // to change the order of grade data that comes in from the endpoint
+    // for only the new milestones !!!! @markaa 11 apr 2022
+    this.newendpoint = this.$route.params.msid > 3
+
     Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/")
       .then(response => {
         this.APIData = response.data.data
         this.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
         // Initial team points
-        console.log(this.APIData.project_data)
-        this.radarData[0].value = this.APIData.project_data[0].data[0].given_points 
-        this.radarData[1].value = this.APIData.project_data[0].data[1].given_points 
+        if (this.newendpoint) {
+          this.radarData[0].value = this.APIData.project_data[0].data[0].given_points
+          this.radarData[1].value = this.APIData.project_data[0].data[1].given_points
+        } else {
+          this.radarData[0].value = this.APIData.project_data[0].data[1].given_points
+          this.radarData[1].value = this.APIData.project_data[0].data[2].given_points
+        }
         this.updateRadar()
       })
       .catch(err => {
@@ -171,7 +190,7 @@ export default {
   computed: {
     currentPoints() {
       let sum = 0
-      for (var grade in this.radarData) 
+      for (var grade in this.radarData)
         sum += +this.radarData[grade].value
       return sum
     }
