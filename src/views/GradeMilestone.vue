@@ -9,7 +9,7 @@
 
       <!--  GitTime  -->
       <div class="col-8 px-3" v-if="gittimedata.length">
-        <GitTime :gitdata="gittimedata" />
+        <GitTime :gitdata="gittimedata" :colours="devColours" />
       </div>
       <div class="col-8 px-3 m-auto" v-else>
         <h4 class="text-center text-warning">NO SPENT TIME DATA AVAILABLE</h4>
@@ -19,6 +19,7 @@
     <!--  Grade Individual Student  -->
     <div class="row m-1">
       <div class="col" :v-if="APIData" v-for="dev in APIData.project_data" :key="dev.id">
+        <RepoDeveloper :devData="dev" />
         <RepoGradeStudent
           :points="dev.data"
           :devName="dev.username"
@@ -61,6 +62,7 @@ import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
 import RepoGradeStudent from "../components/RepoGradeStudent.vue";
 import RepoGradeTeam from "../components/RepoGradeTeam.vue";
+import RepoDeveloper from "../components/RepoDeveloper.vue";
 import { Api } from "../axios-api"
 
 export default {
@@ -70,6 +72,7 @@ export default {
     RepoRadar,
     RepoGradeStudent,
     RepoGradeTeam,
+    RepoDeveloper,
   },
   data() {
     return {
@@ -90,6 +93,7 @@ export default {
       },
       gittimedata: null,
       newendpoint: false,
+      devColours: {},
     }
   },
   methods: {
@@ -174,6 +178,9 @@ export default {
           this.radarData[1].value = this.APIData.project_data[0].data[2].given_points
         }
         this.updateRadar()
+
+        this.devColours = {}
+        for (let dev of this.APIData.project_data) this.devColours[dev.username] = dev.colour
       })
       .catch(err => {
         console.log(err)

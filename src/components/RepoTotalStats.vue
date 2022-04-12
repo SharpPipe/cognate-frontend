@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="totalStats">
         <div class="m-2 p-2 text-right">
             Total Time Spent:
             <div class="display-3">{{ round(totalStats.time_spent) }}h</div>
