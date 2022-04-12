@@ -32,11 +32,11 @@ export default {
       const radius = (height - (margin * 2)) / 2 - 1
       const dotRadius = 4
       const axisCircles = 10
-      const axisLabelFactor = 1.3
+      //const axisLabelFactor = 1.3
       //const wrapWidth = 200
-      const axesLength = 5
+      const axesLength = radardata.length
       const axesDomain = radardata.map(d => d.axis)
-      const maxValue = 5
+      const maxValue = radardata.length
 
       let rScale = d3.scaleLinear()
         .domain([0, maxValue])
@@ -86,18 +86,47 @@ export default {
         .style("stroke", "#191d21")
         .style("stroke-width", "4px");
 
+      const arc = d3.arc()
+      axis.append("path")
+        .attr("id", (d, i) => `textArc${i}`)
+        .attr("d", (d, i) => {
+          // Cutoff point is half the circle + little offset
+          //if (i % 4 < 2) {
+          let angle = angleSlice * i
+          let offset = Math.PI / 16
+          if (angle < Math.PI /2 + offset || angle > Math.PI * 3 / 2 - offset) {
+            // Top Half
+            return arc({
+              innerRadius: radius * 0.95,
+              outerRadius: radius * 0.95,
+              startAngle: (angleSlice * i) - angleSlice / 2 + 0.05,
+              endAngle: (angleSlice * i) + angleSlice / 2 - 0.05
+            })
+          } else {
+            // Bottom Half
+            return arc({
+              innerRadius: radius * 0.95,
+              outerRadius: radius * 0.95,
+              startAngle: (angleSlice * i) + angleSlice / 2 - 0.05,
+              endAngle: (angleSlice * i) - angleSlice / 2 + 0.05
+            })
+          }
+        })
+        .attr("fill", "none")
+        .attr("stroke", "none")
+
       axis.append("text")
-        .attr("class", "legend")
-        .style("font-size", "20px")
-        .style("font-weight", "400")
-        .style("fill", "#6e6")
-        .style("opacity", "0.3")
         .attr("text-anchor", "middle")
-        .attr("font-family", "sans-serif")
-        .attr("dy", "-0.35em")
-        .attr("x", (d, i) => rScale(maxValue * axisLabelFactor * 0.65) * Math.cos(angleSlice * i - Math.PI / 2))
-        .attr("y", (d, i) => rScale(maxValue * axisLabelFactor * 0.70) * Math.sin(angleSlice * i - Math.PI / 2)+ 10)
-        .text(d => d)
+        .append("textPath")
+          .attr("href", (d, i) => `#textArc${i}`)
+          .style("fill", "#ff7f0e")
+          .attr("dominant-baseline", "middle")
+          .attr("startOffset", "25%")
+          .style("font-size", "24px")
+          .style("font-weight", "400")
+          .style("fill", "#6e6")
+          .style("opacity", "0.4")
+          .text(d => d)
 
       let c = '#66ee66'
       const plots = container.append('g')

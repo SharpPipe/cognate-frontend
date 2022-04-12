@@ -98,11 +98,11 @@ export default {
   data() {
     return {
       radarData: [
-        { axis: "Retro", value: 0 },
-        { axis: "Meeting", value: 0 },
-        { axis: "Branch management", value: 0 },
+        { axis: "Retro",    value: 0 },
+        { axis: "Meeting",  value: 0 },
+        { axis: "Branches", value: 0 },
         { axis: "Planning", value: 0 },
-        { axis: "Issues", value: 0 },
+        { axis: "Issues",   value: 0 },
       ],
       currentPoints: 30,
       minCoursePoints: 0,
