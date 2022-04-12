@@ -53,11 +53,14 @@
 
             <td class="p-1 col-4">
               <div v-if="repo.mentors && repo.mentors.length > 0">
-                <span class="badge badge-dark">{{ repo.mentors[0] }} asdfa</span>
+                <span class="badge badge-dark">{{ repo.mentors[0] }}</span>
                 <br />
               </div>
               <span v-for="(dev, i) in repo.users" :key="i" class="pr-1">
-                <div v-if="dev.points > 0" class="badge badge-success">
+                <div class="badge badge-dark">
+                  <svg class="m-0 p-0" height="12" width="12">
+                    <circle cx="6" cy="6" r="6" :fill="`#${dev.colour}`" />
+                  </svg>
                   {{ dev.name }}:
                   <small>{{ Math.round(dev.points) }}</small>
                 </div>

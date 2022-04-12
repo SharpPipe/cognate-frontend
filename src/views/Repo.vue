@@ -58,8 +58,8 @@
       </table>
 
       <!--  Graph  -->
-      <div class="row" v-if="gittimedata">
-        <GitTime class="w-100" :gitdata="gittimedata" />
+      <div class="row" v-if="gittimedata.length && devColours.loaded" >
+        <GitTime class="w-100" :gitdata="gittimedata" :colours="devColours.users" />
       </div>
 
       <!--  Comments  -->
@@ -115,11 +115,24 @@ export default {
       comments: [],
       projectDetails: [],
 
-      gittimedata: null,
+      gittimedata: [],
+      devColours: {
+        loaded: false,
+        users: {}
+      },
     }
   },
   created() {
     const repoid = this.$route.params.repoid
+    Api.get("/projects/" + repoid + "/")
+      .then(response => {
+        this.projectDetails = response.data
+        for (let dev of this.projectDetails.developers) this.devColours["users"][dev.username] = dev.colour
+        this.devColours.loaded = true
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
     Api.get("/feedback/", { params: { type: "PA", project: repoid } })
       .then(response => {
@@ -129,13 +142,6 @@ export default {
         console.log(err)
       })
 
-    Api.get("/projects/" + repoid + "/")
-      .then(response => {
-        this.projectDetails = response.data
-      })
-      .catch(err => {
-        console.log(err)
-      })
 
     Api.get('/projects/' + repoid + "/time_spent/",
       {

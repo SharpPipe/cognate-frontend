@@ -1,5 +1,5 @@
 <template>
-  <svg :viewBox="`0 0 ${width} ${height}`" id="gittime" />
+  <svg v-if="colours" :viewBox="`0 0 ${width} ${height}`" id="gittime" />
 </template>
 
 <script>
@@ -11,7 +11,7 @@ let data
 
 export default {
   name: "GitTime",
-  props: ["gitdata"],
+  props: ["gitdata", "colours"],
   data() {
     return {
       width, height,
@@ -19,11 +19,11 @@ export default {
     }
   },
   mounted() {
-
     this.data = this.gitdata.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
     this.data = this.timezoneOffset(this.data)
     this.data = this.underflow(this.data)
-    this.renderGraph()
+
+    this.renderGraph(this.colours)
   },
   methods: {
     timezoneOffset(data) {
@@ -52,7 +52,7 @@ export default {
       return data
 
     },
-    renderGraph() {
+    renderGraph(colours) {
       // Git Log code inspired by and definitely not directly stolen from 
       // https://observablehq.com/@webapelsin/git-log
       if (!this.data.length) return
@@ -75,14 +75,12 @@ export default {
         .range([height - margins.bottom, margins.top])
 
 
-      let c = (devName, highlight) => {
-        let scaled = 0
-        scaled = (360 / 26) * (devName.charCodeAt(0) - 97)
-        scaled += (360 / 26 ** 2) * (devName.charCodeAt(1) - 97)
-        if (highlight) {
-          return d3.hsl(scaled, 1, 0.7, 1)
-        } else {
-          return d3.hsl(scaled, 0.7, 0.6, 0.75)
+      let c = (devName, hover) => {
+        if (hover) {
+          return "#" + colours[devName] + "ff"
+        }
+        else {
+          return "#" + colours[devName] + "aa"
         }
       }
 
@@ -143,7 +141,10 @@ export default {
         .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60))
         .attr("x2", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
         .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60)))
-        .attr("stroke", d => c(d.user, false))
+        .attr("stroke", d => {
+          let col = c(d.user, false) 
+          return col
+        })
         .attr("stroke-width", -dayWidth)
         .attr("ref", "line")
         .on("mouseover", (event, d) => {

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <RepoDeveloper :name="devName" :spentTime="spentTime" />
 
         <div v-if="points" class="form-group">
             <div class="row no-gutters">
@@ -126,13 +125,12 @@
 
 <script>
 import ProgressBar from "./ProgressBar.vue";
-import RepoDeveloper from "./RepoDeveloper.vue";
 import $ from 'jquery';
 
 export default {
     name: "RepoGradeStudent",
     props: ["points", "devName", "spentTime", "newendpoint"],
-    components: { ProgressBar, RepoDeveloper },
+    components: { ProgressBar },
     computed: {
         currentPoints() {
             let sum = 0

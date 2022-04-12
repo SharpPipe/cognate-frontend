@@ -11,9 +11,9 @@
                 <div class="row m-0 justify-content-between">
                     <span>
                         <font-awesome-icon icon="fa-regular fa-clock" />
-                        <span class="w-25"> {{ this.spent(devData.time_spent) }}h</span>
+                        <span class="w-25"> {{ this.spent(devData.time_spent || devData.spent_time) }}h</span>
                     </span>
-                    <span class="float-right">
+                    <span v-if="devData.lines_added || devData.lines_removed" class="float-right">
                         <font-awesome-icon icon="fa-solid fa-code" />
                         <span class="text-success"> +{{ devData.lines_added }}</span>
                         <span class="text-danger"> -{{ devData.lines_removed }}</span>
