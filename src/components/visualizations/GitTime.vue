@@ -16,7 +16,6 @@ export default {
     return {
       width, height,
       data: [],
-      devColors: {},
     }
   },
   mounted() {
@@ -145,7 +144,6 @@ export default {
         .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60)))
         .attr("stroke", d => {
           let col = c(d.user, false) 
-          console.log(col)
           return col
         })
         .attr("stroke-width", -dayWidth)

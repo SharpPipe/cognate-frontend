@@ -58,10 +58,8 @@
       </table>
 
       <!--  Graph  -->
-      <div class="row" v-if="gittimedata.length && devColours != {}" >
-        <p>{{devColours}}</p>
-        <GitTime class="w-100" :gitdata="gittimedata" :colours="devColours" />
-
+      <div class="row" v-if="gittimedata.length && devColours.loaded" >
+        <GitTime class="w-100" :gitdata="gittimedata" :colours="devColours.users" />
       </div>
 
       <!--  Comments  -->
@@ -118,7 +116,10 @@ export default {
       projectDetails: [],
 
       gittimedata: [],
-      devColours: {},
+      devColours: {
+        loaded: false,
+        users: {}
+      },
     }
   },
   created() {
@@ -126,8 +127,8 @@ export default {
     Api.get("/projects/" + repoid + "/")
       .then(response => {
         this.projectDetails = response.data
-        this.devColours = {}
-        for (let dev of this.projectDetails.developers) this.devColours[dev.username] = dev.colour
+        for (let dev of this.projectDetails.developers) this.devColours["users"][dev.username] = dev.colour
+        this.devColours.loaded = true
       })
       .catch(err => {
         console.log(err)
