@@ -11,8 +11,8 @@
 
       <!--  Overview data  -->
       <div class="row m-1">
-        <div class="col-4 p-0">
-          <RepoRadar class="p-1" :radardata="radarData" />
+        <div class="col-4 p-0" v-if="radar.length">
+          <RepoRadar class="p-1"  :radardata="radar" />
         </div>
 
         <div class="col-5 p-0 d-flex flex-column align-content-stretch">
@@ -35,7 +35,11 @@
       <!--  Sprints  -->
       <table class="table table-borderless">
         <tr>
-          <td v-for="milestone in projectDetails.milestones" :key="milestone.milestone_id" class="m-1 p-1">
+          <td
+            v-for="milestone in projectDetails.milestones"
+            :key="milestone.milestone_id"
+            class="m-1 p-1"
+          >
             <router-link
               :to="{
                 name: 'grade-milestone',
@@ -48,17 +52,14 @@
                 }
               }"
             >
-              <RepoMilestoneCard
-                class="m-0"
-                :msData="milestone"
-              />
+              <RepoMilestoneCard class="m-0" :msData="milestone" />
             </router-link>
           </td>
         </tr>
       </table>
 
       <!--  Graph  -->
-      <div class="row" v-if="gittimedata.length && devColours.loaded" >
+      <div class="row" v-if="gittimedata.length && devColours.loaded">
         <GitTime class="w-100" :gitdata="gittimedata" :colours="devColours.users" />
       </div>
 
@@ -98,11 +99,13 @@ export default {
   data() {
     return {
       radarData: [
-        { axis: "Retro",    value: 0 },
-        { axis: "Meeting",  value: 0 },
-        { axis: "Branches", value: 0 },
-        { axis: "Planning", value: 0 },
-        { axis: "Issues",   value: 0 },
+        [
+          { axis: "Retro", value: 1 },
+          { axis: "Meeting", value: 3 },
+          { axis: "Branches", value: 2 },
+          { axis: "Planning", value: 2 },
+          { axis: "Issues", value: 1 },
+        ]
       ],
       currentPoints: 30,
       minCoursePoints: 0,
@@ -115,6 +118,7 @@ export default {
       comments: [],
       projectDetails: [],
 
+      radar: [],
       gittimedata: [],
       devColours: {
         loaded: false,
@@ -129,6 +133,9 @@ export default {
         this.projectDetails = response.data
         for (let dev of this.projectDetails.developers) this.devColours["users"][dev.username] = dev.colour
         this.devColours.loaded = true
+
+        this.radar = this.formatMilestonePointsForRadarGraph(this.projectDetails.milestones)
+
       })
       .catch(err => {
         console.log(err)
@@ -161,6 +168,41 @@ export default {
   methods: {
     formatedTime(timeString) {
       return new Date(timeString).toUTCString()
+    },
+    formatMilestonePointsForRadarGraph(milestones) {
+      // This is the result of Kristjan building bad APIs 
+      let numOfDevs = milestones[0].user_points.length
+      for (let ms of milestones) {
+        let r =
+          [
+            { axis: "Retro", value: 0 },
+            { axis: "Meeting", value: 0 },
+            { axis: "Branch management", value: 0 },
+            { axis: "Planning", value: 0 },
+            { axis: "Issues", value: 0 },
+          ]
+        for (let user of ms.user_points) {
+          for (let key in user.grades) {
+            if (key !== "Effort") {
+              if (key === "Meeting" || key === "Retro")
+                r.find(o => o.axis == key).value = user.grades[key]
+              else
+                r.find(o => o.axis == key).value += user.grades[key] / numOfDevs
+            }
+          }
+        }
+        this.radar = this.radar.concat(Array(r))
+        r =
+          [
+            { axis: "Retro", value: 0 },
+            { axis: "Meeting", value: 0 },
+            { axis: "Branch management", value: 0 },
+            { axis: "Planning", value: 0 },
+            { axis: "Issues", value: 0 },
+          ]
+      }
+
+      return this.radar
     }
   },
 }

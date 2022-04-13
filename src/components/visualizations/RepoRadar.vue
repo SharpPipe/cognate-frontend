@@ -16,7 +16,7 @@ export default {
   mounted() {
     this.drawChart(this.radardata)
     // add watcher for radardata
-    this.radardata.forEach(d => this.$watch(() => d.value, this.onRadarDataChange))
+    this.radardata[0].forEach(d => this.$watch(() => d.value, this.onRadarDataChange))
   },
   methods: {
     onRadarDataChange() {
@@ -34,9 +34,9 @@ export default {
       const axisCircles = 10
       //const axisLabelFactor = 1.3
       //const wrapWidth = 200
-      const axesLength = radardata.length
-      const axesDomain = radardata.map(d => d.axis)
-      const maxValue = radardata.length
+      const axesLength = radardata[0].length
+      const axesDomain = radardata[0].map(d => d.axis)
+      const maxValue = radardata[0].length
 
       let rScale = d3.scaleLinear()
         .domain([0, maxValue])
@@ -86,12 +86,12 @@ export default {
         .style("stroke", "#191d21")
         .style("stroke-width", "4px");
 
+      // Labels
       const arc = d3.arc()
       axis.append("path")
         .attr("id", (d, i) => `textArc${i}`)
         .attr("d", (d, i) => {
           // Cutoff point is half the circle + little offset
-          //if (i % 4 < 2) {
           let angle = angleSlice * i
           let offset = Math.PI / 16
           if (angle < Math.PI /2 + offset || angle > Math.PI * 3 / 2 - offset) {
@@ -122,32 +122,36 @@ export default {
           .style("fill", "#ff7f0e")
           .attr("dominant-baseline", "middle")
           .attr("startOffset", "25%")
-          .style("font-size", "24px")
+          .style("font-size", "25px")
           .style("font-weight", "400")
           .style("fill", "#6e6")
           .style("opacity", "0.4")
           .text(d => d)
 
+      // Line
       let c = '#66ee66'
+      let g = '#222222'
       const plots = container.append('g')
         .selectAll('g')
         .data([radardata])
-        //.data(data)
         .join('g')
         .attr("fill", c)
         .style("fill-opacity", 0.8)
         .attr("stroke", c)
         .style("stroke_width", "3px");
-
-      plots.append('path')
+      
+      plots.append('g')
+        .selectAll('something')
+        .data(d => d)
+        .enter().append("path")
         .attr("d", d => radarLine(d.map(v => v.value)))
-        .attr("fill", c)
-        .attr("fill-opacity", 0.1)
-        .attr("stroke", c)
+        .attr("fill", (d, i) => (i == radardata.length - 1) ? c : g)
+        .attr("fill-opacity", 0.15)
+        .attr("stroke", (d, i) => (i == radardata.length - 1) ? c : g)
         .attr("stroke-width", 2);
 
       plots.selectAll("circle")
-        .data(d => d)
+        .data(d => d[radardata.length - 1])
         .join("circle")
         .attr("r", dotRadius)
         .attr("cx", (d, i) => rScale(d.value) * Math.cos(angleSlice * i - Math.PI / 2))

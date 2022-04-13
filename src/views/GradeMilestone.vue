@@ -3,8 +3,8 @@
     <h3>{{ APIData.project_name }}</h3>
     <div class="row m-1">
       <!--  RepoRadar  -->
-      <div class="col-4 p-0" v-if="radarData">
-        <RepoRadar :radardata="radarData" :key="key" />
+      <div class="col-4 p-0" v-if="radarData.length">
+        <RepoRadar :radardata="Array(radarData)" :key="key" />
       </div>
 
       <!--  GitTime  -->
@@ -82,7 +82,7 @@ export default {
       radarData: [
         { axis: "Retro", value: 0 },
         { axis: "Meeting", value: 0 },
-        { axis: "Branch management", value: 0 },
+        { axis: "Branches", value: 0 },
         { axis: "Planning", value: 0 },
         { axis: "Issues", value: 0 },
       ],
@@ -116,6 +116,9 @@ export default {
       }
     },
     updateTeamPoints(event) {
+      this.radarData[0].value = +this.radarData[0].value
+      this.radarData[1].value = +this.radarData[1].value
+      console.log(event)
       return event
     },
     updateRadar() {
