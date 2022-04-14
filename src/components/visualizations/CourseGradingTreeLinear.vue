@@ -69,7 +69,8 @@ export default {
   },
   methods: {
     countSubnodes(node) {
-      if (node.children === undefined) return 1
+      if (node.children === undefined || node.children === null) return 1
+      console.log(node.children)
       let n = 0
       for (let c of node.children) n += this.countSubnodes(c)
       return n
