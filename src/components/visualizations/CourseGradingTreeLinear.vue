@@ -70,7 +70,6 @@ export default {
   methods: {
     countSubnodes(node) {
       if (node.children === undefined || node.children === null) return 1
-      console.log(node.children)
       let n = 0
       for (let c of node.children) n += this.countSubnodes(c)
       return n
@@ -150,7 +149,7 @@ export default {
       nodeEnter
         .append("circle")
         .attr("r", 12)
-        .attr("fill", (d) => (d._children ? "#444" : "#aaa"))
+        .attr("fill", (d) => (d._children ? "#ccc" : "#ccc"))
         .attr("stroke-width", 10);
 
       nodeEnter
