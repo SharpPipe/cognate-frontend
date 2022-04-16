@@ -4,7 +4,7 @@
     <div class="row m-1">
       <!--  RepoRadar  -->
       <div class="col-4 p-0" v-if="radarData.length">
-        <RepoRadar :radardata="Array(radarData)" :key="key" />
+        <RepoRadar :radardata="radarData" :key="key" />
       </div>
 
       <!--  GitTime  -->
@@ -20,12 +20,12 @@
     <div class="row m-1">
       <div class="col" :v-if="APIData" v-for="dev in APIData.users_data" :key="dev.id">
         <RepoDeveloper :devData="dev" />
-        <RepoGradeStudent :points="dev.data" v-on:pointsChanged="updateRadar" />
+        <RepoGradeStudent :points="dev.data" v-on:pointsChanged="updateRadar()" />
         <ProgressBar
-            class="mb-2"
-            :currentPoints="currentPoints(dev.data)"
-            minPoints="0"
-            :maxPoints="maxPoints()"
+          class="mb-2"
+          :currentPoints="currentPoints(dev.data)"
+          minPoints="0"
+          :maxPoints="maxPoints()"
         />
       </div>
     </div>
@@ -33,10 +33,7 @@
     <!--  Grade the whole team  -->
     <div class="row mx-3 p-1">
       <!--         :teamPoints="APIData.project_data" -->
-      <RepoGradeTeam
-        :teamPoints="APIData.project_data"
-        v-on:teamPointsChanged="updateTeamPoints($event)"
-      />
+      <RepoGradeTeam :teamPoints="APIData.project_data" v-on:teamPointsChanged="updateRadar()" />
     </div>
 
     <!--  Add Helpful Comment  -->
@@ -87,11 +84,13 @@ export default {
       msg: null,
       APIData: null,
       radarData: [
-        { axis: "Retro", value: 0 },
-        { axis: "Meeting", value: 0 },
-        { axis: "Branches", value: 0 },
-        { axis: "Planning", value: 0 },
-        { axis: "Issues", value: 0 },
+        [
+          { axis: "Retro", value: 0 },
+          { axis: "Meeting", value: 0 },
+          { axis: "Branch management", value: 0 },
+          { axis: "Planning", value: 0 },
+          { axis: "Issues", value: 0 },
+        ],
       ],
       payload: {
         feedback: "",
@@ -120,12 +119,22 @@ export default {
           })
       }
     },
-    updateTeamPoints(event) {
-      this.radarData[0].value = +this.radarData[0].value
-      this.radarData[1].value = +this.radarData[1].value
-      return event
-    },
     updateRadar() {
+      let num_students = this.APIData.users_data.length
+      for (let radarAxis of this.radarData[0]) radarAxis.value = 0
+
+      for (let student of this.APIData.users_data)  {
+        for (let student_grade of student.data)  {
+          let axis = this.radarData[0].find(a => a.axis == student_grade.name)
+          if (axis) axis.value += student_grade.given_points / num_students
+        }
+      }
+
+      for (let project_grade of this.APIData.project_data) {
+        let axis = this.radarData[0].find(a => a.axis == project_grade.name)
+        if (axis) axis.value = project_grade.given_points
+      }
+
       this.key++;
     },
     makePayload() {
@@ -178,16 +187,15 @@ export default {
     // Since Kristjan is a spicy boi, he decided it would be a good idea 
     // to change the order of grade data that comes in from the endpoint
     // for only the new milestones !!!! @markaa 11 apr 2022
-    this.newendpoint = this.$route.params.msid > 3
 
     Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/")
       .then(response => {
         this.APIData = response.data.data
 
         this.APIData.project_data.forEach(d => d.given_points = +d.given_points)
-        this.APIData.users_data.forEach(d => d.data.forEach(d => d.given_points = +d.given_points ))
+        this.APIData.users_data.forEach(d => d.data.forEach(d => d.given_points = +d.given_points))
 
-        //this.updateRadar()
+        this.updateRadar()
 
         for (let dev of this.APIData.users_data) this.devColours[dev.username] = dev.colour
       })

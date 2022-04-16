@@ -9,7 +9,7 @@
                         data-placement="top"
                         :title="point.description"
                     >{{ point.name }}</label>
-                    <p class="ml-auto mr-0 text-muted">{{ point.given_points }}/5</p>
+                    <p class="ml-auto mr-0 text-muted">{{ point.given_points }}/{{ +point.total }}</p>
                 </div>
                 <input
                     type="range"
