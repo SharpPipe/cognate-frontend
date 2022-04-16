@@ -1,6 +1,6 @@
 <template>
   <div class="repos">
-    <div class="container">
+    <div class="container" v-if="repos">
       <div class="row justify-content-between">
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar

@@ -18,21 +18,25 @@
 
     <!--  Grade Individual Student  -->
     <div class="row m-1">
-      <div class="col" :v-if="APIData" v-for="dev in APIData.project_data" :key="dev.id">
+      <div class="col" :v-if="APIData" v-for="dev in APIData.users_data" :key="dev.id">
         <RepoDeveloper :devData="dev" />
-        <RepoGradeStudent
-          :points="dev.data"
-          :devName="dev.username"
-          :spentTime="dev.spent_time"
-          :newendpoint="newendpoint"
-          v-on:pointsChanged="updateRadar"
+        <RepoGradeStudent :points="dev.data" v-on:pointsChanged="updateRadar" />
+        <ProgressBar
+            class="mb-2"
+            :currentPoints="currentPoints(dev.data)"
+            minPoints="0"
+            :maxPoints="maxPoints()"
         />
       </div>
     </div>
 
     <!--  Grade the whole team  -->
     <div class="row mx-3 p-1">
-      <RepoGradeTeam :radarData="radarData" v-on:teamPointsChanged="updateTeamPoints($event)" />
+      <!--         :teamPoints="APIData.project_data" -->
+      <RepoGradeTeam
+        :teamPoints="APIData.project_data"
+        v-on:teamPointsChanged="updateTeamPoints($event)"
+      />
     </div>
 
     <!--  Add Helpful Comment  -->
@@ -63,7 +67,9 @@ import GitTime from "../components/visualizations/GitTime";
 import RepoGradeStudent from "../components/RepoGradeStudent.vue";
 import RepoGradeTeam from "../components/RepoGradeTeam.vue";
 import RepoDeveloper from "../components/RepoDeveloper.vue";
+import ProgressBar from "../components/ProgressBar.vue";
 import { Api } from "../axios-api"
+import _ from "lodash"
 
 export default {
   name: 'Repo',
@@ -73,6 +79,7 @@ export default {
     RepoGradeStudent,
     RepoGradeTeam,
     RepoDeveloper,
+    ProgressBar,
   },
   data() {
     return {
@@ -89,10 +96,9 @@ export default {
       payload: {
         feedback: "",
         type: "PA",
-        project: null,
+        project: this.$route.params.repoid,
       },
-      gittimedata: null,
-      newendpoint: false,
+      gittimedata: [],
       devColours: {},
     }
   },
@@ -108,7 +114,6 @@ export default {
           console.log(err)
         })
       if (this.payload.feedback) {
-        this.payload.project = this.$route.params.repoid
         Api.post('/feedback/', this.payload)
           .catch(err => {
             console.log(err)
@@ -118,48 +123,55 @@ export default {
     updateTeamPoints(event) {
       this.radarData[0].value = +this.radarData[0].value
       this.radarData[1].value = +this.radarData[1].value
-      console.log(event)
       return event
     },
     updateRadar() {
-      var numStudents = this.APIData.project_data.length
-      this.radarData[2].value = 0
-      this.radarData[3].value = 0
-      this.radarData[4].value = 0
-      for (var i in this.APIData.project_data) {
-        if (this.newendpoint) {
-          this.radarData[2].value += this.APIData.project_data[i].data[2].given_points / numStudents
-          this.radarData[3].value += this.APIData.project_data[i].data[3].given_points / numStudents
-          this.radarData[4].value += this.APIData.project_data[i].data[4].given_points / numStudents
-        } else {
-          this.radarData[2].value += this.APIData.project_data[i].data[3].given_points / numStudents
-          this.radarData[3].value += this.APIData.project_data[i].data[4].given_points / numStudents
-          this.radarData[4].value += this.APIData.project_data[i].data[5].given_points / numStudents
-        }
-      }
       this.key++;
     },
     makePayload() {
       let payload = []
-      for (let i in this.APIData.project_data) {
-        if (this.newendpoint) {
-          this.APIData.project_data[i].data[0].given_points = this.radarData[0].value
-          this.APIData.project_data[i].data[1].given_points = this.radarData[1].value
-        } else {
-          this.APIData.project_data[i].data[1].given_points = this.radarData[0].value
-          this.APIData.project_data[i].data[2].given_points = this.radarData[1].value
-        }
+
+      // Individual team grades
+      for (let user of this.APIData.users_data) {
         let studentpoints = []
-        for (let p in this.APIData.project_data[i].data) {
-          studentpoints[p] = {
-            "user_group_id": this.APIData.project_data[i].id,
-            "grade_id": this.APIData.project_data[i].data[p].id,
-            "points": +this.APIData.project_data[i].data[p].given_points
-          }
+        for (let p of user.data) {
+          studentpoints.push(
+            {
+              "user_group_id": user.id,
+              "grade_id": p.id,
+              "points": +p.given_points
+            }
+          )
+        }
+        payload.push.apply(payload, studentpoints)
+      }
+
+      // Whole team grades
+      let user_ids = this.APIData.users_data.map(u => u.id)
+      for (let user_id of user_ids) {
+        let studentpoints = []
+        for (let p of this.APIData.project_data) {
+          studentpoints.push(
+            {
+              "user_group_id": user_id,
+              "grade_id": p.id,
+              "points": +p.given_points
+            }
+          )
         }
         payload.push.apply(payload, studentpoints)
       }
       return payload
+    },
+    currentPoints(devData) {
+      let student_total = devData.map(p => +p.given_points)
+      let project_total = this.APIData.project_data.map(p => +p.given_points)
+      return _.sum(student_total) + _.sum(project_total)
+    },
+    maxPoints() {
+      let student_total = this.APIData.users_data[0].data.map(p => +p.total)
+      let project_total = this.APIData.project_data.map(p => +p.total)
+      return _.sum(student_total) + _.sum(project_total)
     }
   },
   created() {
@@ -171,19 +183,13 @@ export default {
     Api.get('/projects/' + this.$route.params.repoid + "/milestone/" + this.$route.params.msid + "/")
       .then(response => {
         this.APIData = response.data.data
-        this.APIData.project_data.forEach(d => d.data.forEach(d => { return d.given_points = +d.given_points }))
-        // Initial team points
-        if (this.newendpoint) {
-          this.radarData[0].value = this.APIData.project_data[0].data[0].given_points
-          this.radarData[1].value = this.APIData.project_data[0].data[1].given_points
-        } else {
-          this.radarData[0].value = this.APIData.project_data[0].data[1].given_points
-          this.radarData[1].value = this.APIData.project_data[0].data[2].given_points
-        }
-        this.updateRadar()
 
-        this.devColours = {}
-        for (let dev of this.APIData.project_data) this.devColours[dev.username] = dev.colour
+        this.APIData.project_data.forEach(d => d.given_points = +d.given_points)
+        this.APIData.users_data.forEach(d => d.data.forEach(d => d.given_points = +d.given_points ))
+
+        //this.updateRadar()
+
+        for (let dev of this.APIData.users_data) this.devColours[dev.username] = dev.colour
       })
       .catch(err => {
         console.log(err)
@@ -198,12 +204,6 @@ export default {
       })
   },
   computed: {
-    currentPoints() {
-      let sum = 0
-      for (var grade in this.radarData)
-        sum += +this.radarData[grade].value
-      return sum
-    }
   },
 }
 </script>
