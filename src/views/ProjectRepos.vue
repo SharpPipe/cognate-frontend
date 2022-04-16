@@ -1,6 +1,6 @@
 <template>
   <div class="repos">
-    <div class="container">
+    <div class="container" v-if="repos">
       <div class="row justify-content-between">
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar
@@ -10,10 +10,18 @@
           :maxPoints="100"
           class="w-75 my-auto"
         />
-        <button
-          class="btn-sm btn-primary float-right"
-          @click="refreshGroup($route.params.id)"
-        >Refresh</button>
+        <div v-if="repos.rights.includes('O') || repos.rights.includes('A')">
+          <button
+            class="btn-sm btn-secondary float-right"
+            @click="refreshGroup($route.params.id)"
+          >Refresh</button>
+          <router-link tag="button" class="btn-sm btn-secondary float-right"
+              :to="{
+                name: 'group-admin-view',
+                params: { id: $route.params.id }
+              }"
+          >Config</router-link>
+        </div>
       </div>
 
       <table class="table table-borderless">
@@ -39,7 +47,7 @@
 
       <div v-if="repos">
         <table class="table">
-          <tr v-for="repo in repos" :key="repo.id">
+          <tr v-for="repo in repos.data" :key="repo.id">
             <td v-if="repo.users" class="p-1">
               <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users" />
             </td>

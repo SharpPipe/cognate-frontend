@@ -36,7 +36,7 @@ export default {
       //const wrapWidth = 200
       const axesLength = radardata[0].length
       const axesDomain = radardata[0].map(d => d.axis)
-      const maxValue = radardata[0].length
+      const maxValue = 5
 
       let rScale = d3.scaleLinear()
         .domain([0, maxValue])
@@ -99,16 +99,16 @@ export default {
             return arc({
               innerRadius: radius * 0.95,
               outerRadius: radius * 0.95,
-              startAngle: (angleSlice * i) - angleSlice / 2 + 0.05,
-              endAngle: (angleSlice * i) + angleSlice / 2 - 0.05
+              startAngle: (angleSlice * i) - angleSlice / 2 - 0.03,
+              endAngle: (angleSlice * i) + angleSlice / 2 + 0.03
             })
           } else {
             // Bottom Half
             return arc({
               innerRadius: radius * 0.95,
               outerRadius: radius * 0.95,
-              startAngle: (angleSlice * i) + angleSlice / 2 - 0.05,
-              endAngle: (angleSlice * i) - angleSlice / 2 + 0.05
+              startAngle: (angleSlice * i) + angleSlice / 2 + 0.03,
+              endAngle: (angleSlice * i) - angleSlice / 2 - 0.03
             })
           }
         })
@@ -122,7 +122,7 @@ export default {
           .style("fill", "#ff7f0e")
           .attr("dominant-baseline", "middle")
           .attr("startOffset", "25%")
-          .style("font-size", "25px")
+          .style("font-size", "20px")
           .style("font-weight", "400")
           .style("fill", "#6e6")
           .style("opacity", "0.4")

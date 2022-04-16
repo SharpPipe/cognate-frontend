@@ -1,7 +1,7 @@
 <template>
     <div class="border rounded">
         <div class="row m-1">
-            <svg class="m-1" height="40" width="40">
+            <svg class="m-2 my-auto" height="40" width="40">
                 <circle cx="20" cy="20" r="20" :fill="`#${devData.colour}`" />
             </svg>
             <div class="w-75">

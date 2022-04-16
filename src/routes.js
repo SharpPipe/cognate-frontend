@@ -98,6 +98,14 @@ export default new VueRouter({
             }
         },
         {
+            path: '/group/:id/config/',
+            name: 'group-admin-view',
+            component: () => import("./views/GroupAdminView"),
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
             path: '/group/:id/grading/',
             name: 'grading',
             component: () => import("./views/Grading"),
