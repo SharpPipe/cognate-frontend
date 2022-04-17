@@ -29,7 +29,7 @@
                             <div class="col p-0">
                                 <select
                                     required
-                                    class="form-control my-0"
+                                    class="custom-select form-control my-0"
                                     v-model="payload.children_type"
                                 >
                                     <option
