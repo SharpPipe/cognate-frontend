@@ -13,7 +13,7 @@
         </div>
 
         <DragBoard
-          class="py-1 w-75 float-left bg-dark h-100 "
+          class="py-1 w-75 float-left bg-dark h-100 flex-grow-1"
           :id="`board-${project.id}`"
           v-on:cardDropped="changeProject"
         >
@@ -24,11 +24,12 @@
             draggable="true"
             class="d-block bg-secondary px-2 py-1 my-3 ml-3 mr-0"
           >
-            <a :href="repo.url">
+            <a :href="repo.url" target="_blank">
               <font-awesome-icon icon="fa-brands fa-gitlab" />
             </a>
             {{ repo.name }}
           </DragCard>
+          <div class="py-3" /> <!-- Needed so the DragBoard doesn't shrink -->
         </DragBoard>
       </div>
 
