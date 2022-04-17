@@ -11,22 +11,22 @@
           <div class="w-25 p-3 my-2 float-left">
             <div>
               <div class="h3">Milestone {{ ms.milestone_order_id }}</div>
-              <div class="mr-1 badge badge-pill badge-secondary">
-                {{ ms.start.substring(0, 10) }}
-              </div>
-              <div class="badge badge-pill badge-secondary">
-                {{ ms.end.substring(0, 10) }}
-              </div>
+              <div class="mr-1 badge badge-pill badge-secondary">{{ ms.start.substring(0, 10) }}</div>
+              <div class="badge badge-pill badge-secondary">{{ ms.end.substring(0, 10) }}</div>
             </div>
           </div>
 
-          <DragBoard class="p-2 w-75 float-left bg-dark" :id="`board-${ms.id}`">
+          <DragBoard
+            class="p-2 w-75 float-left bg-dark"
+            :id="`board-${ms.id}`"
+            v-on:cardDropped="changeMilestone"
+          >
             <DragCard
               :id="`card-${gitlab_ms.id}`"
               draggable="true"
               v-for="gitlab_ms in ms.gl_milestones"
               :key="gitlab_ms.id"
-              class="justify-content-center bg-secondary px-4 py-2 m-3"
+              class="justify-content-center d-flex bg-secondary px-4 py-2 m-3"
             >
               <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
               {{ gitlab_ms.title }}
@@ -44,11 +44,15 @@
             <div class="h3">Unmatched</div>
           </div>
 
-          <DragBoard class="p-2 w-75 float-left bg-dark" id="board-unmatched">
+          <DragBoard
+            class="p-2 w-75 float-left bg-dark"
+            id="board-unmatched"
+            v-on:cardDropped="changeMilestone"
+          >
             <DragCard
               :id="`card-${unmatched.id}-unmatched`"
               draggable="true"
-              class="justify-content-center bg-secondary px-4 py-2 m-3"
+              class="justify-content-center d-flex bg-secondary px-4 py-2 m-3"
             >
               <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
               {{ unmatched.title }}
@@ -101,6 +105,11 @@ export default {
         }
       }
       return raw;
+    },
+    changeMilestone(card_id, board_id) {
+      Api.put("/milestones/" + card_id + "/grade_milestone/", {
+        id: board_id,
+      }).catch((error) => console.log(error));
     },
   },
 };
