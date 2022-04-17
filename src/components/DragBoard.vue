@@ -12,7 +12,7 @@ export default {
     drop(e) {
       const card_id_raw = e.dataTransfer.getData("card_id");
       const card = document.getElementById(card_id_raw);
-      card.style.display = "block";
+      card.style.display = "flex";
       e.target.appendChild(card);
 
       let card_id = card.id.split("-")[1];
