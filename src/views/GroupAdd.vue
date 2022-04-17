@@ -77,7 +77,9 @@ export default {
     },
     methods: {
         createGroup() {
-            console.log(this.payload)
+            // front#65 need to leave out group_id if it is blank, otherwise backend will be confused
+            if (this.payload.group_id == "") delete this.payload.group_id
+
             Api.post('/groups/', this.payload)
                 .then(() => {
                     this.success = 'New group created!'
