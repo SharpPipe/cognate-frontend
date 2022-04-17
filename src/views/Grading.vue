@@ -19,6 +19,7 @@
             <option value="S">Sum</option>
             <option value="I">Min</option>
             <option value="M">Max</option>
+            <option value="A">Automatic</option>
           </select>
           <input
             type="number"
@@ -37,6 +38,24 @@
             >Add Node</button>
           </div>
         </div>
+
+        <div v-if="payload.grade_type == 'A'" class="input-group mb-2">
+          <select required class="form-control my-0 col-3" v-model="payload.automation_type">
+            <option value selected disabled hidden>Automation Type</option>
+            <option value="T">Time Spent Goal</option>
+            <option value="L">Lines Added Goal</option>
+          </select>
+          <input
+            type="number"
+            class="form-control"
+            v-model="payload.amount_needed"
+          />
+          <div class="input-group-append">
+            <span v-if="payload.automation_type =='T'" class="input-group-text">hours of work done</span>
+            <span v-if="payload.automation_type =='L'" class="input-group-text">lines added</span>
+          </div>
+        </div>
+
         <div class="input-group mb-2">
           <input
             type="text"
@@ -47,26 +66,41 @@
             v-model="payload.description"
           />
         </div>
-        <div class="input-group mb-2">
-          <div class="input-group-prepend">
+
+        <div class="row m-0">
+          <div class="input-group mb-2 col px-0">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                Is Milestone? &nbsp;
+                <input
+                  id="ms_check"
+                  type="checkbox"
+                  @change="toggleMilestone"
+                  aria-label="Checkbox for following text input"
+                />
+              </div>
+            </div>
+            <date-picker id="starttime" v-model="payload.start" disabled :config="options"></date-picker>
+            <div class="input-group-text rounded-0 mx-n1">to</div>
+            <date-picker id="endtime" disabled v-model="payload.end" :config="options"></date-picker>
+          </div>
+
+          <div class="mb-2 col-3 px-0 pl-2">
             <div class="input-group-text">
-              Is Milestone? &nbsp;
+              Is Project Grade? &nbsp;
               <input
-                id="ms_check"
                 type="checkbox"
-                @change="toggleMilestone"
+                v-model="payload.project_grade"
                 aria-label="Checkbox for following text input"
               />
             </div>
           </div>
-          <date-picker id="starttime" v-model="payload.start" disabled :config="options"></date-picker>
-          <div class="input-group-text rounded-0 mx-n1">to</div>
-          <date-picker id="endtime" disabled v-model="payload.end" :config="options"></date-picker>
         </div>
+
         <div class="row rounded m-0 bg-dark input-group" v-if="selectedNode.data.id !== 0">
-          <div class="col border border-right-0 border-secondary rounded-left">
+          <div class="col border border-right-0 border-secondary rounded-left pt-1">
             Selected: &nbsp;
-            <em class="font-weight-bold">{{ selectedNode.data.name, }}</em>
+            <em class="font-weight-bold">{{ selectedNode.data.name }}</em>
             <br />Points worth: &nbsp;
             <em class="font-weight-bold">{{ formatedPoints }}</em>
             <br />Description: &nbsp;
@@ -76,21 +110,29 @@
               <em class="font-weight-bold">{{ selectedNode.grade_milestone.start }}</em>
               <br />End: &nbsp;
               <em class="font-weight-bold">{{ selectedNode.grade_milestone.end }}</em>
-
+            </div>
+            <div v-else>
+              Project grade: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.project_grade }}</em>
             </div>
           </div>
 
           <!-- Delete Button -->
 
-          <div class="input-group-append w-20">
+          <div class style="display: grid">
             <button
-              class="btn btn-outline-warning"
+              class="btn btn-outline-warning rounded-0 rounded-tr"
               data-target="#editNodeModal"
               data-toggle="modal"
               type="button"
             >Edit Node</button>
             <button
-              class="btn btn-outline-danger rounded-r"
+              class="btn btn-outline-info rounded-0"
+              @click="copyNode"
+              type="button"
+            >Clone Node</button>
+            <button
+              class="btn btn-outline-danger rounded-0 rounded-br"
               data-target="#deleteNodeModal"
               data-toggle="modal"
               type="button"
@@ -187,9 +229,17 @@
                       v-model="selectedNode.data.total"
                     />
                     <div v-if="selectedNode.grade_milestone">
-                    <date-picker id="starttime" v-model="selectedNode.grade_milestone.start"  :config="options" class="mb-2"></date-picker>
-                    <date-picker id="endtime" v-model="selectedNode.grade_milestone.end" :config="options"></date-picker>
-
+                      <date-picker
+                        id="starttime"
+                        v-model="selectedNode.grade_milestone.start"
+                        :config="options"
+                        class="mb-2"
+                      ></date-picker>
+                      <date-picker
+                        id="endtime"
+                        v-model="selectedNode.grade_milestone.end"
+                        :config="options"
+                      ></date-picker>
                     </div>
                   </div>
                 </div>
@@ -249,6 +299,8 @@ export default {
         end: "",
         description: "",
         project_grade: false,
+        automation_type: "",
+        amount_needed: 0,
       },
       selectedNode: {
         id: null,
@@ -331,6 +383,12 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    copyNode() {
+      Api.post("grade_category/" + this.selectedNode.id + "/copy/")
+        .then(() => {
+          this.getTree()
+        })
+    },
     toggleMilestone() {
       let check = document.getElementById("ms_check").checked;
       let start = document.getElementById("starttime");
@@ -362,5 +420,11 @@ select option[value=""] {
   border-bottom-right-radius: 0.25rem !important;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+}
+.rounded-tr {
+  border-top-right-radius: 0.25rem !important;
+}
+.rounded-br {
+  border-bottom-right-radius: 0.25rem !important;
 }
 </style>
