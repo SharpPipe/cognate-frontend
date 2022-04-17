@@ -11,44 +11,48 @@
           <div class="w-25 p-3 my-2 float-left">
             <div>
               <div class="h3">Milestone {{ ms.milestone_order_id }}</div>
-              <div class="mr-1 badge badge-pill badge-secondary">
-                {{ ms.start.substring(0, 10) }}
-              </div>
-              <div class="badge badge-pill badge-secondary">
-                {{ ms.end.substring(0, 10) }}
-              </div>
+              <div class="mr-1 badge badge-pill badge-secondary">{{ ms.start.substring(0, 10) }}</div>
+              <div class="badge badge-pill badge-secondary">{{ ms.end.substring(0, 10) }}</div>
             </div>
           </div>
 
-          <DragBoard class="p-2 w-75 float-left bg-dark" :id="`board-${ms.id}`">
+          <DragBoard
+            class="p-2 w-75 float-left bg-dark flex-grow-1"
+            :id="`board-${ms.id}`"
+            v-on:cardDropped="changeMilestone"
+          >
             <DragCard
               :id="`card-${gitlab_ms.id}`"
               draggable="true"
               v-for="gitlab_ms in ms.gl_milestones"
               :key="gitlab_ms.id"
-              class="justify-content-center bg-secondary px-4 py-2 m-3"
+              class="justify-content-center d-flex bg-secondary px-4 py-2 m-3"
             >
-              <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
+              <a :href="gitlab_ms.gitlab_link" target="_blank" class="align-self-center">
+                <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
+              </a>
               {{ gitlab_ms.title }}
             </DragCard>
           </DragBoard>
         </div>
 
         <!--  Unmatched  -->
-        <div
-          class="border rounded p-0 my-2"
-          v-for="unmatched in milestone_connections.unmatched"
-          :key="unmatched.id"
-        >
+        <div class="border rounded p-0 my-2">
           <div class="w-25 p-3 my-2 float-left">
             <div class="h3">Unmatched</div>
           </div>
 
-          <DragBoard class="p-2 w-75 float-left bg-dark" id="board-unmatched">
+          <DragBoard
+            class="p-2 w-75 float-left bg-dark col-lg-auto flex-grow-1"
+            id="board-unmatched"
+            v-on:cardDropped="changeMilestone"
+          >
             <DragCard
+              v-for="unmatched in milestone_connections.unmatched"
+              :key="unmatched.id"
               :id="`card-${unmatched.id}-unmatched`"
               draggable="true"
-              class="justify-content-center bg-secondary px-4 py-2 m-3"
+              class="justify-content-center d-flex bg-secondary px-4 py-2 m-3 col-lg-auto"
             >
               <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
               {{ unmatched.title }}
@@ -102,6 +106,11 @@ export default {
       }
       return raw;
     },
+    changeMilestone(card_id, board_id) {
+      Api.put("/milestones/" + card_id + "/grade_milestone/", {
+        id: board_id,
+      }).catch((error) => console.log(error));
+    },
   },
 };
 </script>
@@ -117,6 +126,7 @@ export default {
 .flexbox .board {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 .flexbox .board .card {
   cursor: pointer;

@@ -5,24 +5,21 @@
 </template>
 
 <script>
-import { Api } from "../axios-api";
 
 export default {
   props: ["id"],
   methods: {
-    drop: (e) => {
-      const card_id = e.dataTransfer.getData("card_id");
-      const card = document.getElementById(card_id);
+    drop(e) {
+      const card_id_raw = e.dataTransfer.getData("card_id");
+      const card = document.getElementById(card_id_raw);
       card.style.display = "flex";
       e.target.appendChild(card);
 
-      let gitlab_milestone_id = card.id.split("-")[1];
-      let cognate_milestone = e.target.id.split("-")[1];
-      if (cognate_milestone == "unmatched") cognate_milestone = null;
+      let card_id = card.id.split("-")[1];
+      let board_id = e.target.id.split("-")[1];
+      if (board_id == "unmatched") board_id = null;
 
-      Api.put("/milestones/" + gitlab_milestone_id + "/grade_milestone/", {
-        id: cognate_milestone,
-      }).catch((error) => console.log(error));
+      this.$emit("cardDropped", card_id, board_id)
     },
   },
 };
