@@ -22,6 +22,7 @@ export default {
     this.data = this.gitdata.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
     this.data = this.timezoneOffset(this.data)
     this.data = this.underflow(this.data)
+    this.data = this.underflow(this.data)
 
     this.renderGraph(this.colours)
   },
