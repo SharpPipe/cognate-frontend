@@ -1,104 +1,86 @@
 <template>
-    <div class="container">
-        <form>
-            <h2 class="text-info">Create new Group</h2>
-            <div class="row">
-                <div class="col">
-                    <form class="form-group" v-on:submit.prevent="createGroup">
-                        <input
-                            type="text"
-                            class="form-control my-1"
-                            placeholder="Group name"
-                            v-model="payload.name"
-                        />
-                        <input
-                            type="text"
-                            class="form-control my-1"
-                            placeholder="Group description"
-                            v-model="payload.description"
-                        />
-                        <div class="row m-0">
-                            <div class="col-8 p-0 pr-1">
-                                <input
-                                    type="text"
-                                    class="form-control my-0"
-                                    placeholder="Group ID"
-                                    v-model="payload.group_id"
-                                />
-                            </div>
-                            <div class="col p-0">
-                                <select
-                                    required
-                                    class="form-control my-0"
-                                    v-model="payload.children_type"
-                                >
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                        hidden
-                                    >Children</option>
-                                    <option value="P">Projects</option>
-                                    <option value="G">Groups</option>
-                                </select>
-                            </div>
-                        </div>
+  <div class="container" v-if="payload.name">
+    <form>
+      <h2 class="text-info">Modify {{payload.name}}</h2>
+      <div class="row">
+        <div class="col">
+          <form class="form-group" v-on:submit.prevent="modifyGroup">
+            <label>Group name:</label>
+            <input
+              type="text"
+              class="form-control mb-3"
+              placeholder="Group name"
+              v-model="payload.name"
+            />
+            <label>Group description:</label>
+            <input
+              type="text"
+              class="form-control mb-3"
+              placeholder="Group description"
+              v-model="payload.description"
+            />
+            <label>GitLab Token:</label>
+            <input
+              type="text"
+              class="form-control mb-3"
+              placeholder="GitLab Token (optional)"
+              v-model="payload.gitlab_token"
+            />
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary my-2">Create new Group</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col">
-                    <div class="alert alert-success" role="alert" v-if="success">{{ success }}</div>
-                    <div class="alert alert-danger" role="alert" v-if="error">{{ error }}</div>
-                </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary my-2">Update Group</button>
             </div>
-        </form>
-    </div>
+          </form>
+        </div>
+        <div class="col">
+          <div class="alert alert-success" role="alert" v-if="success">{{ success }}</div>
+          <div class="alert alert-danger" role="alert" v-if="error">{{ error }}</div>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
 import { Api } from "../axios-api";
 
 export default {
-    name: 'Groupadd',
-    data() {
-        return {
-            payload: {
-                name: "",
-                description: "",
-                group_id: "",
-                children_type: "",
-            },
-            success: "",
-            error: "",
-        }
+  name: 'GroupModify',
+  data() {
+    return {
+      payload: {
+        name: "",
+        description: "",
+        gitlab_token: "",
+      },
+      success: "",
+      error: "",
+    }
+  },
+  created() {
+    Api.get('/groups/')
+      .then(response => {
+        let this_group = response.data.find(g => g.id == this.$route.params.id)
+        this.payload.name = this_group.name
+        this.payload.description = this_group.description
+      })
+      .catch(err => {
+        this.error = err
+        console.log(err)
+      })
+  },
+  methods: {
+    modifyGroup() {
+      Api.put('/groups/' + this.$route.params.id + '/', this.payload)
+        .then(() => {
+          this.success = "Group modified!"
+          this.$router.push({ name: 'groups' })
+        })
+        .catch(err => {
+          this.error = err
+          console.log(err)
+        })
     },
-    methods: {
-        createGroup() {
-            console.log(this.payload)
-            Api.post('/groups/', this.payload)
-                .then(() => {
-                    this.success = 'New group created!'
-                    this.$router.push({ name: 'groups' })
-                })
-                .catch(err => {
-                    this.error = err
-                    console.log(err)
-                })
-        },
-    },
+  },
 }
 </script>
-
-<style scoped>
-select, select option {
-  color: #dee2e6;
-}
-
-select:invalid,
-select option[value=""] {
-  color: #6c757d;
-}
-</style>
