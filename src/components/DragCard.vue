@@ -19,7 +19,7 @@ export default {
       e.dataTransfer.setData("card_id", target.id);
 
       setTimeout(() => {
-        target.style.display = "none";
+        target.style.display = "flex";
       }, 0);
     },
   },
