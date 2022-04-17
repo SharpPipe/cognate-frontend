@@ -71,6 +71,13 @@
             <em class="font-weight-bold">{{ formatedPoints }}</em>
             <br />Description: &nbsp;
             <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
+            <div v-if="selectedNode.grade_milestone">
+              Start: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.grade_milestone.start }}</em>
+              <br />End: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.grade_milestone.end }}</em>
+
+            </div>
           </div>
 
           <!-- Delete Button -->
@@ -179,6 +186,11 @@
                       placeholder="Points worth"
                       v-model="selectedNode.data.total"
                     />
+                    <div v-if="selectedNode.grade_milestone">
+                    <date-picker id="starttime" v-model="selectedNode.grade_milestone.start"  :config="options" class="mb-2"></date-picker>
+                    <date-picker id="endtime" v-model="selectedNode.grade_milestone.end" :config="options"></date-picker>
+
+                    </div>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -236,9 +248,12 @@ export default {
         start: "",
         end: "",
         description: "",
+        project_grade: false,
       },
       selectedNode: {
         id: null,
+        grade_milestone: null,
+        project_grade: false,
         data: { name: "", id: null, total: 0, description: "", subnodecount: 0 },
       },
       graphData: null,
@@ -278,12 +293,11 @@ export default {
         this.payload.start = this.payload.start + "T00:00:00Z"
         this.payload.end = this.payload.end + "T23:59:00Z"
       }
+      console.log(this.payload)
+      console.log(this.selectedNode.id)
 
-      if (this.payload.name && this.selectedNode.data.name) {
-        Api.post(
-          "grade_category/" + this.selectedNode.id + "/",
-          this.payload
-        )
+      if (this.payload.name && this.selectedNode.id) {
+        Api.post("grade_category/" + this.selectedNode.id + "/", this.payload)
           .then(() => {
             this.getTree()
           })
@@ -306,6 +320,10 @@ export default {
         total: this.selectedNode.data.total,
         name: this.selectedNode.data.name,
         description: this.selectedNode.data.description,
+      }
+      if (this.selectedNode.grade_milestone) {
+        payload.start = this.selectedNode.grade_milestone.start + "T00:00:00Z"
+        payload.end = this.selectedNode.grade_milestone.end + "T23:59:00Z"
       }
       Api.put("grade_category/" + this.selectedNode.id + "/", payload)
         .then(() => {
