@@ -45,7 +45,7 @@
 import { Api } from "../axios-api";
 
 export default {
-  name: 'Groupadd',
+  name: 'GroupModify',
   data() {
     return {
       payload: {
