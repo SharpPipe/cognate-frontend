@@ -146,7 +146,6 @@ export default {
           this.selected.data.subnodecount = this.countSubnodes(d)
           this.selected.grade_milestone = d.data.grademilestone
           this.selected.project_grade = d.data.project_grade
-          console.log(d.data)
           this.$emit('select', this.selected);
           this.update(d);
         });

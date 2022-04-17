@@ -345,9 +345,6 @@ export default {
         this.payload.start = this.payload.start + "T00:00:00Z"
         this.payload.end = this.payload.end + "T23:59:00Z"
       }
-      console.log(this.payload)
-      console.log(this.selectedNode.id)
-
       if (this.payload.name && this.selectedNode.id) {
         Api.post("grade_category/" + this.selectedNode.id + "/", this.payload)
           .then(() => {
