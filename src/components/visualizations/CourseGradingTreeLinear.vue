@@ -48,6 +48,8 @@ export default {
       height,
       selected: {
         id: null,
+        grade_milestone: null,
+        project_grade: false,
         data: { name: "", total: 0, description: "", subnodecount: 0},
       },
       root,
@@ -142,6 +144,8 @@ export default {
           this.selected.data.total = d.data.total;
           this.selected.data.description = d.data.description;
           this.selected.data.subnodecount = this.countSubnodes(d)
+          this.selected.grade_milestone = d.data.grademilestone
+          this.selected.project_grade = d.data.project_grade
           this.$emit('select', this.selected);
           this.update(d);
         });
