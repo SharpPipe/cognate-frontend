@@ -56,6 +56,7 @@
             <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
             {{ unmatched.name }}
           </DragCard>
+          <div class="py-3" /> <!-- Needed so the DragBoard doesn't shrink -->
         </DragBoard>
       </div>
     </div>

@@ -8,7 +8,7 @@
           v-for="ms in milestone_connections.grade_milestones"
           :key="ms.id"
         >
-          <div class="w-25 p-3 my-2 float-left">
+          <div class="w-25 p-2 my-2 float-left">
             <div>
               <div class="h3">Milestone {{ ms.milestone_order_id }}</div>
               <div class="mr-1 badge badge-pill badge-secondary">{{ ms.start.substring(0, 10) }}</div>
@@ -33,12 +33,13 @@
               </a>
               {{ gitlab_ms.title }}
             </DragCard>
+            <div class="py-5" /> <!-- Needed so the DragBoard doesn't shrink -->
           </DragBoard>
         </div>
 
         <!--  Unmatched  -->
         <div class="border rounded p-0 my-2">
-          <div class="w-25 p-3 my-2 float-left">
+          <div class="w-25 p-2 my-2 float-left">
             <div class="h3">Unmatched</div>
           </div>
 
@@ -57,6 +58,7 @@
               <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
               {{ unmatched.title }}
             </DragCard>
+            <div class="py-5" /> <!-- Needed so the DragBoard doesn't shrink -->
           </DragBoard>
         </div>
       </div>
