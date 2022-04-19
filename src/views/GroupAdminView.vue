@@ -78,7 +78,7 @@
                 type="text"
                 class="form-control mb-2"
                 placeholder="GitLab ID"
-                v-model="repo.id"
+                v-model="repo.gitlab_id"
               />
               <button class="btn btn-primary" type="button" @click="addRepo">Add repo to project</button>
             </div>
@@ -111,7 +111,7 @@ export default {
       repo: {
         name: "",
         url: "",
-        id: "",
+        gitlab_id: "",
       },
       success: "",
       error: "",
@@ -159,7 +159,7 @@ export default {
       }
     },
     addRepo() {
-      if (this.selectedProject && this.repo.name && this.repo.url && this.repo.id) {
+      if (this.selectedProject && this.repo.name && this.repo.url && this.repo.gitlab_id) {
         Api.post("/projects/" + this.selectedProject + "/repo/", this.repo)
           .then(response => {
             console.log(response.data)
