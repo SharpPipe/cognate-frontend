@@ -25,10 +25,10 @@
       </div>
 
       <table class="table table-borderless">
-        <tr>
-          <td class="m-0 p-0" v-for="n in 7" :key="n">
+        <tr v-if="repos.total_milestones">
+          <td class="m-0 p-0" v-for="n in repos.total_milestones" :key="n">
             <router-link
-              :is="(n >= 5) ? 'span' : 'router-link'"
+              :is="(n > repos.active_milestones) ? 'span' : 'router-link'"
               :to="{
                 name: 'group-milestone-summary',
                 params: {
