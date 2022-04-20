@@ -371,8 +371,10 @@ export default {
         description: this.selectedNode.data.description,
       }
       if (this.selectedNode.grade_milestone) {
-        payload.start = this.selectedNode.grade_milestone.start + "T00:00:00Z"
-        payload.end = this.selectedNode.grade_milestone.end + "T23:59:00Z"
+        payload.start = this.selectedNode.grade_milestone.start
+        payload.end = this.selectedNode.grade_milestone.end
+        if (payload.start.length <= 10) payload.start = payload.start + "T00:00:00Z"
+        if (payload.end.length <= 10) payload.end = payload.end + "T23:59:00Z"
       }
       Api.put("grade_category/" + this.selectedNode.id + "/", payload)
         .then(() => {
