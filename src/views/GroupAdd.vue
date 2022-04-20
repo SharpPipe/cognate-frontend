@@ -22,14 +22,14 @@
                                 <input
                                     type="text"
                                     class="form-control my-0"
-                                    placeholder="Group ID"
+                                    placeholder="Group ID (optional)"
                                     v-model="payload.group_id"
                                 />
                             </div>
                             <div class="col p-0">
                                 <select
                                     required
-                                    class="form-control my-0"
+                                    class="custom-select form-control my-0"
                                     v-model="payload.children_type"
                                 >
                                     <option
@@ -43,6 +43,13 @@
                                 </select>
                             </div>
                         </div>
+
+                        <input
+                            type="text"
+                            class="form-control my-1"
+                            placeholder="GitLab Token (optional)"
+                            v-model="payload.gitlab_token"
+                        />
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary my-2">Create new Group</button>
@@ -70,6 +77,7 @@ export default {
                 description: "",
                 group_id: "",
                 children_type: "",
+                gitlab_token: "",
             },
             success: "",
             error: "",
@@ -77,7 +85,11 @@ export default {
     },
     methods: {
         createGroup() {
-            console.log(this.payload)
+            // front#65 need to leave out fields if they are blank 
+            // otherwise backend will be confused             #sad
+            if (this.payload.group_id == "") delete this.payload.group_id
+            if (this.payload.gitlab_token == "") delete this.payload.gitlab_token
+
             Api.post('/groups/', this.payload)
                 .then(() => {
                     this.success = 'New group created!'

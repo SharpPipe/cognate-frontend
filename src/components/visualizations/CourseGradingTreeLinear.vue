@@ -48,6 +48,8 @@ export default {
       height,
       selected: {
         id: null,
+        grade_milestone: null,
+        project_grade: false,
         data: { name: "", total: 0, description: "", subnodecount: 0},
       },
       root,
@@ -69,7 +71,7 @@ export default {
   },
   methods: {
     countSubnodes(node) {
-      if (node.children === undefined) return 1
+      if (node.children === undefined || node.children === null) return 1
       let n = 0
       for (let c of node.children) n += this.countSubnodes(c)
       return n
@@ -142,6 +144,8 @@ export default {
           this.selected.data.total = d.data.total;
           this.selected.data.description = d.data.description;
           this.selected.data.subnodecount = this.countSubnodes(d)
+          this.selected.grade_milestone = d.data.grademilestone
+          this.selected.project_grade = d.data.project_grade
           this.$emit('select', this.selected);
           this.update(d);
         });
@@ -149,7 +153,7 @@ export default {
       nodeEnter
         .append("circle")
         .attr("r", 12)
-        .attr("fill", (d) => (d._children ? "#444" : "#aaa"))
+        .attr("fill", (d) => (d._children ? "#ccc" : "#ccc"))
         .attr("stroke-width", 10);
 
       nodeEnter

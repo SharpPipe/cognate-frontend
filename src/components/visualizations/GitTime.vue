@@ -16,14 +16,13 @@ export default {
     return {
       width, height,
       data: [],
-      devColors: {},
     }
   },
   mounted() {
     this.data = this.gitdata.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
     this.data = this.timezoneOffset(this.data)
     this.data = this.underflow(this.data)
-    console.log(this.colours)
+    this.data = this.underflow(this.data)
 
     this.renderGraph(this.colours)
   },
@@ -145,7 +144,6 @@ export default {
         .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60)))
         .attr("stroke", d => {
           let col = c(d.user, false) 
-          console.log(col)
           return col
         })
         .attr("stroke-width", -dayWidth)

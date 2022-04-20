@@ -74,6 +74,14 @@ export default new VueRouter({
             }
         },
         {
+            path: '/group/:groupid/repo/:repoid/manage',
+            name: 'managerepo',
+            component: () => import("./views/RepoMilestoneManager"),
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
             path: '/group/:id/',
             name: 'group-repos',
             component: () => import("./views/ProjectRepos"),
@@ -85,6 +93,14 @@ export default new VueRouter({
             path: '/group/:id/milestone/:msid/',
             name: 'group-milestone-summary',
             component: () => import("./views/GroupMilestoneSummary"),
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/group/:id/config/',
+            name: 'group-admin-view',
+            component: () => import("./views/GroupAdminView"),
             meta: {
                 requiresAuth: true
             }

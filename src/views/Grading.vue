@@ -19,6 +19,7 @@
             <option value="S">Sum</option>
             <option value="I">Min</option>
             <option value="M">Max</option>
+            <option value="A">Automatic</option>
           </select>
           <input
             type="number"
@@ -37,6 +38,24 @@
             >Add Node</button>
           </div>
         </div>
+
+        <div v-if="payload.grade_type == 'A'" class="input-group mb-2">
+          <select required class="form-control my-0 col-3" v-model="payload.automation_type">
+            <option value selected disabled hidden>Automation Type</option>
+            <option value="T">Time Spent Goal</option>
+            <option value="L">Lines Added Goal</option>
+          </select>
+          <input
+            type="number"
+            class="form-control"
+            v-model="payload.amount_needed"
+          />
+          <div class="input-group-append">
+            <span v-if="payload.automation_type =='T'" class="input-group-text">hours of work done</span>
+            <span v-if="payload.automation_type =='L'" class="input-group-text">lines added</span>
+          </div>
+        </div>
+
         <div class="input-group mb-2">
           <input
             type="text"
@@ -47,36 +66,73 @@
             v-model="payload.description"
           />
         </div>
-        <div class="input-group mb-2">
-          <div class="input-group-prepend">
+
+        <div class="row m-0">
+          <div class="input-group mb-2 col px-0">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                Is Milestone? &nbsp;
+                <input
+                  id="ms_check"
+                  type="checkbox"
+                  @change="toggleMilestone"
+                  aria-label="Checkbox for following text input"
+                />
+              </div>
+            </div>
+            <date-picker id="starttime" v-model="payload.start" disabled :config="options"></date-picker>
+            <div class="input-group-text rounded-0 mx-n1">to</div>
+            <date-picker id="endtime" disabled v-model="payload.end" :config="options"></date-picker>
+          </div>
+
+          <div class="mb-2 col-3 px-0 pl-2">
             <div class="input-group-text">
-              Is Milestone? &nbsp;
+              Is Project Grade? &nbsp;
               <input
-                id="ms_check"
                 type="checkbox"
-                @change="toggleMilestone"
+                v-model="payload.project_grade"
                 aria-label="Checkbox for following text input"
               />
             </div>
           </div>
-          <date-picker id="starttime" v-model="payload.start" disabled :config="options"></date-picker>
-          <div class="input-group-text rounded-0 mx-n1">to</div>
-          <date-picker id="endtime" disabled v-model="payload.end" :config="options"></date-picker>
         </div>
-        <div class="row rounded m-0 bg-dark" v-if="selectedNode.data.id !== null">
-          <div class="col border border-right-0 border-secondary rounded-left">
+
+        <div class="row rounded m-0 bg-dark input-group" v-if="selectedNode.data.id !== 0">
+          <div class="col border border-right-0 border-secondary rounded-left pt-1">
             Selected: &nbsp;
-            <em class="font-weight-bold">{{ selectedNode.data.name, }}</em>
+            <em class="font-weight-bold">{{ selectedNode.data.name }}</em>
             <br />Points worth: &nbsp;
             <em class="font-weight-bold">{{ formatedPoints }}</em>
             <br />Description: &nbsp;
             <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
+            <div v-if="selectedNode.grade_milestone">
+              Start: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.grade_milestone.start }}</em>
+              <br />End: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.grade_milestone.end }}</em>
+            </div>
+            <div v-else>
+              Project grade: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.project_grade }}</em>
+            </div>
           </div>
 
           <!-- Delete Button -->
-          <div class="input-group-append w-20">
+
+          <div class style="display: grid">
             <button
-              class="btn btn-outline-danger rounded-r"
+              class="btn btn-outline-warning rounded-0 rounded-tr"
+              data-target="#editNodeModal"
+              data-toggle="modal"
+              type="button"
+            >Edit Node</button>
+            <button
+              class="btn btn-outline-info rounded-0"
+              @click="copyNode"
+              type="button"
+            >Clone Node</button>
+            <button
+              class="btn btn-outline-danger rounded-0 rounded-br"
               data-target="#deleteNodeModal"
               data-toggle="modal"
               type="button"
@@ -104,27 +160,21 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>
-                  Are you quite sure you want to delete this node?
-                  </p>
+                  <p>Are you quite sure you want to delete this node?</p>
                   <p>Deleting a node from the tree will unlink all children and delete all user grades that are directly tied to that node.</p>
 
                   <div class="border rounded p-2">
-                    <span>
-                    Points worth: &nbsp;
-                    </span>
+                    <span>Points worth: &nbsp;</span>
                     <em class="font-weight-bold h4">{{ formatedPoints }}</em>
                     <br />
-                    <span v-if="selectedNode.data.description">
-                    Description: &nbsp;
-                    </span>
+                    <span v-if="selectedNode.data.description">Description: &nbsp;</span>
                     <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
-
                   </div>
 
-                  <div v-if="selectedNode.data.subnodecount > 1" class="alert alert-danger my-3">This action will delete {{ selectedNode.data.subnodecount }} subnodes too!</div>
-
-
+                  <div
+                    v-if="selectedNode.data.subnodecount > 1"
+                    class="alert alert-danger my-3"
+                  >This action will delete {{ selectedNode.data.subnodecount }} subnodes too!</div>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -138,6 +188,72 @@
             </div>
           </div>
 
+          <!-- Edit Modal -->
+          <div
+            class="modal fade"
+            id="editNodeModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="editNodeModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5
+                    class="modal-title text-warning"
+                    id="editNodeModalLabel"
+                  >Edit Node {{ selectedNode.data.name }}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control mb-2"
+                      placeholder="Node name"
+                      v-model="selectedNode.data.name"
+                    />
+                    <input
+                      type="text"
+                      class="form-control mb-2"
+                      placeholder="Description"
+                      v-model="selectedNode.data.description"
+                    />
+                    <input
+                      type="number"
+                      class="form-control mb-2"
+                      placeholder="Points worth"
+                      v-model="selectedNode.data.total"
+                    />
+                    <div v-if="selectedNode.grade_milestone">
+                      <date-picker
+                        id="starttime"
+                        v-model="selectedNode.grade_milestone.start"
+                        :config="options"
+                        class="mb-2"
+                      ></date-picker>
+                      <date-picker
+                        id="endtime"
+                        v-model="selectedNode.grade_milestone.end"
+                        :config="options"
+                      ></date-picker>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    class="btn btn-outline-success rounded"
+                    data-dismiss="modal"
+                    type="button"
+                    @click="editNode"
+                  >Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -182,10 +298,15 @@ export default {
         start: "",
         end: "",
         description: "",
+        project_grade: false,
+        automation_type: "",
+        amount_needed: 0,
       },
       selectedNode: {
         id: null,
-        data: { name: "", id: null, total: 0, description: "", subnodecount: 0},
+        grade_milestone: null,
+        project_grade: false,
+        data: { name: "", id: null, total: 0, description: "", subnodecount: 0 },
       },
       graphData: null,
       addedNode: null,
@@ -224,12 +345,8 @@ export default {
         this.payload.start = this.payload.start + "T00:00:00Z"
         this.payload.end = this.payload.end + "T23:59:00Z"
       }
-
-      if (this.payload.name && this.selectedNode.data.name) {
-        Api.post(
-          "grade_category/" + this.selectedNode.id + "/",
-          this.payload
-        )
+      if (this.payload.name && this.selectedNode.id) {
+        Api.post("grade_category/" + this.selectedNode.id + "/", this.payload)
           .then(() => {
             this.getTree()
           })
@@ -246,6 +363,30 @@ export default {
           })
           .catch((err) => console.log(err));
       }
+    },
+    editNode() {
+      let payload = {
+        total: this.selectedNode.data.total,
+        name: this.selectedNode.data.name,
+        description: this.selectedNode.data.description,
+      }
+      if (this.selectedNode.grade_milestone) {
+        payload.start = this.selectedNode.grade_milestone.start
+        payload.end = this.selectedNode.grade_milestone.end
+        if (payload.start.length <= 10) payload.start = payload.start + "T00:00:00Z"
+        if (payload.end.length <= 10) payload.end = payload.end + "T23:59:00Z"
+      }
+      Api.put("grade_category/" + this.selectedNode.id + "/", payload)
+        .then(() => {
+          this.getTree()
+        })
+        .catch((err) => console.log(err));
+    },
+    copyNode() {
+      Api.post("grade_category/" + this.selectedNode.id + "/copy/")
+        .then(() => {
+          this.getTree()
+        })
     },
     toggleMilestone() {
       let check = document.getElementById("ms_check").checked;
@@ -278,5 +419,11 @@ select option[value=""] {
   border-bottom-right-radius: 0.25rem !important;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+}
+.rounded-tr {
+  border-top-right-radius: 0.25rem !important;
+}
+.rounded-br {
+  border-bottom-right-radius: 0.25rem !important;
 }
 </style>

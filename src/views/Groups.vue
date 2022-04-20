@@ -4,18 +4,15 @@
       <div class="row d-flex">
         <h3 class="flex-grow-1">Groups</h3>
         <router-link :to="{ name: 'groupadd' }">
-          <button class="btn btn-primary r-100">+</button>
+          <button class="btn btn-primary">&plus;</button>
         </router-link>
       </div>
 
       <div v-if="APIData">
-        <table class="table">
+        <table class="table table">
           <tr v-for="group in APIData" :key="group.id">
             <td>
               <div class="row justify-content-between">
-                <div class="col-auto">
-                  <img src="//place-hold.it/120" class="img-fluid" alt />
-                </div>
 
                 <div class="col my-auto">
                   <div>
@@ -26,22 +23,19 @@
                       >{{ group.name }}</router-link>
                     </h5>
                     <p class="text-muted m-0">{{ group.description }}</p>
-                    <p class="text-muted m-0">Children type: {{ group.children_type }}</p>
                   </div>
                 </div>
 
-                <div class="col my-auto">
+                <div class="col-2 my-auto">
                   <router-link
                     :to="{ name: 'grading', params: { id: group.id, name: group.name } }"
-                    class="text-white"
                     v-if="group.rights.includes('O') || group.rights.includes('A')"
                   >
-                    <button class="btn-sm btn-primary m-1">GradingTree</button>
+                    <button class="btn-sm btn-secondary m-1">Grading 🌳</button>
 
                   </router-link>
                 </div>
 
-                <GroupChartMini />
               </div>
             </td>
           </tr>
@@ -53,7 +47,6 @@
 
 <script>
 import { Api } from "../axios-api";
-import GroupChartMini from "../components/visualizations/GroupChartMini";
 
 export default {
   name: 'Groups',
@@ -61,9 +54,6 @@ export default {
     return {
       APIData: null
     }
-  },
-  components: {
-    GroupChartMini,
   },
   created() {
     Api.get('groups/')
