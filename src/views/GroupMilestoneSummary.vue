@@ -56,7 +56,7 @@ export default {
         }
     },
     created() {
-        const url = 'groups/' + this.$route.params.id + "/milestone/" + this.$route.params.msid + "/"
+        const url = 'groups/' + this.$route.params.groupid + "/milestone/" + this.$route.params.msid + "/"
         Api.get(url)
             .then(response => {
                 this.APIData = response.data.data

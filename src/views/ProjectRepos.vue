@@ -13,14 +13,8 @@
         <div v-if="repos.rights.includes('O') || repos.rights.includes('A')">
           <button
             class="btn-sm btn-secondary float-right"
-            @click="refreshGroup($route.params.id)"
+            @click="refreshGroup($route.params.groupid)"
           >Refresh</button>
-          <router-link tag="button" class="btn-sm btn-secondary float-right"
-              :to="{
-                name: 'group-admin-view',
-                params: { id: $route.params.id }
-              }"
-          >Config</router-link>
         </div>
       </div>
 
@@ -32,7 +26,7 @@
               :to="{
                 name: 'group-milestone-summary',
                 params: {
-                  id: $route.params.id,
+                  groupid: $route.params.groupid,
                   msid: n
                 }
               }"
@@ -54,7 +48,7 @@
 
             <td class="p-1">
               <router-link
-                :to="{ name: 'repo', params: { groupid: $route.params.id, repoid: repo.id } }"
+                :to="{ name: 'repo', params: { groupid: $route.params.groupid, repoid: repo.id } }"
                 class="text-white"
               >{{ repo.name }}</router-link>
             </td>
@@ -113,7 +107,7 @@ export default {
     }
   },
   created() {
-    const url = 'groups/' + this.$route.params.id + "/"
+    const url = 'groups/' + this.$route.params.groupid + "/"
     Api.get(url)
       .then(response => {
         this.repos = response.data
