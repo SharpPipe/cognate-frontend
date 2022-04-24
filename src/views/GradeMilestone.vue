@@ -3,15 +3,15 @@
     <h3>{{ APIData.project_name }}</h3>
     <div class="row m-1">
       <!--  RepoRadar  -->
-      <div class="col-4 p-0" v-if="radarData.length">
+      <div class="col-4 p-1" v-if="radarData.length">
         <RepoRadar :radardata="radarData" :key="key" />
       </div>
 
       <!--  GitTime  -->
-      <div class="col-8 px-3" v-if="gittimedata.length">
+      <div class="col-8 px-1" v-if="gittimedata.length">
         <GitTime :gitdata="gittimedata" :colours="devColours" />
       </div>
-      <div class="col-8 px-3 m-auto" v-else>
+      <div class="col-8 px-1 m-auto" v-else>
         <h4 class="text-center text-warning">NO SPENT TIME DATA AVAILABLE</h4>
       </div>
     </div>

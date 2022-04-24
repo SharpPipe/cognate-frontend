@@ -1,5 +1,13 @@
 <template>
-  <svg v-if="colours" :viewBox="`0 0 ${width} ${height}`" id="gittime" />
+  <div>
+    <svg v-if="colours" :viewBox="`0 0 ${width} ${height}`" id="gittime" />
+    <div v-if="repos.length > 1" class="custom-checkbox p-0 d-flex-lnline">
+      <div v-for="repo in repos" :key="repo" class="float-right px-1">
+        <input type="checkbox" :value=repo v-model="checkedRepos" checked="true"/>
+        <label class="px-1 py-0 my-0">{{repo}}</label>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -16,6 +24,8 @@ export default {
     return {
       width, height,
       data: [],
+      repos: [],
+      checkedRepos: [],
     }
   },
   mounted() {
@@ -24,7 +34,20 @@ export default {
     this.data = this.underflow(this.data)
     this.data = this.underflow(this.data)
 
-    this.renderGraph(this.colours)
+    this.differentiateByRepo(this.data)
+
+    this.renderGraph(this.colours, this)
+  },
+  computed: {
+    checkedLength() {
+      return this.checkedRepos.length
+    }
+  },
+  watch: {
+    checkedLength() {
+      d3.select('#gittime').selectAll("*").remove()
+      this.renderGraph(this.colours, this)
+    }
   },
   methods: {
     timezoneOffset(data) {
@@ -43,6 +66,7 @@ export default {
             user: d.user,
             title: d.title,
             gitlab_link: d.gitlab_link,
+            repo_id: d.repo_id,
             time: new Date(new Date(d.time.toDateString()).valueOf() - 1)
           })
 
@@ -51,9 +75,13 @@ export default {
       })
       data.push.apply(data, newLines)
       return data
-
     },
-    renderGraph(colours) {
+    differentiateByRepo(data) {
+      let diffed = _.groupBy(data, d => d.repo_id)
+      this.repos = Object.keys(diffed)
+      this.checkedRepos = this.repos
+    },
+    renderGraph(colours, self) {
       // Git Log code inspired by and definitely not directly stolen from 
       // https://observablehq.com/@webapelsin/git-log
       if (!this.data.length) return
@@ -138,12 +166,13 @@ export default {
         .selectAll("circle")
         .data(data)
         .enter().append("line")
+        .style("opacity", d => self.checkedRepos.includes(d.repo_id + "") ? 1 : 0)
         .attr("x1", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
         .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60))
         .attr("x2", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
         .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60)))
         .attr("stroke", d => {
-          let col = c(d.user, false) 
+          let col = c(d.user, false)
           return col
         })
         .attr("stroke-width", -dayWidth)
