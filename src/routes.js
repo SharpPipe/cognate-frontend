@@ -126,7 +126,7 @@ export default new VueRouter({
                 requiresAuth: true,
                 breadcrumb: {
                     label: "Group Admin",
-                    parent: 'group-repos'
+                    parent: 'groups'
                 }
             }
         },

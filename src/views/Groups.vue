@@ -13,7 +13,6 @@
           <tr v-for="group in APIData" :key="group.id">
             <td>
               <div class="row justify-content-between">
-
                 <div class="col my-auto">
                   <div>
                     <h5 class="text-capitalize">
@@ -26,16 +25,24 @@
                   </div>
                 </div>
 
-                <div class="col-2 my-auto">
+                <div
+                  class="col-3 my-auto d-flex"
+                  v-if="group.rights.includes('O') || group.rights.includes('A')"
+                >
                   <router-link
+                    tag="button"
+                    class="btn-sm btn-secondary float-right"
                     :to="{ name: 'grading', params: { groupid: group.id, name: group.name } }"
-                    v-if="group.rights.includes('O') || group.rights.includes('A')"
-                  >
-                    <button class="btn-sm btn-secondary m-1">Grading 🌳</button>
-
-                  </router-link>
+                  >Grading 🌳</router-link>
+                  <router-link
+                    tag="button"
+                    class="btn-sm btn-secondary float-right"
+                    :to="{
+                      name: 'group-admin-view',
+                      params: { groupid: group.id }
+                    }"
+                  >Config 📐</router-link>
                 </div>
-
               </div>
             </td>
           </tr>

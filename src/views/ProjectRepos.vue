@@ -15,12 +15,6 @@
             class="btn-sm btn-secondary float-right"
             @click="refreshGroup($route.params.groupid)"
           >Refresh</button>
-          <router-link tag="button" class="btn-sm btn-secondary float-right"
-              :to="{
-                name: 'group-admin-view',
-                params: { groupid: $route.params.groupid }
-              }"
-          >Config</router-link>
         </div>
       </div>
 

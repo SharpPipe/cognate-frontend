@@ -129,9 +129,7 @@ export default {
         console.log(err);
       });
 
-    let g = this.$route.params.groupid
-    console.log(g)
-    Api.get("/groups/" + g + "/project_repo_connections/")
+    Api.get("/groups/" + this.$route.params.groupid + "/project_repo_connections/")
       .then((response) => {
         this.allProjects = response.data.projects
       })
