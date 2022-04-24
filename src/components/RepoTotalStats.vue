@@ -6,8 +6,8 @@
             <h2>{{ eap(totalStats.time_spent) }}EAP</h2>Codelines:
             <h4>
                 <font-awesome-icon icon="fa-solid fa-code" />
-                <span class="text-success"> +{{ totalStats.lines_added }}</span>
-                <span class="text-danger"> -{{ totalStats.lines_removed }}</span>
+                <span class="text-success"> +{{ comaFormat(totalStats.lines_added) }}</span>
+                <span class="text-danger"> -{{ comaFormat(totalStats.lines_removed) }}</span>
             </h4>
         </div>
     </div>
@@ -23,7 +23,10 @@ export default {
         },
         round(spent) {
             return spent.toFixed(0)
+        },
+        comaFormat(num) {
+            return num.toLocaleString("en-US")
         }
-    }
+    },
 }
 </script>
