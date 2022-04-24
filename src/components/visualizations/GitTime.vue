@@ -23,7 +23,6 @@ export default {
   data() {
     return {
       width, height,
-      lineGraphData: [],
       data: [],
       repos: [],
       checkedRepos: [],
@@ -35,7 +34,6 @@ export default {
     this.data = this.underflow(this.data)
     this.data = this.underflow(this.data)
 
-    this.lineGraphData = this.aggregateTime(this.data)
     this.differentiateByRepo(this.data)
 
     this.renderGraph(this.colours, this)
@@ -52,21 +50,6 @@ export default {
     }
   },
   methods: {
-    aggregateTime(data) {
-      let linegraph = []
-      let lines = _.groupBy(data, d => d.time.toDateString())
-      _.forEach(lines, (value, key) => {
-        lines[key] = value.reduce((total, item) => item.amount + total, 0)
-        linegraph.push({date: new Date(key), amount: lines[key]})
-      })
-      let minday = _.minBy(linegraph, d => d.date.valueOf()).date.valueOf()
-      let maxday = _.maxBy(linegraph, d => d.date.valueOf()).date.valueOf()
-      let alldays = linegraph.map(d => d.date.valueOf())
-      for (let s = minday; s <= maxday; s+= 86400000) {  // ms in day
-        if (!alldays.includes(s)) linegraph.push({date: new Date(s), amount: 0})
-      }  
-      return linegraph.sort((a, b) => a.date - b.date)
-    },
     timezoneOffset(data) {
       _.forEach(data, d => { d.time = new Date(d.time.valueOf() + d.time.getTimezoneOffset() * 60 * 1000) })
       return data
@@ -106,8 +89,6 @@ export default {
       let svg = d3.select('#gittime')
       let margins = ({ top: 20, right: 50, bottom: 30, left: 30 })
 
-      let self = this
-
       // Axis
       let domainExtent = d3.extent(data, d => new Date(d.time.toDateString().valueOf()))
       domainExtent[0] = new Date(domainExtent[0].getTime() - 24 * 60 * 60 * 1000)
@@ -119,7 +100,7 @@ export default {
 
 
       let y = d3.scaleLinear()
-        .domain([0, 24])
+        .domain([24, 0])
         .range([height - margins.bottom, margins.top])
 
 
@@ -177,25 +158,12 @@ export default {
         .attr("d", d => d3.arc().outerRadius(radius).innerRadius(radius * 0.66)(d))
         .attr("fill", d => c(Object.keys(groups).find(key => groups[key] === d.data), false))
 
-      // Aggregate line graph
-      let lineFunc = d3.line()
-        .x(d=>x(d.date))
-        .y(d=> y(d.amount / 60))
-        .curve(d3.curveMonotoneX)
-      svg.append("g")
-        .attr("opacity", 0.7)
-        .append("path")
-        .attr("d", lineFunc(self.lineGraphData))
-        .attr("stroke", "#6e6")
-        .attr("fill", "none")
-        .attr("stroke-width", 4)
-
       // Lines
       let dayWidth = x(new Date("2000-01-01")) - x(new Date("2000-01-02"))
 
       svg.append("g")
         .attr("stroke", "#000")
-        .selectAll("line")
+        .selectAll("circle")
         .data(data)
         .enter().append("line")
         .style("opacity", d => self.checkedRepos.includes(d.repo_id + "") ? 1 : 0)
