@@ -18,7 +18,7 @@
                   <div>
                     <h5 class="text-capitalize">
                       <router-link
-                        :to="{ name: 'group-repos', params: { id: group.id, group_id: group.group_id, name: group.name } }"
+                        :to="{ name: 'group-repos', params: { groupid: group.id } }"
                         class="text-white"
                       >{{ group.name }}</router-link>
                     </h5>
@@ -28,7 +28,7 @@
 
                 <div class="col-2 my-auto">
                   <router-link
-                    :to="{ name: 'grading', params: { id: group.id, name: group.name } }"
+                    :to="{ name: 'grading', params: { groupid: group.id, name: group.name } }"
                     v-if="group.rights.includes('O') || group.rights.includes('A')"
                   >
                     <button class="btn-sm btn-secondary m-1">Grading 🌳</button>

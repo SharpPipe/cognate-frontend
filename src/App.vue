@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Navbar/>
+    <Breadcrumbs/>
     <router-view/>
   </div>
 </template>

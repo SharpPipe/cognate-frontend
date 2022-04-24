@@ -56,17 +56,17 @@
               <select required class="custom-select form-control mb-2" v-model="selectedProject">
                 <option value selected disabled hidden>Project</option>
 
-                <option 
+                <option
                   :value="project.id"
-                  v-for="project in allProjects" :key="project.id"
-                >{{ project.name}}
-                </option>
+                  v-for="project in allProjects"
+                  :key="project.id"
+                >{{ project.name }}</option>
               </select>
-              <input 
-                type="text" 
-                class="form-control mb-2" 
-                placeholder="Repo Name" 
-                v-model="repo.name" 
+              <input
+                type="text"
+                class="form-control mb-2"
+                placeholder="Repo Name"
+                v-model="repo.name"
               />
               <input
                 type="text"
@@ -120,7 +120,7 @@ export default {
   created() {
     Api.get("/groups/")
       .then(response => {
-        let this_group = response.data.find(g => g.id == this.$route.params.id);
+        let this_group = response.data.find(g => g.id == this.$route.params.groupid);
         this.payload.name = this_group.name;
         this.payload.description = this_group.description;
       })
@@ -128,15 +128,21 @@ export default {
         this.error = err;
         console.log(err);
       });
-    Api.get(
-      "/groups/" + this.$route.params.id + "/project_repo_connections/"
-    ).then((response) => {
-      this.allProjects = response.data.projects
-    });
+
+    let g = this.$route.params.groupid
+    console.log(g)
+    Api.get("/groups/" + g + "/project_repo_connections/")
+      .then((response) => {
+        this.allProjects = response.data.projects
+      })
+      .catch(err => {
+        this.error = err;
+        console.log(err)
+      });
   },
   methods: {
     modifyGroup() {
-      Api.put("/groups/" + this.$route.params.id + "/", this.payload)
+      Api.put("/groups/" + this.$route.params.groupid + "/", this.payload)
         .then(() => {
           this.success = "Group modified!";
           this.$router.push({ name: "groups" });
@@ -148,7 +154,7 @@ export default {
     },
     addProject() {
       if (this.newProjectName) {
-        Api.post("/groups/" + this.$route.params.id + "/project/", { name: this.newProjectName }) 
+        Api.post("/groups/" + this.$route.params.groupid + "/project/", { name: this.newProjectName })
           .then(response => {
             this.allProjects.push(response.data)
             this.newProjectName = ""
@@ -174,7 +180,8 @@ export default {
 </script>
 
 <style scoped>
-select, select option {
+select,
+select option {
   color: #dee2e6;
 }
 

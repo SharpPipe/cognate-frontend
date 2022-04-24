@@ -82,7 +82,7 @@ export default {
   },
   created() {
     Api.get(
-      "/groups/" + this.$route.params.id + "/project_repo_connections/"
+      "/groups/" + this.$route.params.groupid + "/project_repo_connections/"
     ).then((response) => {
       this.project_connections = this.formatedConnections(response.data);
     });

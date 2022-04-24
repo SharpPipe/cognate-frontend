@@ -17,6 +17,9 @@ export default new VueRouter({
             path: '/pricing/',
             name: 'pricing',
             component: () => import("./views/Pricing"),
+            meta: {
+                breadcrumb: "Pricing"
+            }
         },
         {
             path: '/browse/',
@@ -53,7 +56,8 @@ export default new VueRouter({
             name: 'profile',
             component: () => import("./views/Profile"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: "Profile"
             }
         },
         // authenticated users
@@ -62,7 +66,20 @@ export default new VueRouter({
             name: 'groups',
             component: () => import("./views/Groups"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: "Groups"
+            }
+        },
+        {
+            path: '/group/:groupid/',
+            name: 'group-repos',
+            component: () => import("./views/ProjectRepos"),
+            meta: {
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Group Projects",
+                    parent: 'groups'
+                }
             }
         },
         {
@@ -70,7 +87,11 @@ export default new VueRouter({
             name: 'repo',
             component: () => import("./views/Repo"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Project",
+                    parent: 'group-repos'
+                }
             }
         },
         {
@@ -78,39 +99,47 @@ export default new VueRouter({
             name: 'managerepo',
             component: () => import("./views/RepoMilestoneManager"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Manage Project",
+                    parent: 'repo'
+                }
             }
         },
         {
-            path: '/group/:id/',
-            name: 'group-repos',
-            component: () => import("./views/ProjectRepos"),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: '/group/:id/milestone/:msid/',
+            path: '/group/:groupid/milestone/:msid/',
             name: 'group-milestone-summary',
             component: () => import("./views/GroupMilestoneSummary"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Group Sprint Stats",
+                    parent: 'group-repos'
+                }
             }
         },
         {
-            path: '/group/:id/config/',
+            path: '/group/:groupid/config/',
             name: 'group-admin-view',
             component: () => import("./views/GroupAdminView"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Group Admin",
+                    parent: 'group-repos'
+                }
             }
         },
         {
-            path: '/group/:id/grading/',
+            path: '/group/:groupid/grading/',
             name: 'grading',
             component: () => import("./views/Grading"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Group Grading Configuration",
+                    parent: 'groups'
+                }
             }
         },
         {
@@ -118,7 +147,11 @@ export default new VueRouter({
             name: 'grade-milestone',
             component: () => import("./views/GradeMilestone"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Grade Milestone",
+                    parent: 'repo'
+                }
             }
         },
         {
@@ -126,7 +159,10 @@ export default new VueRouter({
             name: 'groupadd',
             component: () => import("./views/GroupAdd"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Add new Group",
+                }
             }
         },
         {
@@ -134,9 +170,13 @@ export default new VueRouter({
             name: 'feedback',
             component: () => import("./views/Feedback"),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                breadcrumb: {
+                    label: "Give us Feedback now!",
+                }
             }
         },
+        // Debug views
         {
             path: '/gittime/',
             name: 'gittime',
