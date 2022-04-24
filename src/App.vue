@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar/>
-    <Breadcrumbs/>
+    <Breadcrumbs class="p-1 rounded-0"  style="background-color: #343a4080;" />
     <router-view/>
   </div>
 </template>
