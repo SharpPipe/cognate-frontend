@@ -189,4 +189,7 @@ export default {
   border-radius: 8px;
   pointer-events: none;
 }
+line {
+  cursor: pointer;
+}
 </style>
