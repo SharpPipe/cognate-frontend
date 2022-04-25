@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bar mb-2" :class="{ 'bg-danger': isDevEnv, 'bg-dark': !isDevEnv }">
+  <div class="nav-bar" :class="{ 'bg-danger': isDevEnv, 'bg-dark': !isDevEnv }">
     <nav class="navbar navbar-expand-lg navbar-dark primary-color">
       <button
         class="navbar-toggler"
