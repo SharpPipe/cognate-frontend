@@ -311,7 +311,7 @@ export default {
       graphData: null,
       addedNode: null,
       deletedNode: null,
-      groupid: this.$route.params.id
+      groupid: this.$route.params.groupid
     };
   },
   created() {
