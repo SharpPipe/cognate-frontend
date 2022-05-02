@@ -53,11 +53,9 @@ export default {
   },
   methods: {
     aggregateTime(data) {
-      let linegraph = []
-
-
       let devLine = _.groupBy(data, d => d.user)
       for (let dev of Object.keys(devLine)) {
+        let linegraph = []
         let lines = _.groupBy(devLine[dev], d => new Date(d.time).setHours(0, 0, 0, 0))
 
         _.forEach(lines, (value, key) => {
@@ -74,7 +72,7 @@ export default {
             aggregator += linegraph.find(d => d.date.valueOf() == s).amount
           else if (alldays.includes(s - 3600000))  // daylight savings 
             aggregator += linegraph.find(d => d.date.valueOf() == s - 3600000).amount
-          aggregateLineGraph.push({ date: new Date(s), amount: aggregator })
+          aggregateLineGraph.push({ date: new Date(s - 3600000), amount: aggregator })
         }
         devLine[dev] = aggregateLineGraph.sort((a, b) => a.date - b.date)
       }
@@ -205,8 +203,8 @@ export default {
 
       // Aggregate line graph
       let lineFunc = d3.line()
-        .x(d=> x(d.date))
-        .y(d=>y_agg(d.amount))
+        .x(d => x(d.date))
+        .y(d => y_agg(d.amount))
         .curve(d3.curveMonotoneX)
 
       svg.append("g")
