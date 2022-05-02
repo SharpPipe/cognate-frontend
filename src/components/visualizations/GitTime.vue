@@ -54,23 +54,27 @@ export default {
   methods: {
     aggregateTime(data) {
       let linegraph = []
-      let lines = _.groupBy(data, d => d.time.toDateString())
+      let lines = _.groupBy(data, d => new Date(d.time).setHours(0, 0, 0, 0))
+
+      console.log(lines)  
       _.forEach(lines, (value, key) => {
         lines[key] = value.reduce((total, item) => item.amount + total, 0)
-        linegraph.push({date: new Date(key), amount: lines[key]})
+        linegraph.push({date: new Date(+key), amount: lines[key]})
       })
       let minday = _.minBy(linegraph, d => d.date.valueOf()).date.valueOf()
       let maxday = _.maxBy(linegraph, d => d.date.valueOf()).date.valueOf()
       let alldays = linegraph.map(d => d.date.valueOf())
-      let agg = 0
+      let aggregator = 0
       let aggregateLineGraph = []
       for (let s = minday; s <= maxday; s+= 86400000) {  // ms in day
-        if (alldays.includes(s)) {
-          agg += linegraph.find(d => d.date.valueOf() == s).amount
-        }
-        aggregateLineGraph.push({date: new Date(s), amount: agg})
+        if (alldays.includes(s)) 
+          aggregator += linegraph.find(d => d.date.valueOf() == s).amount
+        else if (alldays.includes(s-3600000))  // daylight savings 
+          aggregator += linegraph.find(d => d.date.valueOf() == s-3600000).amount
+        aggregateLineGraph.push({date: new Date(s), amount: aggregator})
       }  
-      return aggregateLineGraph.sort((a, b) => a.date - b.date)
+      let sorted  = aggregateLineGraph.sort((a, b) => a.date - b.date)
+      return sorted
     },
     timezoneOffset(data) {
       _.forEach(data, d => { d.time = new Date(d.time.valueOf() + d.time.getTimezoneOffset() * 60 * 1000) })
