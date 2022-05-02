@@ -10,12 +10,16 @@ import VueBreadcrumbs from 'vue-2-breadcrumbs'
 // https://fontawesome.com/v6/docs/web/use-with/vue/add-icons
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faGitlab } from '@fortawesome/free-brands-svg-icons'
-import { faClock } from '@fortawesome/free-regular-svg-icons'
-import { faCode } from '@fortawesome/free-solid-svg-icons'
+import { faClipboard, faClock, faStarHalfAlt } from '@fortawesome/free-regular-svg-icons'
+import { faClipboardList, faCode } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faGitlab)
 library.add(faClock)
 library.add(faCode)
+library.add(faClipboardList)
+library.add(faClipboard)
+library.add(faStarHalfAlt)
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // env variables
