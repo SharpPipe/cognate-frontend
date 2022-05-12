@@ -1,10 +1,10 @@
 <template>
     <div class="border rounded">
         <div class="row m-1">
-            <svg class="m-1" height="40" width="40">
+            <svg class="m-2 my-auto" height="40" width="40">
                 <circle cx="20" cy="20" r="20" :fill="`#${devData.colour}`" />
             </svg>
-            <div class="w-75">
+            <div class="flex-grow-1">
                 <span class="font-weight-bold">{{ devData.username }}</span>
                 <br />
 
@@ -15,8 +15,8 @@
                     </span>
                     <span v-if="devData.lines_added || devData.lines_removed" class="float-right">
                         <font-awesome-icon icon="fa-solid fa-code" />
-                        <span class="text-success"> +{{ devData.lines_added }}</span>
-                        <span class="text-danger"> -{{ devData.lines_removed }}</span>
+                        <span class="text-success"> +{{ comaFormat(devData.lines_added) }}</span>
+                        <span class="text-danger"> -{{ comaFormat(devData.lines_removed) }}</span>
                     </span>
                 </div>
             </div>
@@ -33,6 +33,9 @@ export default {
         spent(time) {
             if (isNaN(time)) return time
             return time.toFixed(2)
+        },
+        comaFormat(num) {
+            return num.toLocaleString("en-US")
         }
     },
 }

@@ -1,5 +1,13 @@
 <template>
-  <svg v-if="colours" :viewBox="`0 0 ${width} ${height}`" id="gittime" />
+  <div>
+    <svg v-if="colours" :viewBox="`0 0 ${width} ${height}`" id="gittime" />
+    <div v-if="repos.length > 1" class="custom-checkbox p-0 d-flex-lnline">
+      <div v-for="repo in repos" :key="repo" class="float-right px-1">
+        <input type="checkbox" :value="repo" v-model="checkedRepos" checked="true" />
+        <label class="px-1 py-0 my-0">{{ repo }}</label>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -15,19 +23,61 @@ export default {
   data() {
     return {
       width, height,
+      lineGraphData: [],
       data: [],
-      devColors: {},
+      repos: [],
+      checkedRepos: [],
     }
   },
   mounted() {
     this.data = this.gitdata.map(c => Object.assign(c, { time: d3.isoParse(c.time) }))
     this.data = this.timezoneOffset(this.data)
     this.data = this.underflow(this.data)
-    console.log(this.colours)
+    this.data = this.underflow(this.data)
 
-    this.renderGraph(this.colours)
+    this.differentiateByRepo(this.data)
+    this.lineGraphData = this.aggregateTime(this.data)
+
+    this.renderGraph(this.colours, this)
+  },
+  computed: {
+    checkedLength() {
+      return this.checkedRepos.length
+    }
+  },
+  watch: {
+    checkedLength() {
+      d3.select('#gittime').selectAll("*").remove()
+      this.renderGraph(this.colours, this)
+    }
   },
   methods: {
+    aggregateTime(data) {
+      let devLine = _.groupBy(data, d => d.user)
+      for (let dev of Object.keys(devLine)) {
+        let linegraph = []
+        let lines = _.groupBy(devLine[dev], d => new Date(d.time).setHours(0, 0, 0, 0))
+
+        _.forEach(lines, (value, key) => {
+          lines[key] = value.reduce((total, item) => item.amount + total, 0)
+          linegraph.push({ date: new Date(+key), amount: lines[key] })
+        })
+        let minday = _.minBy(linegraph, d => d.date.valueOf()).date.valueOf()
+        let maxday = _.maxBy(linegraph, d => d.date.valueOf()).date.valueOf()
+        let alldays = linegraph.map(d => d.date.valueOf())
+        let aggregator = 0
+        let aggregateLineGraph = []
+        for (let s = minday; s <= maxday; s += 86400000) {  // ms in day
+          if (alldays.includes(s))
+            aggregator += linegraph.find(d => d.date.valueOf() == s).amount
+          else if (alldays.includes(s - 3600000))  // daylight savings 
+            aggregator += linegraph.find(d => d.date.valueOf() == s - 3600000).amount
+          aggregateLineGraph.push({ date: new Date(s - 3600000), amount: aggregator })
+        }
+        devLine[dev] = aggregateLineGraph.sort((a, b) => a.date - b.date)
+      }
+      return _.toPairsIn(devLine)
+    },
     timezoneOffset(data) {
       _.forEach(data, d => { d.time = new Date(d.time.valueOf() + d.time.getTimezoneOffset() * 60 * 1000) })
       return data
@@ -44,6 +94,7 @@ export default {
             user: d.user,
             title: d.title,
             gitlab_link: d.gitlab_link,
+            repo_id: d.repo_id,
             time: new Date(new Date(d.time.toDateString()).valueOf() - 1)
           })
 
@@ -52,9 +103,13 @@ export default {
       })
       data.push.apply(data, newLines)
       return data
-
     },
-    renderGraph(colours) {
+    differentiateByRepo(data) {
+      let diffed = _.groupBy(data, d => d.repo_id)
+      this.repos = Object.keys(diffed)
+      this.checkedRepos = this.repos
+    },
+    renderGraph(colours, self) {
       // Git Log code inspired by and definitely not directly stolen from 
       // https://observablehq.com/@webapelsin/git-log
       if (!this.data.length) return
@@ -73,7 +128,12 @@ export default {
 
 
       let y = d3.scaleLinear()
-        .domain([24, 0])
+        .domain([0, 24])
+        .range([height - margins.bottom, margins.top])
+
+      let agg_maxtime = 14040  // 9 EAP
+      let y_agg = d3.scaleLinear()
+        .domain([0, agg_maxtime])
         .range([height - margins.bottom, margins.top])
 
 
@@ -98,8 +158,18 @@ export default {
         .call(g => g.select(".domain").attr('stroke', '#d8dbdb'))
         .call(g => g.selectAll("line").attr('stroke', '#d8dbdb').attr('stroke-opacity', '0.3'))
 
+      let yAggAxis = g => g
+        .attr("transform", `translate(${margins.left},0)`)
+        .attr("stroke", "#66ee66aa")
+        .call(d3.axisLeft(y_agg)
+          .tickSize(0)
+          .tickFormat(v => (v / 60).toFixed(0) + 'h')
+        )
+
+
       svg.append("g").call(xAxis)
       svg.append("g").call(yAxis)
+      svg.append("g").call(yAggAxis)
 
       // Tooltip
       let div = d3.select("body").append("div")
@@ -131,23 +201,37 @@ export default {
         .attr("d", d => d3.arc().outerRadius(radius).innerRadius(radius * 0.66)(d))
         .attr("fill", d => c(Object.keys(groups).find(key => groups[key] === d.data), false))
 
+      // Aggregate line graph
+      let lineFunc = d3.line()
+        .x(d => x(d.date))
+        .y(d => y_agg(d.amount))
+        .curve(d3.curveMonotoneX)
+
+      svg.append("g")
+        .selectAll(".aggLine")
+        .data(self.lineGraphData)
+        .enter().append("path")
+        .attr("d", d => lineFunc(d[1]))
+        .attr("class", ".aggLine")
+        .attr("stroke", d => c(d[0], false))
+        .attr("fill", "none")
+        .attr("opacity", 0.7)
+        .attr("stroke-width", 4)
+
       // Lines
       let dayWidth = x(new Date("2000-01-01")) - x(new Date("2000-01-02"))
 
       svg.append("g")
         .attr("stroke", "#000")
-        .selectAll("circle")
+        .selectAll("line")
         .data(data)
         .enter().append("line")
+        .style("opacity", d => self.checkedRepos.includes(d.repo_id + "") ? 1 : 0)
         .attr("x1", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
         .attr("y1", d => y(d.time.getHours() + d.time.getMinutes() / 60))
         .attr("x2", d => x(new Date(d.time.getFullYear(), d.time.getMonth(), d.time.getDate())))
         .attr("y2", d => y(d.time.getHours() + d.time.getMinutes() / 60 - (d.amount / 60)))
-        .attr("stroke", d => {
-          let col = c(d.user, false) 
-          console.log(col)
-          return col
-        })
+        .attr("stroke", d => c(d.user, false))
         .attr("stroke-width", -dayWidth)
         .attr("ref", "line")
         .on("mouseover", (event, d) => {
@@ -190,5 +274,8 @@ export default {
   border: 0px;
   border-radius: 8px;
   pointer-events: none;
+}
+line {
+  cursor: pointer;
 }
 </style>

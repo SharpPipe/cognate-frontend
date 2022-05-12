@@ -24,23 +24,21 @@ export default {
         makeChart() {
             if (this.k == undefined) return
 
-            let data = this.users.map(o => +o.points) 
+            let data = this.users 
 
             let svg = d3.select("#teampiechart" + this.k)
 
             const g = svg.append('g')
                 .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
 
-            let color = ["#6610f2", "#dc3545", "#fd7e14", "#abbc11"]
 
             let pie = d3.pie()
+              .value(d => d.points)
 
             let arc = d3.arc()
                 .innerRadius(0)
                 .outerRadius((height - 10) / 2)
                 .cornerRadius(1)
-
-            
 
             let arcs = g.selectAll('arc')
                 .data(pie(data))
@@ -48,7 +46,7 @@ export default {
                 .append('g')
 
             arcs.append("path")
-                .attr("fill", (d, i) => color[i])
+                .attr("fill", (d) => "#" + d.data.colour + "ee")
                 .attr("d", arc)
 
 /*             let arcOuter = d3.arc()

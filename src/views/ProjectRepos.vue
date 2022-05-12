@@ -1,6 +1,6 @@
 <template>
   <div class="repos">
-    <div class="container">
+    <div class="container" v-if="repos">
       <div class="row justify-content-between">
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar
@@ -10,21 +10,23 @@
           :maxPoints="100"
           class="w-75 my-auto"
         />
-        <button
-          class="btn-sm btn-primary float-right"
-          @click="refreshGroup($route.params.id)"
-        >Refresh</button>
+        <div v-if="repos.rights.includes('O') || repos.rights.includes('A')">
+          <button
+            class="btn-sm btn-secondary float-right"
+            @click="refreshGroup($route.params.groupid)"
+          >Refresh</button>
+        </div>
       </div>
 
       <table class="table table-borderless">
-        <tr>
-          <td class="m-0 p-0" v-for="n in 7" :key="n">
+        <tr v-if="repos.total_milestones">
+          <td class="m-0 p-0" v-for="n in repos.total_milestones" :key="n">
             <router-link
-              :is="(n >= 5) ? 'span' : 'router-link'"
+              :is="(n > repos.active_milestones) ? 'span' : 'router-link'"
               :to="{
                 name: 'group-milestone-summary',
                 params: {
-                  id: $route.params.id,
+                  groupid: $route.params.groupid,
                   msid: n
                 }
               }"
@@ -39,25 +41,28 @@
 
       <div v-if="repos">
         <table class="table">
-          <tr v-for="repo in repos" :key="repo.id">
+          <tr v-for="repo in repos.data" :key="repo.id">
             <td v-if="repo.users" class="p-1">
               <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users" />
             </td>
 
             <td class="p-1">
               <router-link
-                :to="{ name: 'repo', params: { groupid: $route.params.id, repoid: repo.id } }"
+                :to="{ name: 'repo', params: { groupid: $route.params.groupid, repoid: repo.id } }"
                 class="text-white"
               >{{ repo.name }}</router-link>
             </td>
 
             <td class="p-1 col-4">
               <div v-if="repo.mentors && repo.mentors.length > 0">
-                <span class="badge badge-dark">{{ repo.mentors[0] }} asdfa</span>
+                <span class="badge badge-dark">{{ repo.mentors[0] }}</span>
                 <br />
               </div>
               <span v-for="(dev, i) in repo.users" :key="i" class="pr-1">
-                <div v-if="dev.points > 0" class="badge badge-success">
+                <div class="badge badge-dark">
+                  <svg class="m-0 p-0" height="12" width="12">
+                    <circle cx="6" cy="6" r="6" :fill="`#${dev.colour}`" />
+                  </svg>
                   {{ dev.name }}:
                   <small>{{ Math.round(dev.points) }}</small>
                 </div>
@@ -102,7 +107,7 @@ export default {
     }
   },
   created() {
-    const url = 'groups/' + this.$route.params.id + "/"
+    const url = 'groups/' + this.$route.params.groupid + "/"
     Api.get(url)
       .then(response => {
         this.repos = response.data
