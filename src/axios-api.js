@@ -2,8 +2,12 @@ import axios from 'axios'
 import store from './store'
 import router from './routes'
 
+const prefix = process.env.VUE_APP_API_URL === '193.40.156.142'
+              ? 'http://'
+              : 'https://'
+
 const Api = axios.create({
-  baseURL: 'http://' + process.env.VUE_APP_API_URL + ':8081/',
+  baseURL: prefix + process.env.VUE_APP_API_URL + ':8081/',
   //baseURL: 'http://localhost:8081/',
   timeout: 5000,
   headers: {
