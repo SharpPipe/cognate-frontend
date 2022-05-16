@@ -3,8 +3,8 @@ import store from './store'
 import router from './routes'
 
 const prefix = process.env.VUE_APP_API_URL === 'cs.ttu.ee/services/cognate/back'
-              ? 'http://'
-              : 'https://'
+              ? 'https://'
+              : 'http://'
 
 const Api = axios.create({
   baseURL: prefix + process.env.VUE_APP_API_URL + '/',
