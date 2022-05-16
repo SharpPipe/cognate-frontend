@@ -3,7 +3,7 @@ import store from './store'
 import router from './routes'
 
 const Api = axios.create({
-  baseURL: 'http://' + process.env.VUE_APP_API_URL + ':8081/',
+  baseURL: 'http://' + process.env.VUE_APP_API_URL + '/',
   //baseURL: 'http://localhost:8081/',
   timeout: 5000,
   headers: {
