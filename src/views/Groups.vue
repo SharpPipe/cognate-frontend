@@ -48,15 +48,23 @@
           </tr>
         </table>
       </div>
+      <center v-else>
+        <LoadingAnimation />
+      </center>
     </div>
   </div>
 </template>
 
 <script>
 import { Api } from "../axios-api";
+import LoadingAnimation from "../components/LoadingAnimation.vue";
+
 
 export default {
   name: 'Groups',
+  components: {
+    LoadingAnimation,
+  },
   data() {
     return {
       APIData: null
