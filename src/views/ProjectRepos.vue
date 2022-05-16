@@ -75,6 +75,13 @@
           </tr>
         </table>
       </div>
+
+    </div>
+    <div v-else>
+      <center>
+      <LoadingAnimation />
+
+      </center>
     </div>
   </div>
 </template>
@@ -84,6 +91,7 @@ import { Api } from "../axios-api";
 import RepoChartMini from "../components/visualizations/RepoChartMini";
 import PieChart from "../components/visualizations/PieChart.vue";
 import ProgressBar from "../components/ProgressBar.vue";
+import LoadingAnimation from "../components/LoadingAnimation.vue";
 
 export default {
   name: 'Home',
@@ -91,6 +99,7 @@ export default {
     RepoChartMini,
     PieChart,
     ProgressBar,
+    LoadingAnimation,
   },
   data() {
     return {
