@@ -2,12 +2,12 @@ import axios from 'axios'
 import store from './store'
 import router from './routes'
 
-const prefix = process.env.VUE_APP_API_URL === 'cs.ttu.ee/services/cognate/back'
-              ? 'https://'
-              : 'http://'
+const base = process.env.VUE_APP_API_URL === 'cs.ttu.ee/services/cognate/back'
+              ? 'https://cs.ttu.ee/services/cognate/back/'
+              : 'http://193.40.156.142:8081'
 
 const Api = axios.create({
-  baseURL: prefix + process.env.VUE_APP_API_URL + '/',
+  baseURL: base,
   //baseURL: 'http://localhost:8081/',
   timeout: 5000,
   headers: {

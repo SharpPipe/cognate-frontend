@@ -5,7 +5,7 @@
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar
           v-if="refreshIsOngoing"
-          :currentPoints="(+refreshDetail.process.completion_percentage)"
+          :currentPoints="+refreshDetail.process.completion_percentage"
           :minPoints="0"
           :maxPoints="100"
           class="w-75 my-auto"
@@ -14,7 +14,9 @@
           <button
             class="btn-sm btn-secondary float-right"
             @click="refreshGroup($route.params.groupid)"
-          >Refresh</button>
+          >
+            Refresh
+          </button>
         </div>
       </div>
 
@@ -22,13 +24,13 @@
         <tr v-if="repos.total_milestones">
           <td class="m-0 p-0" v-for="n in repos.total_milestones" :key="n">
             <router-link
-              :is="(n > repos.active_milestones) ? 'span' : 'router-link'"
+              :is="n > repos.active_milestones ? 'span' : 'router-link'"
               :to="{
                 name: 'group-milestone-summary',
                 params: {
                   groupid: $route.params.groupid,
-                  msid: n
-                }
+                  msid: n,
+                },
               }"
             >
               <p>Milestone {{ n }}</p>
@@ -43,14 +45,22 @@
         <table class="table">
           <tr v-for="repo in repos.data" :key="repo.id">
             <td v-if="repo.users" class="p-1">
-              <PieChart :id="`teampiechart${repo.id}`" :k="`${repo.id}`" :users="repo.users" />
+              <PieChart
+                :id="`teampiechart${repo.id}`"
+                :k="`${repo.id}`"
+                :users="repo.users"
+              />
             </td>
 
             <td class="p-1">
               <router-link
-                :to="{ name: 'repo', params: { groupid: $route.params.groupid, repoid: repo.id } }"
+                :to="{
+                  name: 'repo',
+                  params: { groupid: $route.params.groupid, repoid: repo.id },
+                }"
                 class="text-white"
-              >{{ repo.name }}</router-link>
+                >{{ repo.name }}</router-link
+              >
             </td>
 
             <td class="p-1 col-4">
@@ -70,12 +80,19 @@
             </td>
 
             <td class="p-1">
-              <RepoChartMini :id="`repoms${repo.id}`" :k="repo.id" :milestones="repo.milestones" />
+              <RepoChartMini
+                :id="`repoms${repo.id}`"
+                :k="repo.id"
+                :milestones="repo.milestones"
+              />
             </td>
           </tr>
         </table>
       </div>
     </div>
+    <center v-else>
+      <LoadingAnimation />
+    </center>
   </div>
 </template>
 
@@ -84,13 +101,15 @@ import { Api } from "../axios-api";
 import RepoChartMini from "../components/visualizations/RepoChartMini";
 import PieChart from "../components/visualizations/PieChart.vue";
 import ProgressBar from "../components/ProgressBar.vue";
+import LoadingAnimation from "../components/LoadingAnimation.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     RepoChartMini,
     PieChart,
     ProgressBar,
+    LoadingAnimation,
   },
   data() {
     return {
@@ -99,49 +118,54 @@ export default {
       refreshDetail: {
         process: {
           completion_percentage: 0,
-          status: "F"
-        }
+          status: "F",
+        },
       },
       refreshIsOngoing: false,
-      i: 0
-    }
+      i: 0,
+    };
   },
   created() {
-    const url = 'groups/' + this.$route.params.groupid + "/"
+    const url = "groups/" + this.$route.params.groupid + "/";
     Api.get(url)
-      .then(response => {
-        this.repos = response.data
+      .then((response) => {
+        this.repos = response.data;
       })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     async refreshGroup(id) {
-      Api.get('projects/' + id + "/update/")
-        .then(response => {
-          this.refreshMeta = response.data
-          this.refreshIsOngoing = true
-          console.log(this.refreshMeta)
+      Api.get("projects/" + id + "/update/")
+        .then((response) => {
+          this.refreshMeta = response.data;
+          this.refreshIsOngoing = true;
+          console.log(this.refreshMeta);
         })
         .then(() => {
           var int = setInterval(() => {
             if (this.refreshIsOngoing) {
-              Api.get('process/' + this.refreshMeta.id + '/' + this.refreshMeta.hash + '/')
-                .then(res => {
-                  this.refreshDetail = res.data
-                  this.refreshIsOngoing = this.refreshDetail.process.status == "O"
-                })
+              Api.get(
+                "process/" +
+                  this.refreshMeta.id +
+                  "/" +
+                  this.refreshMeta.hash +
+                  "/"
+              ).then((res) => {
+                this.refreshDetail = res.data;
+                this.refreshIsOngoing =
+                  this.refreshDetail.process.status == "O";
+              });
+            } else {
+              clearInterval(int);
             }
-            else {
-              clearInterval(int)
-            }
-          }, 2000)
+          }, 2000);
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
-}
+};
 </script>
