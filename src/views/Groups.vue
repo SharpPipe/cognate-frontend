@@ -32,8 +32,8 @@
                   <router-link
                     tag="button"
                     class="btn-sm btn-secondary float-right"
-                    :to="{ name: 'grading', params: { groupid: group.id, name: group.name } }"
-                  >Grading 🌳</router-link>
+                    :to="{ name: 'assessment', params: { groupid: group.id, name: group.name } }"
+                  >Assessment Tree 🌳</router-link>
                   <router-link
                     tag="button"
                     class="btn-sm btn-secondary float-right"

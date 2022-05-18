@@ -5,7 +5,7 @@
       <div class="flexbox">
         <div
           class="border rounded p-0 my-2"
-          v-for="ms in milestone_connections.grade_milestones"
+          v-for="ms in milestone_connections.assessment_milestones"
           :key="ms.id"
         >
           <div class="w-25 p-2 my-2 float-left">
@@ -93,23 +93,23 @@ export default {
     formatedConnections(raw) {
       raw.unmatched = [];
       for (let gl_milestone of raw.milestones) {
-        let gradeMSid = raw.grade_milestones.findIndex(
-          (o) => o.id == gl_milestone.grade_milestone
+        let assessmentMSid = raw.assessment_milestones.findIndex(
+          (o) => o.id == gl_milestone.assessment_milestone
         );
 
-        if (gradeMSid == -1) {
+        if (assessmentMSid == -1) {
           raw.unmatched.push(gl_milestone);
         } else {
-          if (raw.grade_milestones[gradeMSid].gl_milestones == undefined) {
-            raw.grade_milestones[gradeMSid].gl_milestones = [];
+          if (raw.assessment_milestones[assessmentMSid].gl_milestones == undefined) {
+            raw.assessment_milestones[assessmentMSid].gl_milestones = [];
           }
-          raw.grade_milestones[gradeMSid].gl_milestones.push(gl_milestone);
+          raw.assessment_milestones[assessmentMSid].gl_milestones.push(gl_milestone);
         }
       }
       return raw;
     },
     changeMilestone(card_id, board_id) {
-      Api.put("/milestones/" + card_id + "/grade_milestone/", {
+      Api.put("/milestones/" + card_id + "/assessment_milestone/", {
         id: board_id,
       }).catch((error) => console.log(error));
     },

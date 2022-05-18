@@ -28,7 +28,7 @@
 import $ from 'jquery';
 
 export default {
-  name: "RepoGradeStudent",
+  name: "RepoAssessStudent",
   props: ["points"],
   created() {
     $(function () {
