@@ -58,7 +58,7 @@
           >
             <router-link
               :to="{
-                name: 'grade-milestone',
+                name: 'assess-milestone',
                 params: {
                   groupid: $route.params.groupid,
                   repoid: $route.params.repoid,
@@ -131,7 +131,7 @@ export default {
       minCoursePoints: 0,
       maxCoursePoints: 2000,
       milestones: null,
-      gradeMilestones: null,
+      assessmentMilestones: null,
       issueData: [],
 
       projectTimeRange: [
@@ -203,13 +203,13 @@ export default {
           { axis: "Issues", value: 0 },
         ];
         for (let user of ms.user_points) {
-          for (let key in user.grades) {
+          for (let key in user.assessments) {
             if (key !== "Effort") {
               if (key === "Meeting" || key === "Retro")
-                r.find((o) => o.axis == key).value = user.grades[key];
+                r.find((o) => o.axis == key).value = user.assessments[key];
               else
                 r.find((o) => o.axis == key).value +=
-                  user.grades[key] / numOfDevs;
+                  user.assessments[key] / numOfDevs;
             }
           }
         }

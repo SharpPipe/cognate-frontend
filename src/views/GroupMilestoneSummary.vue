@@ -10,7 +10,7 @@
           <thead class="thead">
             <th scope="col">Team</th>
             <td scope="col">Developer</td>
-            <td scope="col" v-for="(g, i) in gradeCategories" :key="i">
+            <td scope="col" v-for="(g, i) in assessmentCategories" :key="i">
               {{ g }}
             </td>
             <th>Total</th>
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       APIData: null,
-      gradeCategories: null,
+      assessmentCategories: null,
     };
   },
   created() {
@@ -70,7 +70,7 @@ export default {
     Api.get(url)
       .then((response) => {
         this.APIData = response.data.data;
-        this.gradeCategories = this.APIData[0].users_data[0].data.map(
+        this.assessmentCategories = this.APIData[0].users_data[0].data.map(
           (g) => g.name
         );
       })
