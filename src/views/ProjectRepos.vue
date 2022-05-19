@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     async refreshGroup(id) {
-      Api.get("projects/" + id + "/update/")
+      Api.get("groups/" + id + "/update/")
         .then((response) => {
           this.refreshMeta = response.data;
           this.refreshIsOngoing = true;
