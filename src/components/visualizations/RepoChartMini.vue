@@ -41,23 +41,10 @@ export default {
         return "#28a745";
       };
 
-      /*           <label
-            class="mb-1"
-            data-toggle="tooltip"
-            data-placement="top"
-            :title="point.description"
-            >{{ point.name }}</label
-          > */
-
       // Tooltip
       $(function () {
         $('[data-toggle="tooltip"]').tooltip();
       });
-      /*
-      let div = d3.select("body").append("div")
-        .attr("class", "milestone-tooltip")
-        .style("opacity", 0)
-        */
 
       // Circles
       svg
@@ -66,19 +53,6 @@ export default {
         .data(this.milestones)
         .enter()
         .append("circle")
-        .attr("data-toggle", "tooltip")
-        .attr("data-placement", "top")
-        .attr("data-html", true)
-        .attr("title", (d) => {
-          return (
-            "<b>Milestone " +
-            d.milestone_id +
-            "</b>" +
-            d.user_points
-              .map((u) => "<br/>" + u.name + ": " + Math.round(u.points))
-              .join("") 
-          );
-        })
         .attr("cx", (d, i) => x(i))
         .attr("cy", height / 2)
         .attr("r", 15)
@@ -90,24 +64,23 @@ export default {
           )
         )
         .attr("stroke-width", 2)
-        .attr("stroke-opacity", 0.6);
+        .attr("stroke-opacity", 0.6)
+        .attr("data-toggle", "tooltip")
+        .attr("data-placement", "top")
+        .attr("data-html", true)
+        .attr(
+          "title",
+          (d) =>
+            "<b>Milestone " +
+            d.milestone_id +
+            "</b>" +
+            d.user_points
+              .map((u) => "<br/>" + u.name + ": " + Math.round(u.points))
+              .join("")
+        );
 
       return svg;
     },
   },
 };
 </script>
-
-<style>
-.milestone-tooltip {
-  position: absolute;
-  text-align: left;
-  width: 50;
-  padding: 2px;
-  font: 16px sans-serif;
-  background: #333;
-  border: 0px;
-  border-radius: 8px;
-  pointer-events: none;
-}
-</style>
