@@ -9,5 +9,5 @@
 - Step1
 - Step2
 
-/label ~🪲 Bug
-/label ~🍆 Frontend
+/label ~"🪲 Bug"
+/label ~"🍆 Frontend"
