@@ -131,25 +131,25 @@ export default new VueRouter({
             }
         },
         {
-            path: '/group/:groupid/grading/',
-            name: 'grading',
-            component: () => import("./views/Grading"),
+            path: '/group/:groupid/assessment/',
+            name: 'assessment',
+            component: () => import("./views/AssessingTree"),
             meta: {
                 requiresAuth: true,
                 breadcrumb: {
-                    label: "Group Grading Configuration",
+                    label: "Group Assessment Configuration",
                     parent: 'groups'
                 }
             }
         },
         {
-            path: '/group/:groupid/repo/:repoid/grade/:msid/',
-            name: 'grade-milestone',
-            component: () => import("./views/GradeMilestone"),
+            path: '/group/:groupid/repo/:repoid/assessment/:msid/',
+            name: 'assess-milestone',
+            component: () => import("./views/AssessMilestone"),
             meta: {
                 requiresAuth: true,
                 breadcrumb: {
-                    label: "Grade Milestone",
+                    label: "Assess Milestone",
                     parent: 'repo'
                 }
             }

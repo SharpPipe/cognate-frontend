@@ -28,7 +28,7 @@
 import $ from 'jquery'
 
 export default {
-    name: "RepoGradeTeam",
+    name: "RepoAssessTeam",
     props: ["teamPoints"],
     created() {
         $(function () {

@@ -2,11 +2,11 @@
     <div class="milestone-card">
         <div class="milestone-card border rounded p-2 text-center">
             <div
-                v-if="msData.graded"
+                v-if="msData.assessed"
                 class="badge badge-pill badge-success"
             >Milestone {{ msData.milestone_id }}</div>
             <div
-                v-if="!msData.graded"
+                v-if="!msData.assessed"
                 class="badge badge-pill badge-warning"
             >Milestone {{ msData.milestone_id }}</div>
             <table class="table table-borderless">

@@ -8,8 +8,14 @@
             data-toggle="tooltip"
             data-placement="top"
             :title="point.description"
-          >{{ point.name }}</label>
-          <p class="ml-auto mr-0 text-muted">{{ point.given_points }}/{{+point.total}}</p>
+            >{{ point.name }}</label
+          >
+          <p class="ml-auto mr-0 text-warning" v-if="point.automatic_points">
+            {{ point.given_points }}/{{ +point.total }}
+          </p>
+          <p class="ml-auto mr-0 text-muted" v-else>
+            {{ point.given_points }}/{{ +point.total }}
+          </p>
         </div>
         <input
           type="range"
@@ -25,17 +31,22 @@
 </template>
 
 <script>
-import $ from 'jquery';
+import $ from "jquery";
 
 export default {
-  name: "RepoGradeStudent",
+  name: "RepoAssessStudent",
   props: ["points"],
   created() {
     $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  },
+  mounted() {
+    for (let p of this.points) 
+      if (p.given_points == 0 && +p.automatic_points == 0) 
+        p.given_points = Math.min(+p.automatic_points, +p.total)
   }
-}
+};
 </script>
 
 
@@ -67,5 +78,9 @@ input[type="range"]::-moz-range-thumb {
   background: #66ee66;
   box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
   border-radius: 50%;
+}
+.automatic > input[type="range"] {
+  -webkit-appearance: none;
+  background-color: #2b3cf4;
 }
 </style>

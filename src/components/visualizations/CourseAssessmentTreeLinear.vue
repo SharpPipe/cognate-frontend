@@ -1,5 +1,5 @@
 <template>
-  <div id="gradingTree"></div>
+  <div id="assessmentTree"></div>
 </template>
 
 <script>
@@ -40,16 +40,16 @@ const gNode = svg
   .attr("pointer-events", "all");
 
 export default {
-  name: "CourseGradingTree",
-  props: ["gradedata"],
+  name: "CourseAssessmentTree",
+  props: ["assessmentdata"],
   data() {
     return {
       width,
       height,
       selected: {
         id: null,
-        grade_milestone: null,
-        project_grade: false,
+        assessment_milestone: null,
+        project_assessment: false,
         data: { name: "", total: 0, description: "", subnodecount: 0},
       },
       root,
@@ -57,7 +57,7 @@ export default {
   },
   beforeUpdate() {
     root = null
-    document.getElementById("gradingTree").innerHTML = null
+    document.getElementById("assessmentTree").innerHTML = null
   },
   mounted() {
     this.$nextTick(() => {
@@ -65,8 +65,10 @@ export default {
     })
   },
   watch: {
-    gradedata() {
-      this.renderGraph()
+    assessmentdata() {
+      this.$nextTick(() => {
+        this.renderGraph()
+      })
     }
   },
   methods: {
@@ -81,7 +83,7 @@ export default {
       // https://observablehq.com/@asktree/interactive-tree-diagram-d3v4-v5
       // https://observablehq.com/@jacob-tu/collapsible-tree
 
-      this.root = d3.hierarchy(this.gradedata);
+      this.root = d3.hierarchy(this.assessmentdata);
 
       this.root.x0 = dy / 2;
       this.root.y0 = 0;
@@ -94,7 +96,7 @@ export default {
       });
 
       this.update(this.root);
-      document.getElementById("gradingTree").appendChild(svg.node());
+      document.getElementById("assessmentTree").appendChild(svg.node());
       this.update(this.root);
       return svg.node();
     },
@@ -144,8 +146,8 @@ export default {
           this.selected.data.total = d.data.total;
           this.selected.data.description = d.data.description;
           this.selected.data.subnodecount = this.countSubnodes(d)
-          this.selected.grade_milestone = d.data.grademilestone
-          this.selected.project_grade = d.data.project_grade
+          this.selected.assessment_milestone = d.data.assessmentmilestone
+          this.selected.project_assessment = d.data.project_assessment
           this.$emit('select', this.selected);
           this.update(d);
         });

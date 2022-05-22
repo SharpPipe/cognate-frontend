@@ -1,20 +1,20 @@
 <template>
   <div class="milestone">
     <div class="container">
-      <h2>Grading for the Course {{ $route.params.name }}</h2>
+      <h2>Assessing configuration for the course {{ $route.params.name }}</h2>
 
       <div class="mb-4">
         <div class="input-group mb-2">
           <input
             type="text"
             class="form-control"
-            placeholder="New grade element with points worth"
-            aria-label="Grade element"
+            placeholder="New assessment element with points worth"
+            aria-label="Assessing element"
             aria-describedby="button-addon1"
             v-model="payload.name"
           />
-          <select required class="form-control my-0 col-sm-2" v-model="payload.grade_type">
-            <option value selected disabled hidden>Grade Type</option>
+          <select required class="form-control my-0 col-sm-2" v-model="payload.assessment_type">
+            <option value selected disabled hidden>Assessment Type</option>
             <option value="C">Custom</option>
             <option value="S">Sum</option>
             <option value="I">Min</option>
@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <div v-if="payload.grade_type == 'A'" class="input-group mb-2">
+        <div v-if="payload.assessment_type == 'A'" class="input-group mb-2">
           <select required class="form-control my-0 col-3" v-model="payload.automation_type">
             <option value selected disabled hidden>Automation Type</option>
             <option value="T">Time Spent Goal</option>
@@ -87,11 +87,10 @@
 
           <div class="mb-2 col-3 px-0 pl-2">
             <div class="input-group-text">
-              Is Project Grade? &nbsp;
+              Is Project Assessment Node? &nbsp;
               <input
                 type="checkbox"
-                v-model="payload.project_grade"
-                aria-label="Checkbox for following text input"
+                v-model="payload.project_assessment"
               />
             </div>
           </div>
@@ -105,15 +104,15 @@
             <em class="font-weight-bold">{{ formatedPoints }}</em>
             <br />Description: &nbsp;
             <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
-            <div v-if="selectedNode.grade_milestone">
+            <div v-if="selectedNode.assessment_milestone">
               Start: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.grade_milestone.start }}</em>
+              <em class="font-weight-bold">{{ selectedNode.assessment_milestone.start }}</em>
               <br />End: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.grade_milestone.end }}</em>
+              <em class="font-weight-bold">{{ selectedNode.assessment_milestone.end }}</em>
             </div>
             <div v-else>
-              Project grade: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.project_grade }}</em>
+              Project assessment: &nbsp;
+              <em class="font-weight-bold">{{ selectedNode.project_assessment }}</em>
             </div>
           </div>
 
@@ -161,7 +160,7 @@
                 </div>
                 <div class="modal-body">
                   <p>Are you quite sure you want to delete this node?</p>
-                  <p>Deleting a node from the tree will unlink all children and delete all user grades that are directly tied to that node.</p>
+                  <p>Deleting a node from the tree will unlink all children and delete all user assessments that are directly tied to that node.</p>
 
                   <div class="border rounded p-2">
                     <span>Points worth: &nbsp;</span>
@@ -228,16 +227,16 @@
                       placeholder="Points worth"
                       v-model="selectedNode.data.total"
                     />
-                    <div v-if="selectedNode.grade_milestone">
+                    <div v-if="selectedNode.assessment_milestone">
                       <date-picker
                         id="starttime"
-                        v-model="selectedNode.grade_milestone.start"
+                        v-model="selectedNode.assessment_milestone.start"
                         :config="options"
                         class="mb-2"
                       ></date-picker>
                       <date-picker
                         id="endtime"
-                        v-model="selectedNode.grade_milestone.end"
+                        v-model="selectedNode.assessment_milestone.end"
                         :config="options"
                       ></date-picker>
                     </div>
@@ -257,13 +256,13 @@
         </div>
       </div>
 
-      <CourseGradingTree v-if="graphData" :gradedata="graphData" v-on:select="updateSelected" />
+      <CourseAssessmentTree v-if="graphData" :assessmentdata="graphData" v-on:select="updateSelected" />
     </div>
   </div>
 </template>
 
 <script>
-import CourseGradingTree from "../components/visualizations/CourseGradingTreeLinear.vue";
+import CourseAssessmentTree from "../components/visualizations/CourseAssessmentTreeLinear.vue";
 import { Api } from "../axios-api";
 
 
@@ -272,9 +271,9 @@ import datePicker from "vue-bootstrap-datetimepicker";
 import "pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css";
 
 export default {
-  name: "Grading",
+  name: "AssessingTree",
   components: {
-    CourseGradingTree,
+    CourseAssessmentTree,
     datePicker,
   },
   computed: {
@@ -294,18 +293,18 @@ export default {
       payload: {
         name: "",
         total: 5,
-        grade_type: "",
+        assessment_type: "",
+        project_assessment: false,
         start: "",
         end: "",
         description: "",
-        project_grade: false,
         automation_type: "",
         amount_needed: 0,
       },
       selectedNode: {
         id: null,
-        grade_milestone: null,
-        project_grade: false,
+        assessment_milestone: null,
+        project_assessment: false,
         data: { name: "", id: null, total: 0, description: "", subnodecount: 0 },
       },
       graphData: null,
@@ -331,7 +330,7 @@ export default {
       this.selectedNode = nodeData
     },
     getTree() {
-      Api.get("groups/" + this.groupid + "/grading/")
+      Api.get("groups/" + this.groupid + "/assessment/")
         .then((response) => {
           this.graphData = response.data
         })
@@ -345,8 +344,9 @@ export default {
         this.payload.start = this.payload.start + "T00:00:00Z"
         this.payload.end = this.payload.end + "T23:59:00Z"
       }
+      console.log(this.payload)
       if (this.payload.name && this.selectedNode.id) {
-        Api.post("grade_category/" + this.selectedNode.id + "/", this.payload)
+        Api.post("assessment_category/" + this.selectedNode.id + "/", this.payload)
           .then(() => {
             this.getTree()
           })
@@ -356,7 +356,7 @@ export default {
     deleteNode() {
       // Don't delete the root, please
       if (this.selectedNode.data.id !== this.graphData.id) {
-        Api.delete("grade_category/" + this.selectedNode.id + "/")
+        Api.delete("assessment_category/" + this.selectedNode.id + "/")
           .then(() => {
             this.resetSelected()
             this.getTree()
@@ -370,22 +370,24 @@ export default {
         name: this.selectedNode.data.name,
         description: this.selectedNode.data.description,
       }
-      if (this.selectedNode.grade_milestone) {
-        payload.start = this.selectedNode.grade_milestone.start
-        payload.end = this.selectedNode.grade_milestone.end
+      if (this.selectedNode.assessment_milestone) {
+        payload.start = this.selectedNode.assessment_milestone.start
+        payload.end = this.selectedNode.assessment_milestone.end
         if (payload.start.length <= 10) payload.start = payload.start + "T00:00:00Z"
         if (payload.end.length <= 10) payload.end = payload.end + "T23:59:00Z"
       }
-      Api.put("grade_category/" + this.selectedNode.id + "/", payload)
+      Api.put("assessment_category/" + this.selectedNode.id + "/", payload)
         .then(() => {
           this.getTree()
         })
         .catch((err) => console.log(err));
     },
     copyNode() {
-      Api.post("grade_category/" + this.selectedNode.id + "/copy/")
+      Api.post("assessment_category/" + this.selectedNode.id + "/copy/")
         .then(() => {
-          this.getTree()
+          this.$nextTick(() => {
+            this.getTree()
+          })
         })
     },
     toggleMilestone() {
@@ -402,7 +404,7 @@ export default {
         end.value = ""
         this.payload.start = ""
         this.payload.end = ""
-        this.payload.grademilestone = false
+        this.payload.assessmentmilestone = false
       }
     },
   }
