@@ -22,6 +22,7 @@
           min="0"
           :max="point.total"
           v-model="point.given_points"
+          :disabled="deactivated"
           class="form-control-range mb-3"
           @change="$emit('pointsChanged')"
         />
@@ -35,17 +36,22 @@ import $ from "jquery";
 
 export default {
   name: "RepoAssessStudent",
-  props: ["points"],
+  props: ["points", "deactivated", "deactivatedUsers"],
   created() {
     $(function () {
       $('[data-toggle="tooltip"]').tooltip();
     });
   },
+  watch: {
+    deactivatedUsers() {
+      this.$forceUpdate();
+    },
+  },
   mounted() {
-    for (let p of this.points) 
-      if (p.given_points == 0 && +p.automatic_points == 0) 
-        p.given_points = Math.min(+p.automatic_points, +p.total)
-  }
+    for (let p of this.points)
+      if (p.given_points == 0 && +p.automatic_points == 0)
+        p.given_points = Math.min(+p.automatic_points, +p.total);
+  },
 };
 </script>
 
@@ -54,6 +60,14 @@ export default {
 input[type="range"] {
   -webkit-appearance: none;
   background-color: #dddddd;
+  height: 10px;
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+input[type="range"]:disabled {
+  -webkit-appearance: none;
+  background-color: #666;
   height: 10px;
   border-radius: 5px;
   box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.7);
