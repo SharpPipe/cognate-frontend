@@ -11,5 +11,5 @@
 - [ ] This works like that
 - [ ] That works like this
 
-/label ~💡Feature
-/label ~🍆 Frontend
+/label ~"💡Feature"
+/label ~"🍆 Frontend"
