@@ -73,7 +73,7 @@
 import $ from "jquery";
 
 export default {
-  name: "RepoMilestoneCard",
+  name: "ProjectMilestoneCard",
   props: ["msData"],
   methods: {
     sumIssues(issues) {

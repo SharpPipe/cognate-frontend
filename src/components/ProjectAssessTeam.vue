@@ -31,7 +31,7 @@
 import $ from "jquery";
 
 export default {
-  name: "RepoAssessTeam",
+  name: "ProjectAssessTeam",
   props: ["teamPoints"],
   created() {
     $(function () {

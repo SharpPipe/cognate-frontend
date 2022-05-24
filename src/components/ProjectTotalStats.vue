@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "ProjectDevs",
+  name: "ProjectTotalStats",
   props: ["totalStats"],
   methods: {
     eap(spent) {

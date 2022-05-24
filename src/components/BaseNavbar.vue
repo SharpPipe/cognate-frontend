@@ -53,7 +53,7 @@ import { mapState } from 'vuex'
 import AuthModal from "./AuthModal";
 
 export default {
-  name: 'Navbar',
+  name: 'BaseNavbar',
   computed: mapState(['accessToken', 'username']),
   components: {
     AuthModal,

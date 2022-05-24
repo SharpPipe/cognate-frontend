@@ -31,7 +31,7 @@
 import $ from 'jquery'
 
 export default {
-  name: 'login',
+  name: 'Login',
   data() {
     return {
       payload: {
