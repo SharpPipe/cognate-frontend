@@ -11,12 +11,12 @@ export default new VueRouter({
     {
       path: "/",
       name: "home",
-      component: () => import("./views/Home"),
+      component: () => import("./views/BaseHome"),
     },
     {
       path: "/pricing/",
       name: "pricing",
-      component: () => import("./views/Pricing"),
+      component: () => import("./views/BasePricing"),
       meta: {
         breadcrumb: "Pricing",
       },
@@ -25,7 +25,7 @@ export default new VueRouter({
     {
       path: "/login/",
       name: "login",
-      component: () => import("./components/Login"),
+      component: () => import("./components/AuthLogin"),
       meta: {
         requiresLogged: true,
       },
@@ -33,7 +33,7 @@ export default new VueRouter({
     {
       path: "/register/",
       name: "register",
-      component: () => import("./components/Register"),
+      component: () => import("./components/AuthRegister"),
       meta: {
         requiresLogged: true,
       },
@@ -41,7 +41,7 @@ export default new VueRouter({
     {
       path: "/logout/",
       name: "logout",
-      component: () => import("./components/Logout"),
+      component: () => import("./components/AuthLogout"),
       meta: {
         requiresAuth: true,
       },
@@ -49,7 +49,7 @@ export default new VueRouter({
     {
       path: "/profile/",
       name: "profile",
-      component: () => import("./views/Profile"),
+      component: () => import("./views/BaseProfileSettings"),
       meta: {
         requiresAuth: true,
         breadcrumb: "Profile",
@@ -59,7 +59,7 @@ export default new VueRouter({
     {
       path: "/groups/",
       name: "groups",
-      component: () => import("./views/Groups"),
+      component: () => import("./views/GroupList"),
       meta: {
         requiresAuth: true,
         breadcrumb: "Groups",
@@ -67,8 +67,8 @@ export default new VueRouter({
     },
     {
       path: "/group/:groupid/",
-      name: "group-repos",
-      component: () => import("./views/ProjectRepos"),
+      name: "group-projects",
+      component: () => import("./views/GroupProjects"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
@@ -80,19 +80,19 @@ export default new VueRouter({
     {
       path: "/group/:groupid/repo/:repoid/",
       name: "repo",
-      component: () => import("./views/Repo"),
+      component: () => import("./views/Project"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
           label: "Project",
-          parent: "group-repos",
+          parent: "group-projects",
         },
       },
     },
     {
       path: "/group/:groupid/repo/:repoid/manage",
       name: "managerepo",
-      component: () => import("./views/RepoMilestoneManager"),
+      component: () => import("./views/ProjectManageSprints"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
@@ -109,7 +109,7 @@ export default new VueRouter({
         requiresAuth: true,
         breadcrumb: {
           label: "Group Sprint Stats",
-          parent: "group-repos",
+          parent: "group-projects",
         },
       },
     },
@@ -128,7 +128,7 @@ export default new VueRouter({
     {
       path: "/group/:groupid/assessment/",
       name: "assessment",
-      component: () => import("./views/AssessingTree"),
+      component: () => import("./views/GroupAssessingTree"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
@@ -139,8 +139,8 @@ export default new VueRouter({
     },
     {
       path: "/group/:groupid/repo/:repoid/assessment/:msid/",
-      name: "assess-milestone",
-      component: () => import("./views/AssessMilestone"),
+      name: "assess-sprint",
+      component: () => import("./views/ProjectAssessSprint"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
@@ -163,7 +163,7 @@ export default new VueRouter({
     {
       path: "/feedback/",
       name: "feedback",
-      component: () => import("./views/Feedback"),
+        component: () => import("./views/BaseFeedback"),
       meta: {
         requiresAuth: true,
         breadcrumb: {

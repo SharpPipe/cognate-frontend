@@ -69,6 +69,6 @@
 
 <script>
 export default {
-  name: 'Pricing',
+  name: 'BasePricing',
 }
 </script>

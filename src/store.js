@@ -54,8 +54,6 @@ export default new Vuex.Store({
             resolve();
           })
           .catch((error) => {
-            console.log(credentials);
-
             reject(error);
           });
       });

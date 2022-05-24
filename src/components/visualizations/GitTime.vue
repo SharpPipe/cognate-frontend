@@ -329,7 +329,6 @@ export default {
         )
         .on("dblclick", (e, d) => {
           if (d.gitlab_link !== null) {
-            console.log(d.gitlab_link);
             window.open(d.gitlab_link, "_blank");
           }
         });

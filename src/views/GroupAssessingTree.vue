@@ -271,7 +271,7 @@ import datePicker from "vue-bootstrap-datetimepicker";
 import "pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css";
 
 export default {
-  name: "AssessingTree",
+  name: "GroupAssessingTree",
   components: {
     CourseAssessmentTree,
     datePicker,
@@ -344,7 +344,6 @@ export default {
         this.payload.start = this.payload.start + "T00:00:00Z"
         this.payload.end = this.payload.end + "T23:59:00Z"
       }
-      console.log(this.payload)
       if (this.payload.name && this.selectedNode.id) {
         Api.post("assessment_category/" + this.selectedNode.id + "/", this.payload)
           .then(() => {

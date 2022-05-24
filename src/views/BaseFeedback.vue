@@ -23,7 +23,7 @@ How would you improve your experience?"
 import { Api } from "../axios-api";
 
 export default {
-  name: "Groupadd",
+  name: "BaseFeedback",
   data() {
     return {
       payload: {

@@ -87,17 +87,17 @@
       </div>
     </form>
 
-    <ProjectRepoManager />
+    <GroupRepositoriesManager />
   </div>
 </template>
 
 <script>
 import { Api } from "../axios-api";
-import ProjectRepoManager from "../components/ProjectRepoManager.vue";
+import GroupRepositoriesManager from "../components/GroupRepositoriesManager.vue";
 
 export default {
   name: "GroupModify",
-  components: { ProjectRepoManager },
+  components: { GroupRepositoriesManager },
   data() {
     return {
       allProjects: null,
