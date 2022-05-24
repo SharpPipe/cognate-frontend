@@ -32,8 +32,8 @@
                   <router-link
                     tag="button"
                     class="btn-sm btn-secondary float-right"
-                    :to="{ name: 'grading', params: { groupid: group.id, name: group.name } }"
-                  >Grading 🌳</router-link>
+                    :to="{ name: 'assessment', params: { groupid: group.id, name: group.name } }"
+                  >Assessment Tree 🌳</router-link>
                   <router-link
                     tag="button"
                     class="btn-sm btn-secondary float-right"
@@ -48,15 +48,23 @@
           </tr>
         </table>
       </div>
+      <center v-else>
+        <LoadingAnimation />
+      </center>
     </div>
   </div>
 </template>
 
 <script>
 import { Api } from "../axios-api";
+import LoadingAnimation from "../components/LoadingAnimation.vue";
+
 
 export default {
   name: 'Groups',
+  components: {
+    LoadingAnimation,
+  },
   data() {
     return {
       APIData: null
