@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import * as d3 from 'd3'
+import d3 from '@/assets/d3'
 const width = 64
 const height = 64
 
@@ -48,15 +48,6 @@ export default {
             arcs.append("path")
                 .attr("fill", (d) => "#" + d.data.colour + "ee")
                 .attr("d", arc)
-
-/*             let arcOuter = d3.arc()
-                .innerRadius(arc.outerRadius()())
-                .outerRadius(arc.outerRadius()() + 5)
-
-            arcs.append("path")
-                .attr("fill", "gray")
-                .attr("opacity", 0.6)
-                .attr("d", arcOuter) */
 
             return svg
         }

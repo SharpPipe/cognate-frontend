@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import * as d3 from "d3";
-import _ from "lodash";
+import d3 from '@/assets/d3'
+import { groupBy, minBy, maxBy, forEach, toPairsIn } from "lodash";
 import $ from "jquery";
 
 const width = 800;
@@ -63,19 +63,19 @@ export default {
   },
   methods: {
     aggregateTime(data) {
-      let devLine = _.groupBy(data, (d) => d.user);
+      let devLine = groupBy(data, (d) => d.user);
       for (let dev of Object.keys(devLine)) {
         let linegraph = [];
-        let lines = _.groupBy(devLine[dev], (d) =>
+        let lines = groupBy(devLine[dev], (d) =>
           new Date(d.time).setHours(0, 0, 0, 0)
         );
 
-        _.forEach(lines, (value, key) => {
+        forEach(lines, (value, key) => {
           lines[key] = value.reduce((total, item) => item.amount + total, 0);
           linegraph.push({ date: new Date(+key), amount: lines[key] });
         });
-        let minday = _.minBy(linegraph, (d) => d.date.valueOf()).date.valueOf();
-        let maxday = _.maxBy(linegraph, (d) => d.date.valueOf()).date.valueOf();
+        let minday = minBy(linegraph, (d) => d.date.valueOf()).date.valueOf();
+        let maxday = maxBy(linegraph, (d) => d.date.valueOf()).date.valueOf();
         let alldays = linegraph.map((d) => d.date.valueOf());
         let aggregator = 0;
         let aggregateLineGraph = [];
@@ -95,10 +95,10 @@ export default {
         }
         devLine[dev] = aggregateLineGraph.sort((a, b) => a.date - b.date);
       }
-      return _.toPairsIn(devLine);
+      return toPairsIn(devLine);
     },
     timezoneOffset(data) {
-      _.forEach(data, (d) => {
+      forEach(data, (d) => {
         d.time = new Date(
           d.time.valueOf() + d.time.getTimezoneOffset() * 60 * 1000
         );
@@ -107,7 +107,7 @@ export default {
     },
     underflow(data) {
       let newLines = [];
-      _.forEach(data, (d) => {
+      forEach(data, (d) => {
         let start = new Date(d.time.valueOf() - d.amount * 1000 * 60);
         if (d.time.getDate() !== start.getDate()) {
           let nextDayMinutes = d.time.getHours() * 60 + d.time.getMinutes(); // + d.time.getSeconds() / 60 + d.time.getMilliseconds() / (60 * 1000)
@@ -128,7 +128,7 @@ export default {
       return data;
     },
     differentiateByRepo(data) {
-      let diffed = _.groupBy(data, (d) => d.repo_id);
+      let diffed = groupBy(data, (d) => d.repo_id);
       this.repos = Object.keys(diffed);
       this.checkedRepos = this.repos;
     },
@@ -223,8 +223,8 @@ export default {
       svg.append("g").call(yAggAxis);
 
       // Pie
-      let groups = _.groupBy(data, (d) => d.user);
-      _.forEach(groups, (value, key) => {
+      let groups = groupBy(data, (d) => d.user);
+      forEach(groups, (value, key) => {
         groups[key] = value.reduce((total, item) => item.amount + total, 0);
       });
       let effort = [];

@@ -81,7 +81,7 @@ import RepoAssessTeam from "../components/RepoAssessTeam.vue";
 import RepoDeveloper from "../components/RepoDeveloper.vue";
 import ProgressBar from "../components/ProgressBar.vue";
 import { Api } from "../axios-api";
-import _ from "lodash";
+import { sum } from "lodash"
 
 export default {
   name: "AssessMilestone",
@@ -204,7 +204,7 @@ export default {
         let project_total = this.APIData.project_data.map(
           (p) => +p.given_points
         );
-        return _.sum(student_total) + _.sum(project_total);
+        return sum(student_total) + sum(project_total);
       } else {
         return 0;
       }
@@ -212,7 +212,7 @@ export default {
     maxPoints() {
       let student_total = this.APIData.users_data[0].data.map((p) => +p.total);
       let project_total = this.APIData.project_data.map((p) => +p.total);
-      return _.sum(student_total) + _.sum(project_total);
+      return sum(student_total) + sum(project_total);
     },
   },
   created() {

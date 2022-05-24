@@ -21,11 +21,6 @@ export default new VueRouter({
                 breadcrumb: "Pricing"
             }
         },
-        {
-            path: '/browse/',
-            name: 'browse',
-            component: () => import("./views/Browse"),
-        },
         // authentications
         {
             path: '/login/',
