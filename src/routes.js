@@ -78,8 +78,8 @@ export default new VueRouter({
       },
     },
     {
-      path: "/group/:groupid/repo/:repoid/",
-      name: "repo",
+      path: "/group/:groupid/project/:repoid/",
+      name: "project",
       component: () => import("./views/Project"),
       meta: {
         requiresAuth: true,
@@ -90,14 +90,14 @@ export default new VueRouter({
       },
     },
     {
-      path: "/group/:groupid/repo/:repoid/manage",
+      path: "/group/:groupid/project/:repoid/manage",
       name: "managerepo",
       component: () => import("./views/ProjectManageSprints"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
           label: "Manage Project",
-          parent: "repo",
+          parent: "project",
         },
       },
     },
@@ -138,14 +138,14 @@ export default new VueRouter({
       },
     },
     {
-      path: "/group/:groupid/repo/:repoid/assessment/:msid/",
+      path: "/group/:groupid/project/:repoid/assessment/:msid/",
       name: "assess-sprint",
       component: () => import("./views/ProjectAssessSprint"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
           label: "Assess Milestone",
-          parent: "repo",
+          parent: "project",
         },
       },
     },
