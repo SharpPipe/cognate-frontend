@@ -24,8 +24,8 @@
         v-for="dev in APIData.users_data"
         :key="dev.id"
       >
-        <RepoDeveloper disableable="true" :devData="dev" @toggle="toggleUser" />
-        <RepoAssessStudent
+        <ProjectDeveloper disableable="true" :devData="dev" @toggle="toggleUser" />
+        <ProjectAssessStudent
           :deactivatedUsers="deactivatedUsers"
           :deactivated="deactivatedUsers[dev.username]"
           :points="dev.data"
@@ -43,7 +43,7 @@
     <!--  Assess the whole team  -->
     <div class="row mx-3 p-1">
       <!--         :teamPoints="APIData.project_data" -->
-      <RepoAssessTeam
+      <ProjectAssessTeam
         :teamPoints="APIData.project_data"
         v-on:teamPointsChanged="updateRadar()"
       />
@@ -76,21 +76,21 @@
 <script>
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
-import RepoAssessStudent from "../components/RepoAssessStudent.vue";
-import RepoAssessTeam from "../components/RepoAssessTeam.vue";
-import RepoDeveloper from "../components/RepoDeveloper.vue";
 import ProgressBar from "../components/ProgressBar.vue";
+import ProjectAssessStudent from "../components/ProjectAssessStudent.vue";
+import ProjectAssessTeam from "../components/ProjectAssessTeam.vue";
+import ProjectDeveloper from "../components/ProjectDeveloper.vue";
 import { Api } from "../axios-api";
-import _ from "lodash";
+import { sum } from "lodash"
 
 export default {
-  name: "AssessMilestone",
+  name: "ProjectAssessSprint",
   components: {
     GitTime,
     RepoRadar,
-    RepoAssessStudent,
-    RepoAssessTeam,
-    RepoDeveloper,
+    ProjectAssessStudent,
+    ProjectAssessTeam,
+    ProjectDeveloper,
     ProgressBar,
   },
   data() {
@@ -128,7 +128,6 @@ export default {
       Api.post("/bulk_assess/", pl)
         .then(() => {
           this.msg = "Points saved!";
-          console.log("Assessments posted");
         })
         .catch((err) => {
           console.log(err);
@@ -204,7 +203,7 @@ export default {
         let project_total = this.APIData.project_data.map(
           (p) => +p.given_points
         );
-        return _.sum(student_total) + _.sum(project_total);
+        return sum(student_total) + sum(project_total);
       } else {
         return 0;
       }
@@ -212,7 +211,7 @@ export default {
     maxPoints() {
       let student_total = this.APIData.users_data[0].data.map((p) => +p.total);
       let project_total = this.APIData.project_data.map((p) => +p.total);
-      return _.sum(student_total) + _.sum(project_total);
+      return sum(student_total) + sum(project_total);
     },
   },
   created() {

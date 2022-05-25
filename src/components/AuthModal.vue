@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import Login    from "./Login";
-import Register from "./Register";
+import Login    from "./AuthLogin";
+import Register from "./AuthRegister";
 
 export default {
   components: {

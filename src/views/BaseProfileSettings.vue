@@ -42,7 +42,7 @@ import { Api } from "../axios-api";
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Profile',
+  name: 'BaseProfileSettings',
   computed: mapState(['username']),
   data() {
     return {

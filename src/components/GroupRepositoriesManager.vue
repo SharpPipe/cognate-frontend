@@ -70,7 +70,7 @@ import DragBoard from "../components/DragBoard.vue";
 import DragCard from "../components/DragCard.vue";
 
 export default {
-  name: "ProjectRepoManager",
+  name: "GroupRepositoriesManager",
   components: {
     DragBoard,
     DragCard,

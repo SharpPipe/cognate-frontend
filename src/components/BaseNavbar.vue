@@ -22,14 +22,6 @@
           <li class="nav-item nav-link">
             <router-link :to="{ name: 'groups' }" exact>Groups</router-link>
           </li>
-          <!-- 
-          <li class="nav-item nav-link">
-            <router-link :to="{ name:'browse' }" exact>Browse</router-link>
-          </li>
-          -->
-          <li class="nav-item nav-link">
-            <router-link :to="{ name: 'pricing' }" exact>Pricing</router-link>
-          </li>
           <li class="nav-item nav-link">
             <router-link :to="{ name: 'feedback' }" exact>Feedback</router-link>
           </li>
@@ -61,7 +53,7 @@ import { mapState } from 'vuex'
 import AuthModal from "./AuthModal";
 
 export default {
-  name: 'Navbar',
+  name: 'BaseNavbar',
   computed: mapState(['accessToken', 'username']),
   components: {
     AuthModal,

@@ -52,7 +52,7 @@ import { Api } from "../axios-api";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 
 export default {
-  name: "Home",
+  name: "GroupMilestoneSummary",
   components: { LoadingAnimation },
   data() {
     return {

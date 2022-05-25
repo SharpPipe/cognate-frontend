@@ -4,6 +4,10 @@
 
 <script>
 import * as d3 from "d3";
+//import d3 from '@/assets/d3'  right now it gives weird 'd3-seleciton' error 
+//                              since this will be refactored soon, I don't see 
+//                              the point in spending too much time on this pile of crap  
+
 const width = 1000;
 const height = 1000;
 

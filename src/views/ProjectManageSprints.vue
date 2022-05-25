@@ -72,7 +72,7 @@ import DragBoard from "../components/DragBoard.vue";
 import DragCard from "../components/DragCard.vue";
 
 export default {
-  name: "Groupadd",
+  name: "ProjectManageSprints",
   components: {
     DragBoard,
     DragCard,
