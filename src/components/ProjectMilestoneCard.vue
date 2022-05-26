@@ -1,10 +1,10 @@
 <template>
   <div class="milestone-card">
-    <div class="milestone-card border rounded p-2 text-center">
-      <div v-if="msData.assessed" class="badge badge-pill badge-success">
+    <div class="milestone-card border rounded p-1 px-3 text-center">
+      <div v-if="msData.assessed" class="badge badge-pill badge-success my-2">
         Milestone {{ msData.milestone_id }}
       </div>
-      <div v-if="!msData.assessed" class="badge badge-pill badge-warning">
+      <div v-if="!msData.assessed" class="badge badge-pill badge-warning my-2">
         Milestone {{ msData.milestone_id }}
       </div>
       <table class="table table-borderless">
@@ -42,18 +42,18 @@
           </th>
         </tr>
         <tr v-for="user in msData.user_points" :key="user.name">
-          <td class="p-0">
+          <td class="p-1">
             <svg class="m-1" height="16" width="16">
               <circle cx="8" cy="8" r="8" :fill="`#${user.colour}`" />
             </svg>
           </td>
-          <td class="p-0">
+          <td class="p-1">
             <label>{{ (+user.points).toFixed(0) }}p</label>
           </td>
-          <td class="p-0">
+          <td class="p-1">
             <label>{{ user.time_spent.toFixed(1) }}h</label>
           </td>
-          <td class="p-0">
+          <td class="p-1">
             <label
               class="mb-1"
               data-toggle="tooltip"

@@ -116,6 +116,10 @@ export default {
     ProjectTotalStats,
     ProjectMilestoneCard,
   },
+  updated() {
+    // Start the milestone table at the end
+    document.getElementById("sprint_table").scrollBy(1000, 0);
+  },
   data() {
     return {
       radarData: [
@@ -231,6 +235,20 @@ export default {
 
 <style scoped>
 table {
-  table-layout: fixed;
+  display: block;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 10px;
 }
 </style>
