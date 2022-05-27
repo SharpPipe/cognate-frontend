@@ -27,16 +27,7 @@
           </li>
         </ul>
 
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="defaultCheck1"
-            @change="$emit('switchlight')"
-          />
-          <label class="form-check-label" for="defaultCheck1">Light</label>
-        </div>
+        <BaseLightswitch  @switchlight="$emit('switchlight')"/>
 
         <button class="btn btn-outline-info mx-2" v-if="accessToken != null">
           <router-link :to="{ name: 'profile' }">{{ username }} ⚙</router-link>
@@ -64,12 +55,14 @@
 <script>
 import { mapState } from "vuex";
 import AuthModal from "./AuthModal";
+import BaseLightswitch from "./BaseLightswitch.vue";
 
 export default {
   name: "BaseNavbar",
   computed: mapState(["accessToken", "username"]),
   components: {
     AuthModal,
+    BaseLightswitch,
   },
   data() {
     return {

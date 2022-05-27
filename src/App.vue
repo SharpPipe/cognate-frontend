@@ -22,6 +22,9 @@ export default {
       lightmode: false
     }
   },
+  created() {
+    document.body.className = 'bootstrap-dark'
+  },
   methods: {
     switchMode () {
       this.lightmode = !this.lightmode
