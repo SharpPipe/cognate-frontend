@@ -1,6 +1,6 @@
 <template>
 <div>
-  <img :src="loadingGif" alt="loading"/>
+  <img :src="isLightMode ? loadingGifLight : loadingGif" alt="loading"/>
   <center>
     <h5 class="text-monospace">LOADING</h5>
   </center>
@@ -13,7 +13,12 @@ export default {
   data() {
     return {
       loadingGif: require("./../../public/loading.gif"),
+      loadingGifLight: require("./../../public/loadinglight.gif"),
+      isLightMode: false
     };
   },
+  mounted() {
+    this.isLightMode = document.body.className === 'bootstrap'
+  }
 };
 </script>
