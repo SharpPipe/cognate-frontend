@@ -58,7 +58,6 @@
                   name: 'project',
                   params: { groupid: $route.params.groupid, repoid: project.id },
                 }"
-                class="text-white"
                 >{{ project.name }}</router-link
               >
             </td>

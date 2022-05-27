@@ -18,7 +18,6 @@
                     <h5 class="text-capitalize">
                       <router-link
                         :to="{ name: 'group-projects', params: { groupid: group.id } }"
-                        class="text-white"
                       >{{ group.name }}</router-link>
                     </h5>
                     <p class="text-muted m-0">{{ group.description }}</p>

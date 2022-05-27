@@ -13,7 +13,11 @@
             aria-describedby="button-addon1"
             v-model="payload.name"
           />
-          <select required class="form-control my-0 col-sm-2" v-model="payload.assessment_type">
+          <select
+            required
+            class="form-control my-0 col-sm-2"
+            v-model="payload.assessment_type"
+          >
             <option value selected disabled hidden>Assessment Type</option>
             <option value="C">Custom</option>
             <option value="S">Sum</option>
@@ -35,12 +39,18 @@
               type="button"
               id="button-addon2"
               @click="addNode"
-            >Add Node</button>
+            >
+              Add Node
+            </button>
           </div>
         </div>
 
         <div v-if="payload.assessment_type == 'A'" class="input-group mb-2">
-          <select required class="form-control my-0 col-3" v-model="payload.automation_type">
+          <select
+            required
+            class="form-control my-0 col-3"
+            v-model="payload.automation_type"
+          >
             <option value selected disabled hidden>Automation Type</option>
             <option value="T">Time Spent Goal</option>
             <option value="L">Lines Added Goal</option>
@@ -51,8 +61,12 @@
             v-model="payload.amount_needed"
           />
           <div class="input-group-append">
-            <span v-if="payload.automation_type =='T'" class="input-group-text">hours of work done</span>
-            <span v-if="payload.automation_type =='L'" class="input-group-text">lines added</span>
+            <span v-if="payload.automation_type == 'T'" class="input-group-text"
+              >hours of work done</span
+            >
+            <span v-if="payload.automation_type == 'L'" class="input-group-text"
+              >lines added</span
+            >
           </div>
         </div>
 
@@ -80,39 +94,59 @@
                 />
               </div>
             </div>
-            <date-picker id="starttime" v-model="payload.start" disabled :config="options"></date-picker>
+            <date-picker
+              id="starttime"
+              v-model="payload.start"
+              disabled
+              :config="options"
+            ></date-picker>
             <div class="input-group-text rounded-0 mx-n1">to</div>
-            <date-picker id="endtime" disabled v-model="payload.end" :config="options"></date-picker>
+            <date-picker
+              id="endtime"
+              disabled
+              v-model="payload.end"
+              :config="options"
+            ></date-picker>
           </div>
 
           <div class="mb-2 col-3 px-0 pl-2">
             <div class="input-group-text">
               Is Project Assessment Node? &nbsp;
-              <input
-                type="checkbox"
-                v-model="payload.project_assessment"
-              />
+              <input type="checkbox" v-model="payload.project_assessment" />
             </div>
           </div>
         </div>
 
-        <div class="row rounded m-0 bg-dark input-group" v-if="selectedNode.data.id !== 0">
-          <div class="col border border-right-0 border-secondary rounded-left pt-1">
+        <div
+          class="row rounded m-0 input-group"
+          v-if="selectedNode.data.id !== 0"
+        >
+          <div
+            class="col border border-right-0 border-secondary rounded-left pt-1"
+          >
             Selected: &nbsp;
             <em class="font-weight-bold">{{ selectedNode.data.name }}</em>
             <br />Points worth: &nbsp;
             <em class="font-weight-bold">{{ formatedPoints }}</em>
             <br />Description: &nbsp;
-            <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
+            <em class="font-weight-bold">{{
+              selectedNode.data.description
+            }}</em>
             <div v-if="selectedNode.assessment_milestone">
               Start: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.assessment_milestone.start }}</em>
+              <em class="font-weight-bold">{{
+                selectedNode.assessment_milestone.start
+              }}</em>
               <br />End: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.assessment_milestone.end }}</em>
+              <em class="font-weight-bold">{{
+                selectedNode.assessment_milestone.end
+              }}</em>
             </div>
             <div v-else>
               Project assessment: &nbsp;
-              <em class="font-weight-bold">{{ selectedNode.project_assessment }}</em>
+              <em class="font-weight-bold">{{
+                selectedNode.project_assessment
+              }}</em>
             </div>
           </div>
 
@@ -124,18 +158,24 @@
               data-target="#editNodeModal"
               data-toggle="modal"
               type="button"
-            >Edit Node</button>
+            >
+              Edit Node
+            </button>
             <button
               class="btn btn-outline-info rounded-0"
               @click="copyNode"
               type="button"
-            >Clone Node</button>
+            >
+              Clone Node
+            </button>
             <button
               class="btn btn-outline-danger rounded-0 rounded-br"
               data-target="#deleteNodeModal"
               data-toggle="modal"
               type="button"
-            >Delete Node</button>
+            >
+              Delete Node
+            </button>
           </div>
 
           <!-- Delete Modal -->
@@ -150,30 +190,45 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5
-                    class="modal-title text-danger"
-                    id="deleteNodeModalLabel"
-                  >Delete Node {{ selectedNode.data.name }}</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h5 class="modal-title text-danger" id="deleteNodeModalLabel">
+                    Delete Node {{ selectedNode.data.name }}
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <p>Are you quite sure you want to delete this node?</p>
-                  <p>Deleting a node from the tree will unlink all children and delete all user assessments that are directly tied to that node.</p>
+                  <p>
+                    Deleting a node from the tree will unlink all children and
+                    delete all user assessments that are directly tied to that
+                    node.
+                  </p>
 
                   <div class="border rounded p-2">
                     <span>Points worth: &nbsp;</span>
                     <em class="font-weight-bold h4">{{ formatedPoints }}</em>
                     <br />
-                    <span v-if="selectedNode.data.description">Description: &nbsp;</span>
-                    <em class="font-weight-bold">{{ selectedNode.data.description }}</em>
+                    <span v-if="selectedNode.data.description"
+                      >Description: &nbsp;</span
+                    >
+                    <em class="font-weight-bold">{{
+                      selectedNode.data.description
+                    }}</em>
                   </div>
 
                   <div
                     v-if="selectedNode.data.subnodecount > 1"
                     class="alert alert-danger my-3"
-                  >This action will delete {{ selectedNode.data.subnodecount }} subnodes too!</div>
+                  >
+                    This action will delete
+                    {{ selectedNode.data.subnodecount }} subnodes too!
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -181,7 +236,9 @@
                     data-dismiss="modal"
                     type="button"
                     @click="deleteNode"
-                  >Delete Node</button>
+                  >
+                    Delete Node
+                  </button>
                 </div>
               </div>
             </div>
@@ -199,11 +256,15 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5
-                    class="modal-title text-warning"
-                    id="editNodeModalLabel"
-                  >Edit Node {{ selectedNode.data.name }}</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h5 class="modal-title text-warning" id="editNodeModalLabel">
+                    Edit Node {{ selectedNode.data.name }}
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -248,7 +309,9 @@
                     data-dismiss="modal"
                     type="button"
                     @click="editNode"
-                  >Save</button>
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
@@ -256,7 +319,11 @@
         </div>
       </div>
 
-      <CourseAssessmentTree v-if="graphData" :assessmentdata="graphData" v-on:select="updateSelected" />
+      <CourseAssessmentTree
+        v-if="graphData"
+        :assessmentdata="graphData"
+        v-on:select="updateSelected"
+      />
     </div>
   </div>
 </template>
@@ -264,7 +331,6 @@
 <script>
 import CourseAssessmentTree from "../components/visualizations/CourseAssessmentTreeLinear.vue";
 import { Api } from "../axios-api";
-
 
 // https://github.com/ankurk91/vue-bootstrap-datetimepicker
 import datePicker from "vue-bootstrap-datetimepicker";
@@ -279,8 +345,8 @@ export default {
   computed: {
     // https://stackoverflow.com/a/47204204/5188258
     formatedPoints() {
-      return Math.round(this.selectedNode.data.total * 100) / 100
-    }
+      return Math.round(this.selectedNode.data.total * 100) / 100;
+    },
   },
   data() {
     return {
@@ -305,34 +371,40 @@ export default {
         id: null,
         assessment_milestone: null,
         project_assessment: false,
-        data: { name: "", id: null, total: 0, description: "", subnodecount: 0 },
+        data: {
+          name: "",
+          id: null,
+          total: 0,
+          description: "",
+          subnodecount: 0,
+        },
       },
       graphData: null,
       addedNode: null,
       deletedNode: null,
-      groupid: this.$route.params.groupid
+      groupid: this.$route.params.groupid,
     };
   },
   created() {
-    this.getTree()
+    this.getTree();
   },
   methods: {
     forceUpdate() {
-      this.key++
+      this.key++;
     },
     resetSelected() {
       this.selectedNode = {
         id: null,
         data: { name: "", id: null, total: 0 },
-      }
+      };
     },
     updateSelected(nodeData) {
-      this.selectedNode = nodeData
+      this.selectedNode = nodeData;
     },
     getTree() {
       Api.get("groups/" + this.groupid + "/assessment/")
         .then((response) => {
-          this.graphData = response.data
+          this.graphData = response.data;
         })
         .catch((err) => {
           console.log(err);
@@ -341,13 +413,16 @@ export default {
     addNode() {
       // Milestone end time day inclusive
       if (document.getElementById("ms_check").checked) {
-        this.payload.start = this.payload.start + "T00:00:00Z"
-        this.payload.end = this.payload.end + "T23:59:00Z"
+        this.payload.start = this.payload.start + "T00:00:00Z";
+        this.payload.end = this.payload.end + "T23:59:00Z";
       }
       if (this.payload.name && this.selectedNode.id) {
-        Api.post("assessment_category/" + this.selectedNode.id + "/", this.payload)
+        Api.post(
+          "assessment_category/" + this.selectedNode.id + "/",
+          this.payload
+        )
           .then(() => {
-            this.getTree()
+            this.getTree();
           })
           .catch((err) => console.log(err));
       }
@@ -357,8 +432,8 @@ export default {
       if (this.selectedNode.data.id !== this.graphData.id) {
         Api.delete("assessment_category/" + this.selectedNode.id + "/")
           .then(() => {
-            this.resetSelected()
-            this.getTree()
+            this.resetSelected();
+            this.getTree();
           })
           .catch((err) => console.log(err));
       }
@@ -368,26 +443,28 @@ export default {
         total: this.selectedNode.data.total,
         name: this.selectedNode.data.name,
         description: this.selectedNode.data.description,
-      }
+      };
       if (this.selectedNode.assessment_milestone) {
-        payload.start = this.selectedNode.assessment_milestone.start
-        payload.end = this.selectedNode.assessment_milestone.end
-        if (payload.start.length <= 10) payload.start = payload.start + "T00:00:00Z"
-        if (payload.end.length <= 10) payload.end = payload.end + "T23:59:00Z"
+        payload.start = this.selectedNode.assessment_milestone.start;
+        payload.end = this.selectedNode.assessment_milestone.end;
+        if (payload.start.length <= 10)
+          payload.start = payload.start + "T00:00:00Z";
+        if (payload.end.length <= 10) payload.end = payload.end + "T23:59:00Z";
       }
       Api.put("assessment_category/" + this.selectedNode.id + "/", payload)
         .then(() => {
-          this.getTree()
+          this.getTree();
         })
         .catch((err) => console.log(err));
     },
     copyNode() {
-      Api.post("assessment_category/" + this.selectedNode.id + "/copy/")
-        .then(() => {
+      Api.post("assessment_category/" + this.selectedNode.id + "/copy/").then(
+        () => {
           this.$nextTick(() => {
-            this.getTree()
-          })
-        })
+            this.getTree();
+          });
+        }
+      );
     },
     toggleMilestone() {
       let check = document.getElementById("ms_check").checked;
@@ -398,15 +475,15 @@ export default {
         end.disabled = false;
       } else {
         start.disabled = true;
-        end.disabled = true
+        end.disabled = true;
         start.value = "";
-        end.value = ""
-        this.payload.start = ""
-        this.payload.end = ""
-        this.payload.assessmentmilestone = false
+        end.value = "";
+        this.payload.start = "";
+        this.payload.end = "";
+        this.payload.assessmentmilestone = false;
       }
     },
-  }
+  },
 };
 </script>
 
