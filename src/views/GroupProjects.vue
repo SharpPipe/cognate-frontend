@@ -64,11 +64,11 @@
 
             <td class="p-1 col-4">
               <div v-if="project.mentors && project.mentors.length > 0">
-                <span class="badge badge-dark">{{ project.mentors[0] }}</span>
+                <span class="badge badge">{{ project.mentors[0] }}</span>
                 <br />
               </div>
               <span v-for="(dev, i) in project.users" :key="i" class="pr-1">
-                <div class="badge badge-dark">
+                <div class="badge border">
                   <svg class="m-0 p-0" height="12" width="12">
                     <circle cx="6" cy="6" r="6" :fill="`#${dev.colour}`" />
                   </svg>
