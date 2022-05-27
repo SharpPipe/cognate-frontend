@@ -27,6 +27,17 @@
           </li>
         </ul>
 
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="defaultCheck1"
+            @change="$emit('switchlight')"
+          />
+          <label class="form-check-label" for="defaultCheck1">Light</label>
+        </div>
+
         <button class="btn btn-outline-info mx-2" v-if="accessToken != null">
           <router-link :to="{ name: 'profile' }">{{ username }} ⚙</router-link>
         </button>
@@ -41,7 +52,9 @@
           v-if="accessToken == null"
           data-toggle="modal"
           data-target="#authModal"
-        >Authenticate</button>
+        >
+          Authenticate
+        </button>
         <AuthModal />
       </div>
     </nav>
@@ -49,22 +62,22 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 import AuthModal from "./AuthModal";
 
 export default {
-  name: 'BaseNavbar',
-  computed: mapState(['accessToken', 'username']),
+  name: "BaseNavbar",
+  computed: mapState(["accessToken", "username"]),
   components: {
     AuthModal,
   },
   data() {
     return {
-      isDevEnv: false
-    }
+      isDevEnv: false,
+    };
   },
   created() {
-    this.isDevEnv = process.env.VUE_APP_API_URL == "193.40.156.142"
-  }
-}
+    this.isDevEnv = process.env.VUE_APP_API_URL == "193.40.156.142";
+  },
+};
 </script>
