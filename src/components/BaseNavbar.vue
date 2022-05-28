@@ -27,6 +27,8 @@
           </li>
         </ul>
 
+        <BaseLightswitch  @switchlight="$emit('switchlight')"/>
+
         <button class="btn btn-outline-info mx-2" v-if="accessToken != null">
           <router-link :to="{ name: 'profile' }">{{ username }} ⚙</router-link>
         </button>
@@ -41,7 +43,9 @@
           v-if="accessToken == null"
           data-toggle="modal"
           data-target="#authModal"
-        >Authenticate</button>
+        >
+          Authenticate
+        </button>
         <AuthModal />
       </div>
     </nav>
@@ -49,22 +53,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 import AuthModal from "./AuthModal";
+import BaseLightswitch from "./BaseLightswitch.vue";
 
 export default {
-  name: 'BaseNavbar',
-  computed: mapState(['accessToken', 'username']),
+  name: "BaseNavbar",
+  computed: mapState(["accessToken", "username"]),
   components: {
     AuthModal,
+    BaseLightswitch,
   },
   data() {
     return {
-      isDevEnv: false
-    }
+      isDevEnv: false,
+    };
   },
   created() {
-    this.isDevEnv = process.env.VUE_APP_API_URL == "193.40.156.142"
-  }
-}
+    this.isDevEnv = process.env.VUE_APP_API_URL == "193.40.156.142";
+  },
+};
 </script>
