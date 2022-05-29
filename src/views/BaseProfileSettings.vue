@@ -76,22 +76,27 @@
             align-items-center
             py-1
           "
-          v-for="invitation in invitations"
-          :key="invitation"
+          v-for="group in invitations"
+          :key="group"
         >
-          {{ invitation }}
+        <span>
+          <b>{{ group.name }}</b>
+          &nbsp;
+          <small>{{ group.description }}</small>
+        </span>
+
           <div>
             <button
               type="button"
               class="btn-sm btn-danger mr-3"
-              @click="rejectInvitation(invitation)"
+              @click="rejectInvitation(group.id)"
             >
               Reject
             </button>
             <button
               type="button"
               class="btn-sm btn-success"
-              @click="acceptInvitation(invitation)"
+              @click="acceptInvitation(group.id)"
             >
               Accept
             </button>

@@ -57,7 +57,7 @@
       </ul>
     </div>
 
-    <div class="col-4 m-3 p-2">
+    <div class="col m-3 p-2">
       <div class="row no-gutters d-flex"></div>
       <div class="input-group mb-3">
         <input
@@ -105,7 +105,7 @@ import $ from "jquery";
 import { Api } from "../axios-api";
 
 export default {
-  name: "GroupAdminGeneral",
+  name: "GroupAdminUsers",
   data() {
     return {
       success: "",
