@@ -1,70 +1,182 @@
 <template>
   <div class="container">
-    <form>
-      <h2 class="text-info">{{ username }}</h2>
-      <div class="row">
-        <div class="col">
-          <form class="form-group" v-on:submit.prevent="submitToken">
-            <label for="exampleInputEmail1">Your Gitlab API Token</label>
+    <h2 class="text-info">{{ username }}</h2>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="">
+          <label>Your Gitlab API Token</label>
+          <div class="input-group">
             <input
               type="text"
               class="form-control"
-              aria-describedby="tokenHelp"
               placeholder="Access Token"
               v-model="gitlab_token"
             />
-
-            <small class="form-text text-muted float-right">
-              <a
-                href="https://gitlab.cs.ttu.ee/-/profile/personal_access_tokens"
-                class="alert-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >Generate a new Gitlab Token</a>
-              <!-- target and rel to open the link in new tab -->
-            </small>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary my-3">Submit</button>
+            <div class="input-group-append">
+              <button
+                class="btn btn-primary"
+                type="button"
+                @click="submitToken"
+              >
+                Submit
+              </button>
             </div>
-          </form>
+          </div>
         </div>
-        <div class="col">
-          <div class="alert alert-success" role="alert" v-if="success">{{ success }}</div>
-          <div class="alert alert-danger" role="alert" v-if="error">{{ error }}</div>
-        </div>
+
+        <small class="form-text text-muted float-right">
+          <a
+            href="https://gitlab.cs.ttu.ee/-/profile/personal_access_tokens"
+            class="alert-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Generate a new Gitlab Token</a
+          >
+        </small>
       </div>
-    </form>
+
+      <div class="col">
+        <label>Your identifier code (send it to your project manager)</label>
+        <form>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              disabled
+              :value="userData.identifier"
+              placeholder="identifier"
+              id="copy-input"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn border"
+                type="button"
+                id="copy-button"
+                @click="copyId"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Copy to Clipboard"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--       <div v-if="invitations"> -->
+    <div>
+      <h4>Group Invitations</h4>
+      <ul class="list-group list-group-flush">
+        <li
+          class="
+            list-group-item
+            d-flex
+            justify-content-between
+            align-items-center
+            py-1
+          "
+          v-for="group in invitations"
+          :key="group"
+        >
+        <span>
+          <b>{{ group.name }}</b>
+          &nbsp;
+          <small>{{ group.description }}</small>
+        </span>
+
+          <div>
+            <button
+              type="button"
+              class="btn-sm btn-danger mr-3"
+              @click="rejectInvitation(group.id)"
+            >
+              Reject
+            </button>
+            <button
+              type="button"
+              class="btn-sm btn-success"
+              @click="acceptInvitation(group.id)"
+            >
+              Accept
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import { Api } from "../axios-api";
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
+import $ from "jquery";
 
 export default {
-  name: 'BaseProfileSettings',
-  computed: mapState(['username']),
+  name: "BaseProfileSettings",
+  computed: mapState(["username"]),
   data() {
     return {
       gitlab_token: "",
-      success: "",
-      error: "",
-    }
+      userData: "",
+      invitations: [1, 3, 4],
+    };
+  },
+  created() {
+    Api.get("/profile/")
+      .then((response) => {
+        this.userData = response.data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    this.getInvitations();
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
+    });
   },
   methods: {
     submitToken() {
-      Api.put('profile/', {
-        gitlab_token: this.gitlab_token
+      Api.put("profile/", { gitlab_token: this.gitlab_token }).catch((err) => {
+        console.log(err);
+      });
+    },
+    copyId() {
+      navigator.clipboard.writeText(this.userData.identifier);
+      let btn = $("#copy-button");
+      btn.attr("title", "Copied!");
+      btn.attr("data-original-title", "Copied!");
+      btn.tooltip("update");
+    },
+    getInvitations() {
+      Api.get("/invitations/")
+        .then((response) => {
+          this.invitations = response.data.data.invitation;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    rejectInvitation(invitation) {
+      Api.post("/groups/" + invitation + "/accept_invitation/", {
+        accept: false,
       })
-        .then(response => {
-          this.success = "Great success!"
-          console.log(response.data)
-        })
-        .catch(err => {
-          this.error = err
-          console.log(err)
-        })
+        .then(() => this.getInvitations())
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    acceptInvitation(invitation) {
+      Api.post("/groups/" + invitation + "/accept_invitation/", {
+        accept: true,
+      })
+        .then(() => this.getInvitations())
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
-}
+};
 </script>

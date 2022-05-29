@@ -92,7 +92,7 @@ export default new VueRouter({
     {
       path: "/group/:groupid/project/:repoid/manage",
       name: "managerepo",
-      component: () => import("./views/ProjectManageSprints"),
+      component: () => import("./views/ProjectManagementView"),
       meta: {
         requiresAuth: true,
         breadcrumb: {
