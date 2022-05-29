@@ -12,10 +12,10 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand font-italic font-weight-light" href="/">
+      <router-link class="navbar-brand font-italic font-weight-light" :to="{ name: 'home' }" exact>
         <div v-if="isDevEnv">Cognate Dev Env</div>
         <div v-else>Cognate</div>
-      </a>
+      </router-link>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-1">
