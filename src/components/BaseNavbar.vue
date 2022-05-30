@@ -12,28 +12,22 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand font-italic font-weight-light" href="/">
+      <router-link class="navbar-brand font-italic font-weight-light" :to="{ name: 'home' }" exact>
         <div v-if="isDevEnv">Cognate Dev Env</div>
         <div v-else>Cognate</div>
-      </a>
+      </router-link>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-1">
           <li class="nav-item nav-link">
             <router-link :to="{ name: 'groups' }" exact>Groups</router-link>
           </li>
-          <!-- 
-          <li class="nav-item nav-link">
-            <router-link :to="{ name:'browse' }" exact>Browse</router-link>
-          </li>
-          -->
-          <li class="nav-item nav-link">
-            <router-link :to="{ name: 'pricing' }" exact>Pricing</router-link>
-          </li>
           <li class="nav-item nav-link">
             <router-link :to="{ name: 'feedback' }" exact>Feedback</router-link>
           </li>
         </ul>
+
+        <BaseLightswitch  @switchlight="$emit('switchlight')"/>
 
         <button class="btn btn-outline-info mx-2" v-if="accessToken != null">
           <router-link :to="{ name: 'profile' }">{{ username }} ⚙</router-link>
@@ -49,7 +43,9 @@
           v-if="accessToken == null"
           data-toggle="modal"
           data-target="#authModal"
-        >Authenticate</button>
+        >
+          Authenticate
+        </button>
         <AuthModal />
       </div>
     </nav>
@@ -57,22 +53,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 import AuthModal from "./AuthModal";
+import BaseLightswitch from "./BaseLightswitch.vue";
 
 export default {
-  name: 'Navbar',
-  computed: mapState(['accessToken', 'username']),
+  name: "BaseNavbar",
+  computed: mapState(["accessToken", "username"]),
   components: {
     AuthModal,
+    BaseLightswitch,
   },
   data() {
     return {
-      isDevEnv: false
-    }
+      isDevEnv: false,
+    };
   },
   created() {
-    this.isDevEnv = process.env.VUE_APP_API_URL == "193.40.156.142"
-  }
-}
+    this.isDevEnv = process.env.VUE_APP_API_URL == "193.40.156.142";
+  },
+};
 </script>

@@ -6,8 +6,7 @@
 
 
 <script>
-import * as d3 from 'd3'
-
+import d3 from '@/assets/d3'
 
 export default {
   name: "RepoRadar",
@@ -83,7 +82,7 @@ export default {
         .attr("x2", (d, i) => rScale(maxValue * 1.1) * Math.cos(angleSlice * i - Math.PI / 2))
         .attr("y2", (d, i) => rScale(maxValue * 1.1) * Math.sin(angleSlice * i - Math.PI / 2))
         .attr("class", "line")
-        .style("stroke", "#191d21")
+        .style("stroke", () => document.body.className === "bootstrap" ? "#fff" : "#191d21")
         .style("stroke-width", "4px");
 
       // Labels

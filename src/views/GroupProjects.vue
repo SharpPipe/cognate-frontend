@@ -1,6 +1,6 @@
 <template>
-  <div class="repos">
-    <div class="container" v-if="repos">
+  <div class="projects">
+    <div class="container" v-if="projects">
       <div class="row justify-content-between">
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar
@@ -10,7 +10,7 @@
           :maxPoints="100"
           class="w-75 my-auto"
         />
-        <div v-if="repos.rights.includes('O') || repos.rights.includes('A')">
+        <div v-if="projects.rights.includes('O') || projects.rights.includes('A')">
           <button
             class="btn-sm btn-secondary float-right"
             @click="refreshGroup($route.params.groupid)"
@@ -21,10 +21,10 @@
       </div>
 
       <table class="table table-borderless">
-        <tr v-if="repos.total_milestones">
-          <td class="m-0 p-0" v-for="n in repos.total_milestones" :key="n">
+        <tr v-if="projects.total_milestones">
+          <td class="m-0 p-0" v-for="n in projects.total_milestones" :key="n">
             <router-link
-              :is="n > repos.active_milestones ? 'span' : 'router-link'"
+              :is="n > projects.active_milestones ? 'span' : 'router-link'"
               :to="{
                 name: 'group-milestone-summary',
                 params: {
@@ -41,35 +41,34 @@
 
       <h4>Teams</h4>
 
-      <div v-if="repos">
+      <div v-if="projects">
         <table class="table">
-          <tr v-for="repo in repos.data" :key="repo.id">
-            <td v-if="repo.users" class="p-1">
+          <tr v-for="project in projects.data" :key="project.id">
+            <td v-if="project.users" class="p-1">
               <PieChart
-                :id="`teampiechart${repo.id}`"
-                :k="`${repo.id}`"
-                :users="repo.users"
+                :id="`teampiechart${project.id}`"
+                :k="`${project.id}`"
+                :users="project.users"
               />
             </td>
 
             <td class="p-1">
               <router-link
                 :to="{
-                  name: 'repo',
-                  params: { groupid: $route.params.groupid, repoid: repo.id },
+                  name: 'project',
+                  params: { groupid: $route.params.groupid, repoid: project.id },
                 }"
-                class="text-white"
-                >{{ repo.name }}</router-link
+                >{{ project.name }}</router-link
               >
             </td>
 
             <td class="p-1 col-4">
-              <div v-if="repo.mentors && repo.mentors.length > 0">
-                <span class="badge badge-dark">{{ repo.mentors[0] }}</span>
+              <div v-if="project.mentors && project.mentors.length > 0">
+                <span class="badge badge">{{ project.mentors[0] }}</span>
                 <br />
               </div>
-              <span v-for="(dev, i) in repo.users" :key="i" class="pr-1">
-                <div class="badge badge-dark">
+              <span v-for="(dev, i) in project.users" :key="i" class="pr-1">
+                <div class="badge border">
                   <svg class="m-0 p-0" height="12" width="12">
                     <circle cx="6" cy="6" r="6" :fill="`#${dev.colour}`" />
                   </svg>
@@ -81,9 +80,9 @@
 
             <td class="p-1">
               <RepoChartMini
-                :id="`repoms${repo.id}`"
-                :k="repo.id"
-                :milestones="repo.milestones"
+                :id="`repoms${project.id}`"
+                :k="project.id"
+                :milestones="project.milestones"
               />
             </td>
           </tr>
@@ -104,7 +103,7 @@ import ProgressBar from "../components/ProgressBar.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 
 export default {
-  name: "Home",
+  name: "GroupProjects",
   components: {
     RepoChartMini,
     PieChart,
@@ -113,7 +112,7 @@ export default {
   },
   data() {
     return {
-      repos: null,
+      projects: null,
       refreshMeta: null,
       refreshDetail: {
         process: {
@@ -129,7 +128,7 @@ export default {
     const url = "groups/" + this.$route.params.groupid + "/";
     Api.get(url)
       .then((response) => {
-        this.repos = response.data;
+        this.projects = response.data;
       })
       .catch((err) => {
         console.log(err);

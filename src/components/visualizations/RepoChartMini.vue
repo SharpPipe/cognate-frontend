@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import * as d3 from "d3";
+import d3 from '@/assets/d3'
 import $ from "jquery";
 
 const width = 320;

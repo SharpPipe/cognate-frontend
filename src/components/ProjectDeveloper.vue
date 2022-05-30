@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: "RepoDeveloper",
+  name: "ProjectDeveloper",
   props: ["devData", "disableable"],
   data() {
     return {

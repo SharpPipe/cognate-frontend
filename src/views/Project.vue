@@ -37,19 +37,19 @@
               :key="dev.username"
               class="d-flex col m-0"
             >
-              <RepoDeveloper :devData="dev" class="w-100 m-1" />
+              <ProjectDeveloper :devData="dev" class="w-100 m-1" />
             </div>
           </div>
         </div>
 
         <div class="col-3 p-0">
-          <RepoTotalStats :totalStats="projectDetails.project" />
+          <ProjectTotalStats :totalStats="projectDetails.project" />
         </div>
       </div>
 
       <!--  Sprints  -->
 
-      <table class="table table-borderless">
+      <table class="table table-borderless" id="sprint_table">
         <tr>
           <td
             v-for="milestone in projectDetails.milestones"
@@ -58,7 +58,7 @@
           >
             <router-link
               :to="{
-                name: 'assess-milestone',
+                name: 'assess-sprint',
                 params: {
                   groupid: $route.params.groupid,
                   repoid: $route.params.repoid,
@@ -68,7 +68,7 @@
                 },
               }"
             >
-              <RepoMilestoneCard class="m-0" :msData="milestone" />
+              <ProjectMilestoneCard class="m-0" :msData="milestone" />
             </router-link>
           </td>
         </tr>
@@ -100,21 +100,25 @@
 </template>
 
 <script>
-import RepoDeveloper from "../components/RepoDeveloper";
+import ProjectTotalStats from "../components/ProjectTotalStats.vue";
+import ProjectDeveloper from "../components/ProjectDeveloper";
+import ProjectMilestoneCard from "../components/ProjectMilestoneCard.vue";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
-import RepoTotalStats from "../components/RepoTotalStats.vue";
-import RepoMilestoneCard from "../components/RepoMilestoneCard.vue";
 
 import { Api } from "../axios-api";
 export default {
-  name: "Repo",
+  name: "Project",
   components: {
     GitTime,
     RepoRadar,
-    RepoDeveloper,
-    RepoTotalStats,
-    RepoMilestoneCard,
+    ProjectDeveloper,
+    ProjectTotalStats,
+    ProjectMilestoneCard,
+  },
+  updated() {
+    // Start the milestone table at the end
+    document.getElementById("sprint_table").scrollBy(1000, 0);
   },
   data() {
     return {
@@ -231,6 +235,20 @@ export default {
 
 <style scoped>
 table {
-  table-layout: fixed;
+  display: block;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 10px;
 }
 </style>

@@ -1,6 +1,6 @@
+
 <template>
   <div v-if="milestone_connections" class="container">
-    <h1>Manage Repo Milestone</h1>
     <div>
       <div class="flexbox">
         <div
@@ -26,12 +26,15 @@
               draggable="true"
               v-for="gitlab_ms in ms.gl_milestones"
               :key="gitlab_ms.id"
-              class="justify-content-center d-flex bg-secondary px-4 py-2 m-3"
+              class="justify-content-center d-flex bg-secondary p-2 m-3"
             >
-              <a :href="gitlab_ms.gitlab_link" target="_blank" class="align-self-center">
-                <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
-              </a>
+            <span>
+
+              <a :href="gitlab_ms.gitlab_link" target="_blank">
+                <font-awesome-icon class="h5" icon="fa-brands fa-gitlab" />
+              </a> &nbsp;
               {{ gitlab_ms.title }}
+            </span>
             </DragCard>
             <div class="py-5" /> <!-- Needed so the DragBoard doesn't shrink -->
           </DragBoard>
@@ -53,10 +56,14 @@
               :key="unmatched.id"
               :id="`card-${unmatched.id}-unmatched`"
               draggable="true"
-              class="justify-content-center d-flex bg-secondary px-4 py-2 m-3 col-lg-auto"
+              class="justify-content-center d-flex bg-secondary p-2 m-3 col-lg-auto"
             >
-              <font-awesome-icon class="h3" icon="fa-brands fa-gitlab" />
+            <span>
+              <a :href="unmatched.gitlab_link" target="_blank">
+              <font-awesome-icon class="h5" icon="fa-brands fa-gitlab" />
+              </a> &nbsp;
               {{ unmatched.title }}
+            </span>
             </DragCard>
             <div class="py-5" /> <!-- Needed so the DragBoard doesn't shrink -->
           </DragBoard>
@@ -68,11 +75,11 @@
 
 <script>
 import { Api } from "../axios-api";
-import DragBoard from "../components/DragBoard.vue";
-import DragCard from "../components/DragCard.vue";
+import DragBoard from "./DragBoard.vue";
+import DragCard from "./DragCard.vue";
 
 export default {
-  name: "Groupadd",
+  name: "ProjectManageSprints",
   components: {
     DragBoard,
     DragCard,

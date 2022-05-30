@@ -18,7 +18,7 @@
 import { Api } from '../axios-api'
 
 export default {
-  name: 'Home',
+  name: 'BaseHome',
   data() {
     return {}
   },

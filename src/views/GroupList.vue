@@ -17,8 +17,7 @@
                   <div>
                     <h5 class="text-capitalize">
                       <router-link
-                        :to="{ name: 'group-repos', params: { groupid: group.id } }"
-                        class="text-white"
+                        :to="{ name: 'group-projects', params: { groupid: group.id } }"
                       >{{ group.name }}</router-link>
                     </h5>
                     <p class="text-muted m-0">{{ group.description }}</p>
@@ -61,7 +60,7 @@ import LoadingAnimation from "../components/LoadingAnimation.vue";
 
 
 export default {
-  name: 'Groups',
+  name: 'GroupList',
   components: {
     LoadingAnimation,
   },

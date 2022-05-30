@@ -49,7 +49,7 @@
 import $ from 'jquery'
 
 export default {
-  name: 'register',
+  name: 'Register',
   data() {
     return {
       payload: {
