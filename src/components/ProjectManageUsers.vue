@@ -74,7 +74,7 @@
           v-for="user in groupUsers"
           :key="user.account.id"
         >
-          <div>
+          <div v-if="user.roles.includes('A') || user.roles.includes('O')">
             <b>
               {{ user.account.username }}
             </b>
