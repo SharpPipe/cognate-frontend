@@ -22,7 +22,7 @@
           data-toggle="tooltip"
           data-placement="top"
           data-html="true"
-          title="Cognate only needs <b>read-api</b> rights"
+          title="Cognate only needs <b>read-api</b> rights. <span class='text-warning'>WARNING: this is not encrypted yet</span>"
         >
           <font-awesome-icon icon="fa-solid fa-circle-info" />
         </label>
