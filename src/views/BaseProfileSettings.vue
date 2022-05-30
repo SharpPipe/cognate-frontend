@@ -33,6 +33,49 @@
             >Generate a new Gitlab Token</a
           >
         </small>
+        <div class="mt-3">
+          <label
+            >Save your password
+            <label
+              class="mb-1"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="When your account is connected with a GitLab token, your password is used to decrypt it. Thus when refresshing GitLab data, you have to send your password to the database. If this chekbox is ticked then the password is stored in your browsers local storage otherwise you have to insert your password upon every refresh of a group. Storing your password in local storage involves some risk."
+            >
+              <font-awesome-icon icon="fa-solid fa-circle-info" />
+            </label>
+          </label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input
+                  type="checkbox"
+                  v-model="userData.store_password"
+                  aria-label="Checkbox for following text input"
+                />
+              </div>
+            </div>
+            <input
+              type="password"
+              class="form-control"
+              :disabled="!userData.store_password"
+              v-model="enteredPassword"
+              aria-label="Text input with checkbox"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-warning"
+                type="button"
+                @click="checkPassword"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+          <div>
+            {{ passwordSendMsg }}
+          </div>
+        </div>
       </div>
 
       <div class="col">
@@ -64,9 +107,8 @@
         </form>
       </div>
     </div>
-    <!--       <div v-if="invitations"> -->
     <div>
-      <h4>Group Invitations</h4>
+      <h4 v-if="invitations">Group Invitations</h4>
       <ul class="list-group list-group-flush">
         <li
           class="
@@ -79,11 +121,11 @@
           v-for="group in invitations"
           :key="group"
         >
-        <span>
-          <b>{{ group.name }}</b>
-          &nbsp;
-          <small>{{ group.description }}</small>
-        </span>
+          <span>
+            <b>{{ group.name }}</b>
+            &nbsp;
+            <small>{{ group.description }}</small>
+          </span>
 
           <div>
             <button
@@ -119,7 +161,9 @@ export default {
     return {
       gitlab_token: "",
       userData: "",
-      invitations: [1, 3, 4],
+      invitations: [],
+      passwordSendMsg: null,
+      enteredPassword: "",
     };
   },
   created() {
@@ -142,6 +186,37 @@ export default {
       Api.put("profile/", { gitlab_token: this.gitlab_token }).catch((err) => {
         console.log(err);
       });
+    },
+    submitSavePassword() {
+      Api.put("profile/", {
+        store_password: this.userData.store_password,
+      })
+        .then(() => {
+          this.passwordSendMsg = "Success";
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    checkPassword() {
+      if (this.userData.store_password) {
+        this.$store
+          .dispatch("loginUser", {
+            username: this.username,
+            password: this.enteredPassword,
+          })
+          .then(() => {
+            this.submitSavePassword();
+            this.$store.commit("updatePassword", this.enteredPassword);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.passwordSendMsg = "Wrong credentials";
+          });
+      } else {
+        this.submitSavePassword();
+        this.$store.commit("updatePassword", null);
+      }
     },
     copyId() {
       navigator.clipboard.writeText(this.userData.identifier);

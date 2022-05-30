@@ -29,6 +29,8 @@
 
 <script>
 import $ from 'jquery'
+import { Api } from "../axios-api";
+
 
 export default {
   name: 'Login',
@@ -45,17 +47,27 @@ export default {
     loginUser() {
       this.$store.dispatch('loginUser', this.payload)
       .then(() => {
+        this.checkStorePassword()
         this.wrongCredentials = false
-        $("#authClose").click()
-        this.$router.push({ name: 'groups' })
       })
       .catch(error => {
         console.log(error)
         this.wrongCredentials = true
-      }
-      
-      )
+      })
 
+    }, 
+    checkStorePassword() {
+      Api.get("/profile/")
+        .then(response => {
+          if (response.data.data.store_password)
+            this.$store.commit('updatePassword', this.payload.password)
+          else 
+            this.$store.commit('updatePassword', null)
+
+          $("#authClose").click()
+          this.$router.push({ name: 'groups' })
+        })
+        .catch(error => console.log(error))
     }
   },
 }
