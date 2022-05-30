@@ -4,7 +4,18 @@
     <div class="row mb-3">
       <div class="col">
         <div class="">
-          <label>Your Gitlab API Token</label>
+          <label
+            >Your Gitlab API Token
+            <label
+              class="mb-1"
+              data-toggle="tooltip"
+              data-placement="top"
+              data-html="true"
+              title="Cognate only needs <b>read-api</b> rights"
+            >
+              <font-awesome-icon icon="fa-solid fa-circle-info" />
+            </label>
+          </label>
           <div class="input-group">
             <input
               type="text"
