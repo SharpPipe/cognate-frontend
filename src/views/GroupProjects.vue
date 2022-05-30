@@ -10,13 +10,58 @@
           :maxPoints="100"
           class="w-75 my-auto"
         />
-        <div v-if="projects.rights.includes('O') || projects.rights.includes('A')">
+        <div
+          v-if="projects.rights.includes('O') || projects.rights.includes('A')"
+        >
           <button
             class="btn-sm btn-secondary float-right"
-            @click="refreshGroup($route.params.groupid)"
+            @click="preRefreshChecks($route.params.groupid)"
           >
             Refresh
           </button>
+        </div>
+
+        <div
+          class="modal fade"
+          id="passModal"
+          data-backdrop=""
+          tabindex="-1"
+          role="dialog"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button
+                  id="passClose"
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <input
+                    type="password"
+                    class="form-control mb-2"
+                    placeholder="Enter password to refresh"
+                    v-model="userpassword"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <span>{{passwordSendMsg}}</span>
+                <button
+                  class="btn btn-outline-success rounded"
+                  type="button"
+                  @click="getPassword"
+                >
+                  Refresh
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -56,7 +101,10 @@
               <router-link
                 :to="{
                   name: 'project',
-                  params: { groupid: $route.params.groupid, repoid: project.id },
+                  params: {
+                    groupid: $route.params.groupid,
+                    repoid: project.id,
+                  },
                 }"
                 >{{ project.name }}</router-link
               >
@@ -97,6 +145,8 @@
 
 <script>
 import { Api } from "../axios-api";
+import { mapState } from "vuex";
+import $ from "jquery";
 import RepoChartMini from "../components/visualizations/RepoChartMini";
 import PieChart from "../components/visualizations/PieChart.vue";
 import ProgressBar from "../components/ProgressBar.vue";
@@ -110,6 +160,7 @@ export default {
     ProgressBar,
     LoadingAnimation,
   },
+  computed: mapState(["username", "password"]),
   data() {
     return {
       projects: null,
@@ -122,6 +173,8 @@ export default {
       },
       refreshIsOngoing: false,
       i: 0,
+      passwordSendMsg: null,
+      userpassword: null,
     };
   },
   created() {
@@ -135,8 +188,32 @@ export default {
       });
   },
   methods: {
+    getPassword() {
+      this.$store
+        .dispatch("loginUser", {
+          username: this.username,
+          password: this.userpassword,
+        })
+        .then(() => {
+          this.passwordSendMsg = "Success";
+          this.refreshGroup(this.$route.params.groupid)
+          $("#passClose").click();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.passwordSendMsg = "Wrong credentials";
+        });
+    },
+    preRefreshChecks(id) {
+      if (this.password) {
+        this.userpassword = this.password
+        this.refreshGroup(id)
+      } else {
+        $("#passModal").modal("show");
+      }
+    },
     async refreshGroup(id) {
-      Api.get("groups/" + id + "/update/")
+      Api.post("groups/" + id + "/update/", { password: this.userpassword })
         .then((response) => {
           this.refreshMeta = response.data;
           this.refreshIsOngoing = true;
