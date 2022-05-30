@@ -20,7 +20,7 @@
             name: 'managerepo',
           }"
         >
-          <div class="btn-sm btn-secondary">Manage sprints</div>
+          <div class="btn-sm btn-secondary">Manage project</div>
         </router-link>
       </div>
 
