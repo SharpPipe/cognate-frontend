@@ -11,6 +11,7 @@ export default new Vuex.Store({
     refreshToken: localStorage.getItem("refresh_token") || null,
     APIData: "",
     username: "",
+    password: null,
   },
   plugins: [createPersistedState()],
   mutations: {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
       state.APIData = null;
       state.username = null;
     },
+    updatePassword(state, password) {
+      state.password = password
+    }
   },
   getters: {
     loggedIn(state) {

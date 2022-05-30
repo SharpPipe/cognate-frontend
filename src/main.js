@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './routes.js'
 import store from './store'
 import '@forevolve/bootstrap-dark/dist/js/bootstrap.js'
+import '@forevolve/bootstrap-dark/dist/js/bootstrap.bundle.js'
+import 'bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js'
+import 'bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css'
 import 'popper.js/dist/popper.min.js'
 import VueBreadcrumbs from 'vue-2-breadcrumbs'
 
@@ -10,11 +13,12 @@ import VueBreadcrumbs from 'vue-2-breadcrumbs'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faGitlab } from '@fortawesome/free-brands-svg-icons'
 import { faClipboard, faClock, faStarHalfAlt } from '@fortawesome/free-regular-svg-icons'
-import { faClipboardList, faCode } from '@fortawesome/free-solid-svg-icons'
+import { faClipboardList, faCode, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faGitlab)
 library.add(faClock)
 library.add(faCode)
+library.add(faInfoCircle)
 library.add(faClipboardList)
 library.add(faClipboard)
 library.add(faStarHalfAlt)
