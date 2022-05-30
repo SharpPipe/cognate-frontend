@@ -15,16 +15,53 @@
           :key="user.account.id"
         >
           <div>
-            <b>
-              {{ user.account.username }}
-            </b>
+            <div class="badge border">
+              <svg
+                class="m-0 p-0"
+                height="24"
+                width="24"
+                v-if="memberColors[user.account.username]"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="12"
+                  :fill="`#${memberColors[user.account.username]}`"
+                />
+              </svg>
+              <span class="h5">
+                {{ user.account.username }}
+              </span>
+            </div>
+
             <br />
             <div
               class="badge border badge-pill"
-              v-for="role in user.roles"
+              v-for="role in userRoles[user.account.username]"
               :key="role"
             >
               {{ roleNames[role] }}
+            </div>
+          </div>
+<div class="row no-gutters">
+
+          <div class="mr-3" v-if="memberColors[user.account.username]">
+            <label>Change users color</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control input-sm"
+                v-model="memberColors[user.account.username]"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  @click="saveColor(user)"
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
 
@@ -47,7 +84,7 @@
                   <label class="checkbox">
                     <input
                       type="checkbox"
-                      :checked="user.roles.includes(role)"
+                      :checked="userRoles[user.account.username].includes(role)"
                       @change="updateRole(role, user)"
                     />
                     {{ roleNames[role] }}
@@ -56,6 +93,8 @@
               </ul>
             </div>
           </div>
+</div>
+
         </li>
       </ul>
     </div>
@@ -71,10 +110,12 @@
             align-items-center
             py-1
           "
-          v-for="user in groupUsers"
+          v-for="user in groupUsers.filter(
+            (u) => u.roles.includes('A') || u.roles.includes('O')
+          )"
           :key="user.account.id"
         >
-          <div v-if="user.roles.includes('A') || user.roles.includes('O')">
+          <div>
             <b>
               {{ user.account.username }}
             </b>
@@ -124,10 +165,14 @@
 
 <script>
 import { Api } from "../axios-api";
+import { map } from "lodash";
+//import ColorPicker from "./ColorPicker.vue";
+
 import $ from "jquery";
 
 export default {
   name: "ProjectManageUsers",
+  //components: {ColorPicker},
   data() {
     return {
       users: [],
@@ -141,6 +186,8 @@ export default {
         A: "Admin",
         O: "Owner",
       },
+      memberColors: {},
+      userRoles: {},
     };
   },
   created() {
@@ -157,6 +204,15 @@ export default {
       Api.get("/projects/" + this.$route.params.repoid + "/users/")
         .then((response) => {
           this.users = response.data.data.by_user;
+          this.memberColors = [];
+          for (let user of this.users) {
+            let color = user.roles.find((r) => r.role == "M");
+            if (color) this.memberColors[user.account.username] = color.colour;
+            this.userRoles[user.account.username] = map(
+              user.roles,
+              (r) => r.role
+            );
+          }
         })
         .catch((err) => {
           this.error = err;
@@ -174,11 +230,13 @@ export default {
         });
     },
     updateRole(role, user) {
-      let member = this.users.find(u => u.account.username === user.account.username)
-      let memberRoles = []
-      if (member) memberRoles = member.roles
-      console.log(user)
-      console.log(member)
+      let member = this.users.find(
+        (u) => u.account.username === user.account.username
+      );
+      let memberRoles = [];
+      if (member) memberRoles = member.roles;
+      console.log(user);
+      console.log(member);
 
       if (user.roles.includes(role) || memberRoles.includes(role)) {
         Api.delete("/projects/" + this.$route.params.repoid + "/users/", {
@@ -209,6 +267,23 @@ export default {
             console.log(err);
           });
       }
+    },
+    saveColor(user) {
+      Api.post(
+        "/projects/" + this.$route.params.repoid + "/change_dev_colour/",
+        {
+          username: user.account.username,
+          colour: this.memberColors[user.account.username],
+        }
+      )
+        .then((response) => {
+          this.success = response.data.message;
+          this.getProjectUsers();
+        })
+        .catch((err) => {
+          this.error = err;
+          console.log(err);
+        });
     },
   },
 };
