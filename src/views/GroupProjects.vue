@@ -1,7 +1,7 @@
 <template>
   <div class="projects">
     <div class="container" v-if="projects">
-      <div class="row justify-content-between">
+      <div class="row mx-0 justify-content-between">
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar
           v-if="refreshIsOngoing"
