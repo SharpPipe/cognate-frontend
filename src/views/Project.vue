@@ -15,29 +15,32 @@
         </span>
       </span>
       <div class="float-right">
-        <router-link
-          :to="{
-            name: 'managerepo',
-          }"
-        >
+        <router-link :to="{ name: 'managerepo' }">
           <div class="btn-sm btn-secondary">Manage project</div>
         </router-link>
       </div>
 
       <!--  Overview data  -->
-      <div class="row m-1">
+      <div id="overview" class="row m-1">
         <div class="col-4 p-0" v-if="radar.length">
           <RepoRadar class="p-1" :radardata="radar" />
         </div>
 
-        <div class="col-5 p-0 d-flex flex-column align-content-stretch">
+        <div
+          id="developerList"
+          class="col-5 p-0 h-100 d-flex flex-column align-content-stretch"
+        >
           <div class>
             <div
               v-for="dev in projectDetails.developers"
               :key="dev.username"
               class="d-flex col m-0"
             >
-              <ProjectDeveloper :devData="dev" class="w-100 m-1" />
+              <ProjectDeveloper
+                :devData="dev"
+                :points="userTotalPoints[dev.username]"
+                class="w-100 m-1"
+              />
             </div>
           </div>
         </div>
@@ -105,6 +108,7 @@ import ProjectDeveloper from "../components/ProjectDeveloper";
 import ProjectMilestoneCard from "../components/ProjectMilestoneCard.vue";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
+import { map, chain } from "lodash";
 
 import { Api } from "../axios-api";
 export default {
@@ -131,16 +135,9 @@ export default {
           { axis: "Issues", value: 1 },
         ],
       ],
-      currentPoints: 30,
-      minCoursePoints: 0,
-      maxCoursePoints: 2000,
-      milestones: null,
-      assessmentMilestones: null,
-      issueData: [],
-
       projectTimeRange: [
-        new Date(2022, 0, 24, 0, 0, 0),
-        new Date(2022, 7, 16, 0, 0, 0),
+        new Date(2020, 0, 24, 0, 0, 0),
+        new Date(2030, 7, 16, 0, 0, 0),
       ],
       comments: [],
       projectDetails: [],
@@ -151,6 +148,7 @@ export default {
         loaded: false,
         users: {},
       },
+      userTotalPoints: [],
     };
   },
   created() {
@@ -165,6 +163,21 @@ export default {
         this.radar = this.formatMilestonePointsForRadarGraph(
           this.projectDetails.milestones
         );
+
+        this.userTotalPoints = chain(this.projectDetails.milestones)
+          .map((ms) =>
+            map(ms.user_points, (up) => {
+              return { name: up.name, points: +up.points };
+            })
+          )
+          .flatten()
+          .reduce((obj, el) => {
+            obj[el.name] = (obj[el.name] || 0) + el.points;
+            return obj;
+          }, {})
+          .value();
+
+        console.log(this.userTotalPoints);
       })
       .catch((err) => {
         console.log(err);
@@ -234,9 +247,13 @@ export default {
 </script>
 
 <style scoped>
-table {
+table,
+#developerList {
   display: block;
   overflow: auto;
+}
+#overview {
+  height: 370px;
 }
 
 ::-webkit-scrollbar {
