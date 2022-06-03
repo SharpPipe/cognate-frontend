@@ -38,18 +38,21 @@
           </option>
         </select>
         <input
+          required
           type="text"
           class="form-control mb-2"
           placeholder="Repo Name"
           v-model="repo.name"
         />
         <input
+          required
           type="text"
           class="form-control mb-2"
           placeholder="GitLab URL"
           v-model="repo.url"
         />
         <input
+          required
           type="text"
           class="form-control mb-2"
           placeholder="GitLab ID"

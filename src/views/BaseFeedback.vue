@@ -4,6 +4,7 @@
       <h2 class="text-info">Give us feedback?</h2>
       <div class="form-group">
         <textarea
+          required
           class="form-control"
           rows="5"
           v-model="payload.feedback"

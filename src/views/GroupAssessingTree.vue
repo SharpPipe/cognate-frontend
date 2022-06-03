@@ -6,6 +6,7 @@
       <div class="mb-4">
         <div class="input-group mb-2">
           <input
+            required
             type="text"
             class="form-control"
             placeholder="New assessment element with points worth"
@@ -72,6 +73,7 @@
 
         <div class="input-group mb-2">
           <input
+            required
             type="text"
             class="form-control"
             placeholder="Description"
