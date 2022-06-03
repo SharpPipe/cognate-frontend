@@ -90,7 +90,7 @@
         <table class="table">
           <tr v-for="project in projects.data" :key="project.id">
             <td v-if="project.users" class="p-1">
-              <PieChart
+              <DonutChart
                 :id="`teampiechart${project.id}`"
                 :k="`${project.id}`"
                 :users="project.users"
@@ -148,7 +148,7 @@ import { Api } from "../axios-api";
 import { mapState } from "vuex";
 import $ from "jquery";
 import RepoChartMini from "../components/visualizations/RepoChartMini";
-import PieChart from "../components/visualizations/PieChart.vue";
+import DonutChart from "../components/visualizations/DonutChart.vue";
 import ProgressBar from "../components/ProgressBar.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 
@@ -156,7 +156,7 @@ export default {
   name: "GroupProjects",
   components: {
     RepoChartMini,
-    PieChart,
+    DonutChart,
     ProgressBar,
     LoadingAnimation,
   },
