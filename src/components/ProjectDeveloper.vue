@@ -11,7 +11,7 @@
         />
         <circle v-else cx="20" cy="20" r="20" fill="#aaaaaa" />
       </svg>
-      <div class="flex-grow-1">
+      <div class="">
         <span class="font-weight-bold">{{ devData.username }}</span>
         <br />
         <table class="table table-borderless w-100">

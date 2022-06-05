@@ -26,23 +26,43 @@
           <RepoRadar class="p-1" :radardata="radar" />
         </div>
 
-        <div
-          id="developerList"
-          class="col-5 p-0 h-100 d-flex flex-column align-content-stretch"
-        >
-          <div class>
-            <div
+        <div class="col-5 h-100" id="developerList">
+          <table class="table table-borderless w-auto">
+            <tr
               v-for="dev in projectDetails.developers"
               :key="dev.username"
-              class="d-flex col m-0"
+              class="w-auto"
             >
-              <ProjectDeveloper
-                :devData="dev"
-                :points="userTotalPoints[dev.username]"
-                class="w-100 m-1"
-              />
-            </div>
-          </div>
+              <td class="py-2 col-2 text-center">
+                <span class="font-weight-bold">
+                  <svg class="m-2 my-auto" height="40" width="40">
+                    <circle cx="20" cy="20" r="20" :fill="`#${dev.colour}`" />
+                  </svg>
+                  {{ dev.username }}
+                </span>
+              </td>
+              <td class="py-2 col-3">
+                <font-awesome-icon icon="fa-regular fa-clock" />
+                <span class="">
+                  {{ spent(dev.time_spent || dev.spent_time) }}h</span
+                >
+                <br />
+                <font-awesome-icon icon="fa-regular fa-star-half-alt" />
+                {{ userTotalPoints[dev.username] }}p
+              </td>
+              <td class="py-2 col-4">
+                <div v-if="dev.lines_added || dev.lines_removed">
+                  <font-awesome-icon icon="fa-solid fa-code" />
+                  <span class="text-success">
+                    +{{ comaFormat(dev.lines_added) }}</span
+                  >
+                  <span class="text-danger">
+                    -{{ comaFormat(dev.lines_removed) }}</span
+                  >
+                </div>
+              </td>
+            </tr>
+          </table>
         </div>
 
         <div class="col-3 p-0">
@@ -104,7 +124,6 @@
 
 <script>
 import ProjectTotalStats from "../components/ProjectTotalStats.vue";
-import ProjectDeveloper from "../components/ProjectDeveloper";
 import ProjectMilestoneCard from "../components/ProjectMilestoneCard.vue";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
@@ -116,7 +135,6 @@ export default {
   components: {
     GitTime,
     RepoRadar,
-    ProjectDeveloper,
     ProjectTotalStats,
     ProjectMilestoneCard,
   },
@@ -205,6 +223,13 @@ export default {
       });
   },
   methods: {
+    spent(time) {
+      if (isNaN(time)) return time;
+      return time.toFixed(2);
+    },
+    comaFormat(num) {
+      return num.toLocaleString("en-US");
+    },
     formatedTime(timeString) {
       return new Date(timeString).toUTCString();
     },
