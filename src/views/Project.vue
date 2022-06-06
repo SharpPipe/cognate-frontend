@@ -141,7 +141,7 @@ export default {
   },
   updated() {
     // Start the milestone table at the end
-    document.getElementById("sprint_table").scrollBy(1000, 0);
+    document.getElementById("sprint_table").scrollBy(100000, 0);
   },
   data() {
     return {
