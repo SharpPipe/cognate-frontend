@@ -34,6 +34,18 @@
                 <td scope="row" v-for="point in dev.data" :key="point.id">
                   {{ +point.given_points }}/{{ +point.total }}
                 </td>
+                <span
+                  v-for="teampoint in repo.project_data"
+                  :key="teampoint.id"
+                >
+                  <td
+                    scope="row"
+                    v-if="i === 0"
+                    :rowspan="repo.users_data.length"
+                  >
+                    <b>{{ +teampoint.given_points }}/{{ +teampoint.total }} </b>
+                  </td>
+                </span>
                 <th scope="row">{{ sumpoints(dev.data) }}</th>
               </tr>
             </template>
@@ -73,6 +85,8 @@ export default {
         this.assessmentCategories = this.APIData[0].users_data[0].data.map(
           (g) => g.name
         );
+        let teamCats = this.APIData[0].project_data.map((g) => g.name);
+        this.assessmentCategories.push(...teamCats);
       })
       .catch((err) => {
         console.log(err);
