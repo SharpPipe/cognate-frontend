@@ -1,6 +1,7 @@
 <template>
   <div class="repo">
     <div v-if="projectDetails" class="container">
+      <!--       <h3 class="display-3 font-weight-lighter font-italic">{{ projectName }}</h3> -->
       <!--  GitLab links  -->
       <span
         v-for="gitlabrepo in projectDetails.repositories"
@@ -194,8 +195,6 @@ export default {
             return obj;
           }, {})
           .value();
-
-        console.log(this.userTotalPoints);
       })
       .catch((err) => {
         console.log(err);

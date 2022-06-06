@@ -15,18 +15,18 @@
           :key="user.account.id"
         >
           <div>
-            <div class="badge border">
+            <div class="badge">
               <svg
-                class="m-0 p-0"
-                height="24"
-                width="24"
-                v-if="memberColors[user.account.username]"
+                class="mb-1 p-0"
+                height="18"
+                width="18"
+                v-if="memberColors[user.account.id]"
               >
                 <circle
-                  cx="12"
-                  cy="12"
-                  r="12"
-                  :fill="`#${memberColors[user.account.username]}`"
+                  cx="9"
+                  cy="9"
+                  r="9"
+                  :fill="memberColors[user.account.id]"
                 />
               </svg>
               <span class="h5">
@@ -43,58 +43,59 @@
               {{ roleNames[role] }}
             </div>
           </div>
-<div class="row no-gutters">
+          <div class="row no-gutters">
+            <div class="mr-3" v-if="memberColors[user.account.id]">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  :id="`cp${user.account.id}`"
+                  style="width: 100px"
+                  v-model="memberColors[user.account.id]"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                    @click="saveColor(user)"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
 
-          <div class="mr-3" v-if="memberColors[user.account.username]">
-            <label>Change users color</label>
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control input-sm"
-                v-model="memberColors[user.account.username]"
-              />
-              <div class="input-group-append">
+            <div>
+              <div class="dropdown">
                 <button
-                  class="btn btn-outline-primary"
+                  class="btn btn-secondary dropdown-toggle"
                   type="button"
-                  @click="saveColor(user)"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
                 >
-                  Submit
+                  Roles
                 </button>
+                <ul class="dropdown-menu">
+                  <li
+                    v-for="role in ['B', 'V', 'M', 'E', 'T', 'A', 'O']"
+                    :key="role"
+                    class="dropdown-item py-0 m-0"
+                  >
+                    <label class="checkbox">
+                      <input
+                        type="checkbox"
+                        :checked="
+                          userRoles[user.account.username].includes(role)
+                        "
+                        @change="updateRole(role, user)"
+                      />
+                      {{ roleNames[role] }}
+                    </label>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-
-          <div>
-            <div class="dropdown">
-              <button
-                class="btn-sm btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-              >
-                Roles
-              </button>
-              <ul class="dropdown-menu">
-                <li
-                  v-for="role in ['B', 'V', 'M', 'E', 'T', 'A', 'O']"
-                  :key="role"
-                  class="dropdown-item py-0 m-0"
-                >
-                  <label class="checkbox">
-                    <input
-                      type="checkbox"
-                      :checked="userRoles[user.account.username].includes(role)"
-                      @change="updateRole(role, user)"
-                    />
-                    {{ roleNames[role] }}
-                  </label>
-                </li>
-              </ul>
-            </div>
-          </div>
-</div>
-
         </li>
       </ul>
     </div>
@@ -166,13 +167,11 @@
 <script>
 import { Api } from "../axios-api";
 import { map } from "lodash";
-//import ColorPicker from "./ColorPicker.vue";
 
 import $ from "jquery";
 
 export default {
   name: "ProjectManageUsers",
-  //components: {ColorPicker},
   data() {
     return {
       users: [],
@@ -194,7 +193,7 @@ export default {
     this.getProjectUsers();
     this.getGroupUsers();
 
-    // Prevent my multiselect dropdown from closing when clicking on a label
+    // Prevent multiselect dropdown from closing when clicking on a label
     $(document).on("click", ".dropdown-menu", function (e) {
       e.stopPropagation();
     });
@@ -207,12 +206,14 @@ export default {
           this.memberColors = [];
           for (let user of this.users) {
             let color = user.roles.find((r) => r.role == "M");
-            if (color) this.memberColors[user.account.username] = color.colour;
+            if (color) this.memberColors[user.account.id] = "#" + color.colour;
             this.userRoles[user.account.username] = map(
               user.roles,
               (r) => r.role
             );
           }
+          this.users.forEach((u) => this.initColorPicker(u.account.id));
+          this.users.sort((u) => u.account.username);
         })
         .catch((err) => {
           this.error = err;
@@ -233,16 +234,15 @@ export default {
       let member = this.users.find(
         (u) => u.account.username === user.account.username
       );
-      let memberRoles = [];
-      if (member) memberRoles = member.roles;
-      console.log(user);
-      console.log(member);
+      let teacherHasRole = false;
+      if (member) teacherHasRole = member.roles.find((r) => r.role === role);
+      let userHasRole = user.roles.find((r) => r.role === role);
 
-      if (user.roles.includes(role) || memberRoles.includes(role)) {
+      if (userHasRole || teacherHasRole) {
         Api.delete("/projects/" + this.$route.params.repoid + "/users/", {
           data: {
             id: user.account.id,
-            rights: role,
+            role: role,
           },
         })
           .then((response) => {
@@ -256,7 +256,7 @@ export default {
       } else {
         Api.post("/projects/" + this.$route.params.repoid + "/users/", {
           id: user.account.id,
-          rights: role,
+          role: role,
         })
           .then((response) => {
             this.success = response.data.message;
@@ -269,11 +269,12 @@ export default {
       }
     },
     saveColor(user) {
+      let color = this.memberColors[user.account.id].substring(1);
       Api.post(
         "/projects/" + this.$route.params.repoid + "/change_dev_colour/",
         {
           username: user.account.username,
-          colour: this.memberColors[user.account.username],
+          colour: color,
         }
       )
         .then((response) => {
@@ -285,11 +286,27 @@ export default {
           console.log(err);
         });
     },
+    initColorPicker(id) {
+      let self = this;
+      $(function () {
+        $("#cp" + id)
+          .colorpicker()
+          .on("change", (e) => {
+            self.memberColors[id] = e.value;
+          });
+      });
+    },
+    setColorToColorPicker(hex) {
+      $(".cp").colorpicker("setValue", hex);
+    },
   },
 };
 </script>
 
 <style scoped>
+.input-small {
+  width: 80px;
+}
 .dropdown-menu {
   min-width: 5rem;
 }
