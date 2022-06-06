@@ -1,6 +1,7 @@
 <template>
   <div class="repo">
     <div v-if="projectDetails" class="container">
+      <!--       <h3 class="display-3 font-weight-lighter font-italic">{{ projectName }}</h3> -->
       <!--  GitLab links  -->
       <span
         v-for="gitlabrepo in projectDetails.repositories"
@@ -15,31 +16,54 @@
         </span>
       </span>
       <div class="float-right">
-        <router-link
-          :to="{
-            name: 'managerepo',
-          }"
-        >
+        <router-link :to="{ name: 'managerepo' }">
           <div class="btn-sm btn-secondary">Manage project</div>
         </router-link>
       </div>
 
       <!--  Overview data  -->
-      <div class="row m-1">
+      <div id="overview" class="row m-1">
         <div class="col-4 p-0" v-if="radar.length">
           <RepoRadar class="p-1" :radardata="radar" />
         </div>
 
-        <div class="col-5 p-0 d-flex flex-column align-content-stretch">
-          <div class>
-            <div
+        <div class="col-5 h-100" id="developerList">
+          <table class="table table-borderless w-auto">
+            <tr
               v-for="dev in projectDetails.developers"
               :key="dev.username"
-              class="d-flex col m-0"
+              class="w-auto"
             >
-              <ProjectDeveloper :devData="dev" class="w-100 m-1" />
-            </div>
-          </div>
+              <td class="py-2 col-2 text-center">
+                <span class="font-weight-bold">
+                  <svg class="m-2 my-auto" height="40" width="40">
+                    <circle cx="20" cy="20" r="20" :fill="`#${dev.colour}`" />
+                  </svg>
+                  {{ dev.username }}
+                </span>
+              </td>
+              <td class="py-2 col-3">
+                <font-awesome-icon icon="fa-regular fa-clock" />
+                <span class="">
+                  {{ spent(dev.time_spent || dev.spent_time) }}h</span
+                >
+                <br />
+                <font-awesome-icon icon="fa-regular fa-star-half-alt" />
+                {{ userTotalPoints[dev.username] }}p
+              </td>
+              <td class="py-2 col-4">
+                <div v-if="dev.lines_added || dev.lines_removed">
+                  <font-awesome-icon icon="fa-solid fa-code" />
+                  <span class="text-success">
+                    +{{ comaFormat(dev.lines_added) }}</span
+                  >
+                  <span class="text-danger">
+                    -{{ comaFormat(dev.lines_removed) }}</span
+                  >
+                </div>
+              </td>
+            </tr>
+          </table>
         </div>
 
         <div class="col-3 p-0">
@@ -101,10 +125,10 @@
 
 <script>
 import ProjectTotalStats from "../components/ProjectTotalStats.vue";
-import ProjectDeveloper from "../components/ProjectDeveloper";
 import ProjectMilestoneCard from "../components/ProjectMilestoneCard.vue";
 import RepoRadar from "../components/visualizations/RepoRadar";
 import GitTime from "../components/visualizations/GitTime";
+import { map, chain } from "lodash";
 
 import { Api } from "../axios-api";
 export default {
@@ -112,13 +136,12 @@ export default {
   components: {
     GitTime,
     RepoRadar,
-    ProjectDeveloper,
     ProjectTotalStats,
     ProjectMilestoneCard,
   },
   updated() {
     // Start the milestone table at the end
-    document.getElementById("sprint_table").scrollBy(1000, 0);
+    document.getElementById("sprint_table").scrollBy(100000, 0);
   },
   data() {
     return {
@@ -131,16 +154,9 @@ export default {
           { axis: "Issues", value: 1 },
         ],
       ],
-      currentPoints: 30,
-      minCoursePoints: 0,
-      maxCoursePoints: 2000,
-      milestones: null,
-      assessmentMilestones: null,
-      issueData: [],
-
       projectTimeRange: [
-        new Date(2022, 0, 24, 0, 0, 0),
-        new Date(2022, 7, 16, 0, 0, 0),
+        new Date(2020, 0, 24, 0, 0, 0),
+        new Date(2030, 7, 16, 0, 0, 0),
       ],
       comments: [],
       projectDetails: [],
@@ -151,6 +167,7 @@ export default {
         loaded: false,
         users: {},
       },
+      userTotalPoints: [],
     };
   },
   created() {
@@ -165,6 +182,19 @@ export default {
         this.radar = this.formatMilestonePointsForRadarGraph(
           this.projectDetails.milestones
         );
+
+        this.userTotalPoints = chain(this.projectDetails.milestones)
+          .map((ms) =>
+            map(ms.user_points, (up) => {
+              return { name: up.name, points: +up.points };
+            })
+          )
+          .flatten()
+          .reduce((obj, el) => {
+            obj[el.name] = (obj[el.name] || 0) + el.points;
+            return obj;
+          }, {})
+          .value();
       })
       .catch((err) => {
         console.log(err);
@@ -192,6 +222,13 @@ export default {
       });
   },
   methods: {
+    spent(time) {
+      if (isNaN(time)) return time;
+      return time.toFixed(2);
+    },
+    comaFormat(num) {
+      return num.toLocaleString("en-US");
+    },
     formatedTime(timeString) {
       return new Date(timeString).toUTCString();
     },
@@ -234,9 +271,13 @@ export default {
 </script>
 
 <style scoped>
-table {
+table,
+#developerList {
   display: block;
   overflow: auto;
+}
+#overview {
+  height: 370px;
 }
 
 ::-webkit-scrollbar {

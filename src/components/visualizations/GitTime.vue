@@ -16,8 +16,17 @@
 </template>
 
 <script>
-import d3 from '@/assets/d3'
-import { groupBy, minBy, maxBy, forEach, toPairsIn } from "lodash";
+import d3 from "@/assets/d3";
+import {
+  groupBy,
+  minBy,
+  maxBy,
+  max,
+  map,
+  last,
+  forEach,
+  toPairsIn,
+} from "lodash";
 import $ from "jquery";
 
 const width = 800;
@@ -162,10 +171,11 @@ export default {
         .domain([0, 24])
         .range([height - margins.bottom, margins.top]);
 
-      let agg_maxtime = 14040; // 9 EAP
+      let agg_maxtime = max(map(this.lineGraphData, (d) => last(d[1]).amount));
+
       let y_agg = d3
         .scaleLinear()
-        .domain([0, agg_maxtime])
+        .domain([0, agg_maxtime + agg_maxtime * 0.05])
         .range([height - margins.bottom, margins.top]);
 
       let c = (devName, hover) => {
