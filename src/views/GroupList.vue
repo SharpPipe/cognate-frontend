@@ -17,8 +17,12 @@
                   <div>
                     <h5 class="text-capitalize">
                       <router-link
-                        :to="{ name: 'group-projects', params: { groupid: group.id } }"
-                      >{{ group.name }}</router-link>
+                        :to="{
+                          name: 'group-projects',
+                          params: { groupid: group.id },
+                        }"
+                        >{{ group.name }}</router-link
+                      >
                     </h5>
                     <p class="text-muted m-0">{{ group.description }}</p>
                   </div>
@@ -26,21 +30,26 @@
 
                 <div
                   class="col-3 my-auto d-flex"
-                  v-if="group.rights.includes('O') || group.rights.includes('A')"
+                  v-if="group.role.includes('O') || group.role.includes('A')"
                 >
                   <router-link
                     tag="button"
                     class="btn-sm btn-secondary float-right"
-                    :to="{ name: 'assessment', params: { groupid: group.id, name: group.name } }"
-                  >Assessment Tree 🌳</router-link>
+                    :to="{
+                      name: 'assessment',
+                      params: { groupid: group.id, name: group.name },
+                    }"
+                    >Assessment Tree 🌳</router-link
+                  >
                   <router-link
                     tag="button"
                     class="btn-sm btn-secondary float-right"
                     :to="{
                       name: 'group-admin-view',
-                      params: { groupid: group.id }
+                      params: { groupid: group.id },
                     }"
-                  >Config 📐</router-link>
+                    >Config 📐</router-link
+                  >
                 </div>
               </div>
             </td>
@@ -58,25 +67,24 @@
 import { Api } from "../axios-api";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 
-
 export default {
-  name: 'GroupList',
+  name: "GroupList",
   components: {
     LoadingAnimation,
   },
   data() {
     return {
-      APIData: null
-    }
+      APIData: null,
+    };
   },
   created() {
-    Api.get('groups/')
-      .then(response => {
-        this.APIData = response.data
+    Api.get("groups/")
+      .then((response) => {
+        this.APIData = response.data;
       })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
-}
+};
 </script>

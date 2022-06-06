@@ -10,9 +10,7 @@
           :maxPoints="100"
           class="w-75 my-auto"
         />
-        <div
-          v-if="projects.rights.includes('O') || projects.rights.includes('A')"
-        >
+        <div v-if="projects.role.includes('O') || projects.role.includes('A')">
           <button
             class="btn-sm btn-secondary float-right"
             @click="preRefreshChecks($route.params.groupid)"
@@ -51,7 +49,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <span>{{passwordSendMsg}}</span>
+                <span>{{ passwordSendMsg }}</span>
                 <button
                   class="btn btn-outline-success rounded"
                   type="button"
@@ -196,7 +194,7 @@ export default {
         })
         .then(() => {
           this.passwordSendMsg = "Success";
-          this.refreshGroup(this.$route.params.groupid)
+          this.refreshGroup(this.$route.params.groupid);
           $("#passClose").click();
         })
         .catch((error) => {
@@ -206,8 +204,8 @@ export default {
     },
     preRefreshChecks(id) {
       if (this.password) {
-        this.userpassword = this.password
-        this.refreshGroup(id)
+        this.userpassword = this.password;
+        this.refreshGroup(id);
       } else {
         $("#passModal").modal("show");
       }
