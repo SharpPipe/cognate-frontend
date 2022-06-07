@@ -55,6 +55,11 @@
             <option value selected disabled hidden>Automation Type</option>
             <option value="T">Time Spent Goal</option>
             <option value="L">Lines Added Goal</option>
+            <option value="CM">Unique Commit Message Goal</option>
+            <option value="CW">Words per Commit Message Goal</option>
+            <option value="IW">Words per Issue Description Goal</option>
+            <option value="IA">Issues Authored Goal</option>
+            <option value="CA">Commits Made Goal</option>
           </select>
           <input
             type="number"
@@ -67,6 +72,21 @@
             >
             <span v-if="payload.automation_type == 'L'" class="input-group-text"
               >lines added</span
+            >
+            <span v-if="payload.automation_type == 'CM'" class="input-group-text"
+              >unique commit messages</span
+            >
+            <span v-if="payload.automation_type == 'CW'" class="input-group-text"
+              >words per commit message</span
+            >
+            <span v-if="payload.automation_type == 'IW'" class="input-group-text"
+              >words per issue description</span
+            >
+            <span v-if="payload.automation_type == 'IA'" class="input-group-text"
+              >issues authored</span
+            >
+            <span v-if="payload.automation_type == 'CA'" class="input-group-text"
+              >commits made</span
             >
           </div>
         </div>
