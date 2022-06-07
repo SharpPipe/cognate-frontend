@@ -4,7 +4,7 @@
       <input
         class="l"
         type="checkbox"
-        @change="$emit('switchlight')"
+        @change="switchLight"
       />
     </div>
   </div>
@@ -13,6 +13,20 @@
 <script>
 export default {
   name: "BaseLightswitch",
+  data() {
+    return {
+      lightmode: false
+    }
+  },
+  created() {
+    document.body.className = 'bootstrap-dark'
+  },
+  methods: {
+    switchLight () {
+      this.lightmode = !this.lightmode
+      document.body.className = this.lightmode ? 'bootstrap' : 'bootstrap-dark'
+    },
+  }
 };
 </script>
 

@@ -27,7 +27,7 @@
           </li>
         </ul>
 
-        <BaseLightswitch  @switchlight="$emit('switchlight')"/>
+        <BaseLightswitch />
 
         <button class="btn btn-outline-info mx-2" v-if="accessToken != null">
           <router-link :to="{ name: 'profile' }">{{ username }} ⚙</router-link>

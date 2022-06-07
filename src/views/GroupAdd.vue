@@ -10,12 +10,14 @@
               class="form-control my-1"
               placeholder="Group name"
               v-model="payload.name"
+              required
             />
             <input
               type="text"
               class="form-control my-1"
               placeholder="Group description"
               v-model="payload.description"
+              required
             />
             <div class="row m-0">
               <div class="col-8 p-0 pr-1">

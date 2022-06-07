@@ -8,10 +8,22 @@
       <div v-if="APIData">
         <table class="table table-sm">
           <thead class="thead">
+            <th scope="col"></th>
+            <td scope="col"></td>
+            <td scope="col" v-for="(c, i) in assessmentCategories" :key="i">
+              <input type="checkbox" v-model="downloadCategories[i]" />
+            </td>
+            <th>
+              <button class="btn-sm btn-secondary" @click="downloadCSV">
+                Download CSV
+              </button>
+            </th>
+          </thead>
+          <thead class="thead">
             <th scope="col">Team</th>
             <td scope="col">Developer</td>
-            <td scope="col" v-for="(g, i) in assessmentCategories" :key="i">
-              {{ g }}
+            <td scope="col" v-for="(c, i) in assessmentCategories" :key="i">
+              {{ c }}
             </td>
             <th>Total</th>
           </thead>
@@ -34,7 +46,21 @@
                 <td scope="row" v-for="point in dev.data" :key="point.id">
                   {{ +point.given_points }}/{{ +point.total }}
                 </td>
-                <th scope="row">{{ sumpoints(dev.data) }}</th>
+                <span
+                  v-for="teampoint in repo.project_data"
+                  :key="teampoint.id"
+                >
+                  <td
+                    scope="row"
+                    v-if="i === 0"
+                    :rowspan="repo.users_data.length"
+                  >
+                    <b>{{ +teampoint.given_points }}/{{ +teampoint.total }} </b>
+                  </td>
+                </span>
+                <th scope="row">
+                  {{ sumpoints(dev.data, repo.project_data) }}
+                </th>
               </tr>
             </template>
           </tbody>
@@ -50,6 +76,7 @@
 <script>
 import { Api } from "../axios-api";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
+import { keys, pickBy } from "lodash";
 
 export default {
   name: "GroupMilestoneSummary",
@@ -57,7 +84,8 @@ export default {
   data() {
     return {
       APIData: null,
-      assessmentCategories: null,
+      assessmentCategories: {},
+      downloadCategories: {},
     };
   },
   created() {
@@ -70,19 +98,50 @@ export default {
     Api.get(url)
       .then((response) => {
         this.APIData = response.data.data;
-        this.assessmentCategories = this.APIData[0].users_data[0].data.map(
-          (g) => g.name
-        );
+        for (let c of this.APIData[0].users_data[0].data) {
+          this.assessmentCategories[c.id] = c.name;
+          this.downloadCategories[c.id] = true;
+        }
+        for (let c of this.APIData[0].project_data) {
+          this.assessmentCategories[c.id] = c.name;
+          this.downloadCategories[c.id] = true;
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   },
   methods: {
-    sumpoints(data) {
-      return data
+    sumpoints(devData, projectData) {
+      let devSum = devData
         .map((x) => +x.given_points)
         .reduce((acc, item) => acc + item, 0);
+      let projectSum = projectData
+        .map((x) => +x.given_points)
+        .reduce((acc, item) => acc + item, 0);
+      return devSum + projectSum;
+    },
+    downloadCSV() {
+      Api.post("groups/" + this.$route.params.groupid + "/assessment_csv/", {
+        assessments: keys(pickBy(this.downloadCategories)),
+      })
+        .then((response) => {
+          console.log(response.data);
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(new Blob([response.data]));
+          const filename =
+            "G" +
+            this.$route.params.groupid +
+            "MS" +
+            this.$route.params.msid +
+            ".csv";
+          link.setAttribute("download", filename);
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

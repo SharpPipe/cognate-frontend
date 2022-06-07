@@ -35,10 +35,12 @@ export default {
 
       let pie = d3.pie().value((d) => d.points);
 
+      let h = height - 10
+
       let arc = d3
         .arc()
-        .innerRadius(0)
-        .outerRadius((height - 10) / 2)
+        .innerRadius(h / 5)
+        .outerRadius(h / 2)
         .cornerRadius(1);
 
       let arcs = g.selectAll("arc").data(pie(data)).enter().append("g");

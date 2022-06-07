@@ -1,7 +1,7 @@
 <template>
   <div class="projects">
     <div class="container" v-if="projects">
-      <div class="row justify-content-between">
+      <div class="row mx-0 justify-content-between">
         <span class="h4 my-1 mr-3">Milestones</span>
         <ProgressBar
           v-if="refreshIsOngoing"
@@ -10,9 +10,7 @@
           :maxPoints="100"
           class="w-75 my-auto"
         />
-        <div
-          v-if="projects.rights.includes('O') || projects.rights.includes('A')"
-        >
+        <div v-if="projects.role.includes('O') || projects.role.includes('A')">
           <button
             class="btn-sm btn-secondary float-right"
             @click="preRefreshChecks($route.params.groupid)"
@@ -51,7 +49,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <span>{{passwordSendMsg}}</span>
+                <span>{{ passwordSendMsg }}</span>
                 <button
                   class="btn btn-outline-success rounded"
                   type="button"
@@ -90,7 +88,7 @@
         <table class="table">
           <tr v-for="project in projects.data" :key="project.id">
             <td v-if="project.users" class="p-1">
-              <PieChart
+              <DonutChart
                 :id="`teampiechart${project.id}`"
                 :k="`${project.id}`"
                 :users="project.users"
@@ -148,7 +146,7 @@ import { Api } from "../axios-api";
 import { mapState } from "vuex";
 import $ from "jquery";
 import RepoChartMini from "../components/visualizations/RepoChartMini";
-import PieChart from "../components/visualizations/PieChart.vue";
+import DonutChart from "../components/visualizations/DonutChart.vue";
 import ProgressBar from "../components/ProgressBar.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 
@@ -156,7 +154,7 @@ export default {
   name: "GroupProjects",
   components: {
     RepoChartMini,
-    PieChart,
+    DonutChart,
     ProgressBar,
     LoadingAnimation,
   },
@@ -196,7 +194,7 @@ export default {
         })
         .then(() => {
           this.passwordSendMsg = "Success";
-          this.refreshGroup(this.$route.params.groupid)
+          this.refreshGroup(this.$route.params.groupid);
           $("#passClose").click();
         })
         .catch((error) => {
@@ -206,8 +204,8 @@ export default {
     },
     preRefreshChecks(id) {
       if (this.password) {
-        this.userpassword = this.password
-        this.refreshGroup(id)
+        this.userpassword = this.password;
+        this.refreshGroup(id);
       } else {
         $("#passModal").modal("show");
       }
