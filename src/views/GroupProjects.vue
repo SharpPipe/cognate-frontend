@@ -106,13 +106,13 @@
                 }"
                 >{{ project.name }}</router-link
               >
+              <div v-if="project.mentors && project.mentors.length > 0">
+                <small class="">Mentor: {{ project.mentors[0] }}</small>
+                <br />
+              </div>
             </td>
 
             <td class="p-1 col-4">
-              <div v-if="project.mentors && project.mentors.length > 0">
-                <span class="badge badge">{{ project.mentors[0] }}</span>
-                <br />
-              </div>
               <span v-for="(dev, i) in project.users" :key="i" class="pr-1">
                 <div class="badge border">
                   <svg class="m-0 p-0" height="12" width="12">
@@ -125,7 +125,7 @@
             </td>
 
             <td class="p-1">
-              <RepoChartMini
+              <ProjectMilestoneBarcharts
                 :id="`repoms${project.id}`"
                 :k="project.id"
                 :milestones="project.milestones"
@@ -145,7 +145,7 @@
 import { Api } from "../axios-api";
 import { mapState } from "vuex";
 import $ from "jquery";
-import RepoChartMini from "../components/visualizations/RepoChartMini";
+import ProjectMilestoneBarcharts from "../components/visualizations/ProjectMilestoneBarcharts";
 import DonutChart from "../components/visualizations/DonutChart.vue";
 import ProgressBar from "../components/ProgressBar.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
@@ -153,7 +153,7 @@ import LoadingAnimation from "../components/LoadingAnimation.vue";
 export default {
   name: "GroupProjects",
   components: {
-    RepoChartMini,
+    ProjectMilestoneBarcharts,
     DonutChart,
     ProgressBar,
     LoadingAnimation,
