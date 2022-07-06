@@ -71,39 +71,6 @@ export default {
           .style('stroke', '#66666666')
           .style('stroke-width', 1)
 
-
-/*       svg
-        .append("g")
-        .selectAll("circle")
-        .data(this.milestones)
-        .enter()
-        .append("circle")
-        .attr("cx", (d, i) => x(i))
-        .attr("cy", height / 2)
-        .attr("r", 15)
-        .attr("fill", (d) =>
-          c(
-            d.user_points
-              .filter((u) => !u.name.includes("project"))
-              .map((u) => +u.points)
-          )
-        )
-        .attr("stroke-width", 2)
-        .attr("stroke-opacity", 0.6)
-        .attr("data-toggle", "tooltip")
-        .attr("data-placement", "top")
-        .attr("data-html", true)
-        .attr(
-          "title",
-          (d) =>
-            "<b>Milestone " +
-            d.milestone_id +
-            "</b>" +
-            d.user_points
-              .map((u) => "<br/>" + u.name + ": " + Math.round(u.points))
-              .join("")
-        ); */
-
       return svg;
     },
   },
