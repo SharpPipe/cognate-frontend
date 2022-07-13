@@ -10,21 +10,24 @@ import d3 from "@/assets/d3";
 
 export default {
   name: "RepoRadar",
-  props: ["radardata"],
+  props: ["radardata", "sprintNumber"],
+  data() {
+    return {
+      defaultSprint: null
+    }
+  },
 
   mounted() {
-    this.drawChart(this.radardata);
-    // add watcher for radardata
-    this.radardata[0].forEach((d) =>
-      this.$watch(() => d.value, this.onRadarDataChange)
-    );
+    this.defaultSprint = this.sprintNumber
+
+    this.drawChart(this.radardata, true);
   },
   methods: {
     onRadarDataChange() {
-      d3.select("#reporadar").selectAll("*").remove();
-      this.drawChart(this.radardata);
+      d3.select("#reporadar").selectAll("*").remove(); // maybe add a sexy tween
+      this.drawChart(this.radardata, this.defaultSprint === this.sprintNumber);
     },
-    drawChart(radardata) {
+    drawChart(radardata, isDefault) {
       // Radar code inspired by and definitely not directly stolen from
       // https://observablehq.com/@jacobtfisher/brand-identity-radar-chart
       const height = 400;
@@ -32,11 +35,11 @@ export default {
       const margin = 0;
       const radius = (height - margin * 2) / 2 - 1;
       const dotRadius = 4;
-      const axisCircles = 10;
+      const axisCircles = 5;
       //const axisLabelFactor = 1.3
       //const wrapWidth = 200
-      const axesLength = radardata[0].length;
-      const axesDomain = radardata[0].map((d) => d.axis);
+      const axesLength = radardata.length;
+      const axesDomain = radardata.map((d) => d.axis);
       const maxValue = 5;
 
       let rScale = d3.scaleLinear().domain([0, maxValue]).range([0, radius]);
@@ -149,33 +152,26 @@ export default {
         .text((d) => d);
 
       // Line
-      let c = "#66ee66";
-      let g = "#222222";
-      const plots = container
+      const c = "#66ee66";
+
+      const plot = container
         .append("g")
         .selectAll("g")
         .data([radardata])
         .join("g")
-        .attr("fill", c)
-        .style("fill-opacity", 0.8)
-        .attr("stroke", c)
-        .style("stroke_width", "3px");
-
-      plots
-        .append("g")
-        .selectAll("something")
-        .data((d) => d)
-        .enter()
+        .attr("fill", isDefault ? c : "lightgray")
+        .attr("fill-opacity", 0.25)
+        .attr("stroke", isDefault ? c : "lightgray")
+        .style("stroke_width", 2);
+      
+      plot
         .append("path")
-        .attr("d", (d) => radarLine(d.map((v) => v.value)))
-        .attr("fill", (d, i) => (i == radardata.length - 1 ? c : g))
-        .attr("fill-opacity", 0.15)
-        .attr("stroke", (d, i) => (i == radardata.length - 1 ? c : g))
-        .attr("stroke-width", 2);
+          .attr("d", (d) => radarLine(d.map((v) => v.value))) 
 
-      plots
+
+      plot
         .selectAll("circle")
-        .data((d) => d[radardata.length - 1])
+        .data((d) => d)
         .join("circle")
         .attr("r", dotRadius)
         .attr(
@@ -186,10 +182,15 @@ export default {
           "cy",
           (d, i) => rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2)
         )
-        .style("fill-opacity", 0.8);
+        .attr("fill-opacity", 1)
 
       return svg.node();
     },
+  },
+  watch: {
+    sprintNumber() {
+      this.onRadarDataChange()
+    }
   },
 };
 </script>
