@@ -35,6 +35,10 @@ import {
 } from 'd3-time-format'
 
 import {
+  transition,
+} from 'd3-transition'
+
+import {
   hierarchy,
   tree,
 } from 'd3-hierarchy'
@@ -69,6 +73,9 @@ export default {
   
   // Time Format
   isoParse,
+
+  // Transition 
+  transition,
 
   // Hierarchy
   hierarchy,

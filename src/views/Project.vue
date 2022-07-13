@@ -24,7 +24,7 @@
       <!--  Overview data  -->
       <div id="overview" class="row m-1">
         <div class="col-4 p-0" v-if="radar.length">
-          <RepoRadar class="p-1" :radardata="radar" />
+          <RepoRadar class="p-1" :radardata="radar[this.displayRadar]" :sprintNumber="this.displayRadar" />
         </div>
 
         <div class="col-5 h-100" id="developerList">
@@ -92,7 +92,12 @@
                 },
               }"
             >
-              <ProjectMilestoneCard class="m-0" :msData="milestone" />
+              <ProjectMilestoneCard
+                class="m-0"
+                :msData="milestone"
+                @mouseenter.native="hoverIn"
+                @mouseleave.native="hoverOut"
+              />
             </router-link>
           </td>
         </tr>
@@ -145,15 +150,6 @@ export default {
   },
   data() {
     return {
-      radarData: [
-        [
-          { axis: "Retro", value: 1 },
-          { axis: "Meeting", value: 3 },
-          { axis: "Branches", value: 2 },
-          { axis: "Planning", value: 2 },
-          { axis: "Issues", value: 1 },
-        ],
-      ],
       projectTimeRange: [
         new Date(2020, 0, 24, 0, 0, 0),
         new Date(2030, 7, 16, 0, 0, 0),
@@ -162,7 +158,9 @@ export default {
       projectDetails: [],
 
       radar: [],
+      displayRadar: 0,
       gittimedata: [],
+
       devColours: {
         loaded: false,
         users: {},
@@ -182,6 +180,7 @@ export default {
         this.radar = this.formatMilestonePointsForRadarGraph(
           this.projectDetails.milestones
         );
+        this.hoverOut(); // display the last radar
 
         this.userTotalPoints = chain(this.projectDetails.milestones)
           .map((ms) =>
@@ -236,35 +235,29 @@ export default {
       // This is the result of Kristjan building bad APIs
       let numOfDevs = milestones[0].user_points.length;
       for (let ms of milestones) {
-        let r = [
-          { axis: "Retro", value: 0 },
-          { axis: "Meeting", value: 0 },
-          { axis: "Branch management", value: 0 },
-          { axis: "Planning", value: 0 },
-          { axis: "Issues", value: 0 },
-        ];
+        let r = [];
         for (let user of ms.user_points) {
           for (let key in user.assessments) {
             if (key !== "Effort") {
-              if (key === "Meeting" || key === "Retro")
-                r.find((o) => o.axis == key).value = user.assessments[key];
+              let ax = r.find((o) => o.axis == key);
+              if (ax !== undefined)
+                ax.value += user.assessments[key] / numOfDevs;
               else
-                r.find((o) => o.axis == key).value +=
-                  user.assessments[key] / numOfDevs;
+                r.push({ axis: key, value: user.assessments[key] / numOfDevs });
             }
           }
         }
         this.radar = this.radar.concat(Array(r));
-        r = [
-          { axis: "Retro", value: 0 },
-          { axis: "Meeting", value: 0 },
-          { axis: "Branch management", value: 0 },
-          { axis: "Planning", value: 0 },
-          { axis: "Issues", value: 0 },
-        ];
+        r = [];
       }
-
       return this.radar;
+    },
+    hoverIn(event) {
+      let sprint = event.target.children[0].children[0].innerHTML;
+      this.displayRadar = +sprint.slice(-2) - 1;
+    },
+    hoverOut() {
+      this.displayRadar = this.radar.length - 1;
     },
   },
 };
