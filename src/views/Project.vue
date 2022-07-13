@@ -24,7 +24,7 @@
       <!--  Overview data  -->
       <div id="overview" class="row m-1">
         <div class="col-4 p-0" v-if="radar.length">
-          <RepoRadar class="p-1" :radardata="radar[this.displayRadar]" :sprintNumber="this.displayRadar" />
+          <ProjectRadar class="p-1" :radardata="radar[this.displayRadar]" :sprintNumber="this.displayRadar" />
         </div>
 
         <div class="col-5 h-100" id="developerList">
@@ -131,7 +131,7 @@
 <script>
 import ProjectTotalStats from "../components/ProjectTotalStats.vue";
 import ProjectMilestoneCard from "../components/ProjectMilestoneCard.vue";
-import RepoRadar from "../components/visualizations/RepoRadar";
+import ProjectRadar from "../components/visualizations/ProjectRadar";
 import GitTime from "../components/visualizations/GitTime";
 import { map, chain } from "lodash";
 
@@ -140,7 +140,7 @@ export default {
   name: "Project",
   components: {
     GitTime,
-    RepoRadar,
+    ProjectRadar,
     ProjectTotalStats,
     ProjectMilestoneCard,
   },
