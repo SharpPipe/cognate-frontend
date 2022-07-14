@@ -239,7 +239,7 @@ export default {
     getInvitations() {
       Api.get("/invitations/")
         .then((response) => {
-          this.invitations = response.data.data.invitation;
+          this.invitations = response.data.data.invitations;
         })
         .catch((err) => {
           console.log(err);

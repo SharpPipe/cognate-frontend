@@ -2,9 +2,9 @@
   <div class="container" v-if="APIData">
     <h3>{{ APIData.project_name }}</h3>
     <div class="row m-1">
-      <!--  RepoRadar  -->
+      <!--  ProjectRadar  -->
       <div class="col-4 p-1" v-if="radarData.length">
-        <RepoRadar :radardata="radarData" :key="key" />
+        <ProjectRadar :radardata="radarData" :key="key" />
       </div>
 
       <!--  GitTime  -->
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import RepoRadar from "../components/visualizations/RepoRadar";
+import ProjectRadar from "../components/visualizations/ProjectRadar";
 import GitTime from "../components/visualizations/GitTime";
 import ProgressBar from "../components/ProgressBar.vue";
 import ProjectAssessStudent from "../components/ProjectAssessStudent.vue";
@@ -87,7 +87,7 @@ export default {
   name: "ProjectAssessSprint",
   components: {
     GitTime,
-    RepoRadar,
+    ProjectRadar,
     ProjectAssessStudent,
     ProjectAssessTeam,
     ProjectDeveloper,
@@ -99,13 +99,11 @@ export default {
       msg: null,
       APIData: null,
       radarData: [
-        [
           { axis: "Retro", value: 0 },
           { axis: "Meeting", value: 0 },
           { axis: "Branch management", value: 0 },
           { axis: "Planning", value: 0 },
           { axis: "Issues", value: 0 },
-        ],
       ],
       payload: {
         feedback: "",
@@ -140,11 +138,11 @@ export default {
     },
     updateRadar() {
       let num_students = this.APIData.users_data.length;
-      for (let radarAxis of this.radarData[0]) radarAxis.value = 0;
+      for (let radarAxis of this.radarData) radarAxis.value = 0;
 
       for (let student of this.APIData.users_data) {
         for (let student_assessment of student.data) {
-          let axis = this.radarData[0].find(
+          let axis = this.radarData.find(
             (a) => a.axis == student_assessment.name
           );
           if (axis)
@@ -153,7 +151,7 @@ export default {
       }
 
       for (let project_assessment of this.APIData.project_data) {
-        let axis = this.radarData[0].find(
+        let axis = this.radarData.find(
           (a) => a.axis == project_assessment.name
         );
         if (axis) axis.value = project_assessment.given_points;
